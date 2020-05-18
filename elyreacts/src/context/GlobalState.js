@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
+import auth from "../auth";
 
 const initialState = {
   posters: [],
@@ -55,7 +56,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
 
-  async function login(uname,pass) {
+  async function login(uname,pass,props) {
     try {
       const config = {
         headers: {
@@ -70,7 +71,9 @@ export const GlobalProvider = ({ children }) => {
         type: "LOGIN",
         user_profile: res.data 
       });
-    
+      auth.login(() => {
+        props.history.push("/home");
+      });
     } catch (err) {
       dispatch({
         type: "ERROR",
