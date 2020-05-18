@@ -33,6 +33,10 @@ export const Home = () => {
     let path = `/photography`; 
     history.push(path);
   }
+  const routeA = () =>{ 
+    let path = `/all`; 
+    history.push(path);
+  }
     return (
         <div>
           <h3>Home</h3>
@@ -43,6 +47,7 @@ export const Home = () => {
             <button onClick={routeG}>Graphic-design</button>
             <button onClick={routePh}>Photography</button>
             <button onClick={routePs}>Aesthethic edits</button>
+            <button onClick={routeA}>All posters</button>
         </div>
     )
 }
