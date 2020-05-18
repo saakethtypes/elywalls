@@ -1,0 +1,251 @@
+@import "../variables.scss";
+
+.headerWrapper {
+    background: $color_white;
+}
+
+@media only screen and (min-width: $media_width_tablet) {
+    .headerContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+
+        max-width: $max-width_content;
+
+        margin: 0 auto;
+        padding: 1em 2em;
+
+        img {
+            height: 2em;
+        }
+    }
+
+    .headerMenuIcon {
+        display: none;
+    }
+
+    .headerLinkContainer {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+
+        & > nav ul {
+            display: inline-block;
+            margin-right: 1.5em;
+
+            li {
+                display: inline-block;
+
+                a {
+                    margin: 0 0.5em;
+                    padding: 1em 0.5em;
+
+                    color: $color_black;
+
+                    &:hover {
+                        color: $color_indywalls_primary;
+                    }
+                }
+            }
+        }
+
+        & > .accountPanel {
+            & > div {
+                display: inline-block;
+
+                margin: 0 0.5em;
+            }
+
+            .accountRegister {
+                position: relative;
+
+                .accountRegister__dropdown {
+                    display: none;
+
+                    position: absolute;
+                    z-index: 998;
+                    top: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    overflow: hidden;
+
+                    // height: 0;
+                    width: max-content;
+
+                    padding: 2.5em 1em 0.5em 1em;
+
+                    & > span {
+                        position: absolute;
+                        z-index: 998;
+                        top: 1.75em;
+                        left: 50%;
+                        transform: translateX(-50%);
+
+                        color: $color_grey_dark;
+
+                        font-size: 0.75em;
+                        text-transform: uppercase;
+                    }
+                    & > a {
+                        position: relative;
+                        z-index: 998;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        z-index: 997;
+                        top: 0.75em;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+
+                        border-radius: 0.5em;
+
+                        background: $color_black;
+                    }
+
+                    &::before {
+                        // Arrow above dropdown
+                        content: "";
+                        pointer-events: none;
+                        position: absolute;
+                        z-index: 996;
+                        top: -0.75em;
+                        left: 50%;
+                        margin-left: -0.75em;
+
+                        border: 0.75em solid transparent;
+                        border-bottom: 0.75em solid $color_black;
+
+                        height: 0;
+                        width: 0;
+                    }
+                }
+
+                // Show dropdown on hover of ANY of the above elements
+                &:hover > .accountRegister__dropdown {
+                    display: block;
+                    // height: max-content;
+                    // opacity: 1;
+                }
+                & > .accountRegister__dropdown:hover {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+    max-width: $max-width_content;
+
+    margin: 0 auto;
+    padding: 1em 2em;
+
+    img {
+        height: 2em;
+    }
+}
+
+.headerMenuIcon {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 0.5em;
+
+    width: 1.5em;
+
+    & > div {
+        height: 0.2em;
+        width: 100%;
+
+        background: $color_black;
+
+        transition: $transition_time_link;
+
+        &:nth-of-type(2) {
+            width: 50%;
+            margin-left: 50%;
+        }
+    }
+
+    &:hover > div {
+        width: 80%;
+        margin-left: 20%;
+
+        background: $color_indywalls_primary_light;
+
+        &:nth-of-type(2) {
+            width: 50%;
+            margin-left: 50%;
+        }
+    }
+}
+
+.headerLinkContainer {
+    position: absolute;
+    top: 4em;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 2em;
+
+    background: $color_white;
+
+    & > nav ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        li {
+            margin: 0.25em 0;
+            padding: 1em 2em 1em 0;
+        }
+    }
+
+    & > .accountPanel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-items: center;
+
+        width: 100%;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 0.5em;
+        }
+
+        .accountRegister {
+            & > .accountRegister__dropdown {
+                margin-top: 0.5em;
+
+                & > span {
+                    padding-right: 0.25em;
+                }
+            }
+        }
+    }
+}

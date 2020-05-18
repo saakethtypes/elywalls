@@ -1,0 +1,84 @@
+@import "./variables.scss";
+
+html {
+    font-family: "Jost", "Montserrat", "Roboto", sans-serif;
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat";
+}
+
+h1,
+h2 {
+    font-weight: 300;
+}
+
+h1 {
+    font-size: 3em;
+}
+h2 {
+    font-size: 2.25em;
+}
+
+h3,
+h4 {
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+h4 {
+    font-size: 0.75em;
+}
+
+a {
+    color: $color_link;
+    text-decoration: none;
+
+    transition: $transition_time_link;
+
+    &:hover {
+        color: $color_link_hover;
+    }
+}
+
+nav {
+    ul {
+        li {
+            display: inline-block;
+
+            a {
+                margin: 0 0.5em;
+                padding: 1em 0.5em;
+
+                color: $color_black;
+
+                &:hover {
+                    color: $color_indywalls_primary;
+                }
+            }
+        }
+    }
+}
+
+.link-button {
+    display: inline-block;
+    padding: 0.75em 1em;
+    border-radius: 0.5em;
+
+    background: $color_indywalls_primary;
+
+    color: $color_white;
+
+    &:hover {
+        background: $color_indywalls_primary_light;
+        color: $color_white;
+    }
+}
