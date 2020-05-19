@@ -12,6 +12,7 @@ const initialState = {
   poster:null,
   artist:null,
   artists:null,
+  log_status:null
 };
 
 export const GlobalContext = createContext(initialState);
@@ -116,7 +117,6 @@ export const GlobalProvider = ({ children }) => {
 
   async function getPostersAll() {
     try {
-      console.log("object")
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -592,6 +592,7 @@ export const GlobalProvider = ({ children }) => {
         poster:state.poster,
         artist:state.artist,
         artists:state.artists,
+        log_status:state.log_status,
        login,
        logout,
        registerUser,

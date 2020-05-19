@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Provide a password"]
   },
 
+  confirmed:{
+    type:Boolean,
+    default:false
+},
   admires: {type:[Poster.schema],defualt:[]},
   cart: {type:[Cart.schema],defualt:[]},
   order_history: {type:[Order.schema],defualt:[]},

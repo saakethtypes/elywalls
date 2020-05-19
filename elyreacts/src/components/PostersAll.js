@@ -9,14 +9,12 @@ export const PostersAll = () => {
         //ex-lint-disable-next-line
     },[])
 
-
-    console.log("posters",posters)
     return (
       <div>
           <h1>All Posters</h1>
         {posters.map((poster, index) => (
-          <div>
-             < Poster key={poster._id} index={index} poster={poster} /> 
+          <div  key={poster._id}>
+             < Poster index={index} poster={poster} /> 
           </div>
         ))}         
       </div>

@@ -37,17 +37,19 @@ export const Home = () => {
     let path = `/all`; 
     history.push(path);
   }
+  //TODO show top 5 featured,popular,instafamous section of print ig wall
+
     return (
         <div>
           <h3>Home</h3>
           <h2>Elegant posters for your walls</h2>
-
           <br></br>
             <button onClick={routeT}>Textography</button>
             <button onClick={routeG}>Graphic-design</button>
             <button onClick={routePh}>Photography</button>
             <button onClick={routePs}>Aesthethic edits</button>
             <button onClick={routeA}>All posters</button>
+
         </div>
     )
 }

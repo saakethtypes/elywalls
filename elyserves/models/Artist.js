@@ -40,6 +40,10 @@ const ArtistSchema = new mongoose.Schema({
     minlength: [6, "Atleast 6 charecters required for a password"],
     required: [true, "Provide a password"]
   },
+  confirmed:{
+      type:Boolean,
+      default:false
+  },
 
   admires: {type:[Poster.schema],defualt:[]},
   cart: {type:[Cart.schema],defualt:[]},

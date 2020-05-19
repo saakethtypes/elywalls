@@ -2,24 +2,55 @@ const User = require("../models/User");
 const Artist = require("../models/Artist");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
+
+let transporter =nodemailer.createTransport({
+  service:'gmail',
+  auth:{
+    user:'saakethlogs@gmail.com',
+    pass:process.env.EMAIL_PASS
+  }
+})
+
 
 exports.registerUser = async (req, res, next) => {
   try {
     const pass = req.body.password;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
-
+    
+    
     let user = {
       name: req.body.name,
       email: req.body.email,
       password: hash,
       phone: req.body.phone,
-      delivery_address: req.body.address,
       username: req.body.username,
     };
+    
     user = await User.create(user);
+    
+    jwt.sign({
+      user:user._id
+    },
+    process.env.EMAIL_SECRET
+    ,{
+      expiresIn:'1d'
+    },async(err,emailToken)=>{
+      if(err){console.log(err)}else{
+      let confURL = `http://localhost:3000/confirmation/${emailToken}`
+      let mailOption = {
+        from: 'saakethlogs@gmail.com',
+        to:req.body.email,
+        subject:'Elywalls Confirmation',
+        html: `Click on this link to activate your account:
+        <a href = "${confURL}">${confURL}</a>`
+      }
+      await transporter.sendMail(mailOption)
+    }})
+    
     //TODO directly login after registration
     jwt.sign(
       { id: user._id },
@@ -48,6 +79,7 @@ exports.login = async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email }).then(
       async (user) => {
+        if(user.confirmed==true){
         if (user) {
           bcrypt.compare(req.body.password, user.password).then((match) =>
             match
@@ -176,7 +208,12 @@ exports.login = async (req, res, next) => {
             }
           );
         }
+      }else{
+        res.json({
+          msg:"Confirm your email before logging in."
+        })
       }
+    }
     );
   } catch (err) {
     return res.json({
@@ -190,13 +227,20 @@ exports.registerArtist = async (req, res, next) => {
     const pass = req.body.password;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
+    let mailOption = {
+      from: 'saakethlogs@gmail.com',
+      to:req.body.email,
+      subject:'Elywalls',
+      text:'workss'
+    }
+    
+    await transporter.sendMail(mailOption)
 
     let artist = {
       name: req.body.name,
       email: req.body.email,
       password: hash,
       phone: req.body.phone,
-      delivery_address: req.body.address,
       username:req.body.username
     };
 
