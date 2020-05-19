@@ -18,8 +18,8 @@ const appreducer = (state, action) => {
         case "LOGOUT":
             return {
                 ...state,
-                ...state.user,
-                user: []
+                user:null,
+                log_status:false
             }
 
         case "EDIT_PROFILE":

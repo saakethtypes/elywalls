@@ -12,7 +12,8 @@ const initialState = {
   poster:null,
   artist:null,
   artists:null,
-  log_status:null
+  log_status:null,
+  utype:null
 };
 
 export const GlobalContext = createContext(initialState);
@@ -66,15 +67,22 @@ export const GlobalProvider = ({ children }) => {
       };
       //TODO redirect to home page
       let usercred = { username: uname, password: pass };
-      const res = await axios.post("/login", config, usercred);
+      const res = await axios.post("/login",usercred,config);
+      if(res.data.logged){
       localStorage.setItem("jwt", res.data.token);
+      console.log("dasa",res)
+
       dispatch({
         type: "LOGIN",
-        user_profile: res.data 
+        user_profile: res.data
       });
       auth.login(() => {
-        props.history.push("/home");
+        props.history.push("/");
       });
+    }else{
+      //TODO notification of error in login
+       console.log("yeah not logged in cuz",res.data.msg)
+    }
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -99,7 +107,7 @@ export const GlobalProvider = ({ children }) => {
           "Content-type": "application/json",
         },
       };
-      await axios.post("/edit-profile", config,editted_profile);
+      await axios.post("/edit-profile", editted_profile,config);
     
       dispatch({
         type: "EDIT_PROFILE",

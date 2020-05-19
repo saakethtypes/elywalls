@@ -2,18 +2,13 @@ import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext,useState } from "react";
 import {Poster} from "../components/Poster";
 
-export const PostersAll = () => {
-    let {posters,getPostersAll} = useContext(GlobalContext)
-    useEffect(()=>{
-          getPostersAll();
-        //ex-lint-disable-next-line
-    },[])
+export const Cart = () => {
+    let {user} = useContext(GlobalContext)
 
-    console.log("posters",posters)
     return (
       <div>
-          <h1>All Posters</h1>
-        {posters.map((poster, index) => (
+          <h1>Cart</h1>
+        {user.cart.map((poster, index) => (
           <div>
              < Poster key={poster._id} index={index} poster={poster} /> 
           </div>

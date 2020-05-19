@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useContext,useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export const Home = () => {
-    const history = useHistory();
+  
+  const history = useHistory();
+
 
   const routeLogin = () =>{ 
     let path = `/login`; 
@@ -37,6 +39,7 @@ export const Home = () => {
     let path = `/all`; 
     history.push(path);
   }
+  
   //TODO show top 5 featured,popular,instafamous section of print ig wall
 
     return (
@@ -49,7 +52,7 @@ export const Home = () => {
             <button onClick={routePh}>Photography</button>
             <button onClick={routePs}>Aesthethic edits</button>
             <button onClick={routeA}>All posters</button>
-
+            
         </div>
     )
 }

@@ -17,6 +17,7 @@ import { Login } from "./components/Login";
 import { RegisterUser } from "./components/UserRegister";
 import { RegisterArtist } from "./components/ArtistRegister";
 import { Header } from "./components/Header";
+import {UserProfile} from './components/UserProfile';
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
         <Route exact path="/textography" component={PostersTextography} />
         <Route exact path="/photoshop" component={PostersPhotoshop} />
         <Route exact path="/all" component={PostersAll} />
+        <Route exact path="/myaccount" component={UserProfile} />
+        <Route exact path="/cart" component={PostersAll} />
 
       </GlobalProvider>
     </BRouter>
