@@ -24,20 +24,19 @@ const UserSchema = new mongoose.Schema({
     maxlength:30,
     required:[true,"Username is required"]
 },
+//TODO check phone length
   phone: {
       type:Number,
       maxlength:10,
-      minlength:10,
+      minlength:8,
       required:[true,"Phone number must be 10 digits"]
   },
   delivery_address: {
       type:[String],
-      maxlength:250,
-      required:[true,"Please provide a delivery address"]
-  },
+      maxlength:250  },
   password: {
     type: String,
-    minlength: [6, "Atleast 6 charecters required for a password"],
+    minlength: [4, "Atleast 4 charecters required for a password"],
     required: [true, "Provide a password"]
   },
 
@@ -52,8 +51,7 @@ const UserSchema = new mongoose.Schema({
   bought_posters: {type:[Poster.schema],defualt:[]},
   credit_card_info: {
       type:[String],
-      default:["","",""],
-      required:true
+      default:["","",""]
   },
   
   createdAt: {

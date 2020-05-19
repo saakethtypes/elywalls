@@ -9,6 +9,7 @@ export const RegisterUser = () => {
     const [Username, setUsername] = useState("");
     const [Email,setEmail] = useState("");
     const [Phone,setPhone] = useState("");
+    const [Submitted,setSubmitted] = useState(false);
     //TODO mention this is delivery address
     //can be asked in checkout page 
   //   const [AFlat,setAFlat] = useState("");
@@ -23,7 +24,7 @@ export const RegisterUser = () => {
       let firstname = Fn;
       firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
       let user_info = {
-        firstname: firstname,
+        name: firstname,
         username: Username,
         password: Pass,
         phone: Phone,
@@ -39,6 +40,8 @@ export const RegisterUser = () => {
         setEmail("");
         setPhone("");
         setcPass("");
+        setSubmitted(true);
+
       } else {
               store.addNotification({
           title: "Shorty",
@@ -111,6 +114,10 @@ export const RegisterUser = () => {
                         Submit
                       </button>
                     </form>
+                    {
+                    Submitted?<div>Check your gmail to activate your account 
+                      <a href="https://gmail.com">Go to Gmail</a></div>:null
+                  }
           </div>
       )
 }

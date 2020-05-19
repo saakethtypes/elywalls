@@ -9,6 +9,8 @@ export const RegisterArtist = () => {
   const [Username, setUsername] = useState("");
   const [Email,setEmail] = useState("");
   const [Phone,setPhone] = useState("");
+  const [Submitted,setSubmitted] = useState(false);
+  
   //TODO mention this is delivery address
   //can be asked in checkout page 
 //   const [AFlat,setAFlat] = useState("");
@@ -23,7 +25,7 @@ export const RegisterArtist = () => {
     let firstname = Fn;
     firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
     let artist_info = {
-      firstname: firstname,
+      name: firstname,
       username: Username,
       password: Pass,
       phone: Phone,
@@ -39,6 +41,7 @@ export const RegisterArtist = () => {
       setEmail("");
       setPhone("");
       setcPass("");
+      setSubmitted(true);
     } else {
       console.log("sss object")
             store.addNotification({
@@ -112,6 +115,10 @@ export const RegisterArtist = () => {
                       Submit
                     </button>
                   </form>
+                  {
+                    Submitted?<div>Check your gmail to activate your account 
+                      <a href="https://gmail.com">Go to Gmail</a></div>:null
+                  }
         </div>
     )
 }

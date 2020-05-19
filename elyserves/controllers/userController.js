@@ -21,7 +21,7 @@ exports.registerUser = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
     
-    
+
     let user = {
       name: req.body.name,
       email: req.body.email,
@@ -31,7 +31,6 @@ exports.registerUser = async (req, res, next) => {
     };
     
     user = await User.create(user);
-    
     jwt.sign({
       user:user._id
     },
@@ -40,15 +39,16 @@ exports.registerUser = async (req, res, next) => {
       expiresIn:'1d'
     },async(err,emailToken)=>{
       if(err){console.log(err)}else{
-      let confURL = `http://localhost:3000/confirmation/${emailToken}`
-      let mailOption = {
+      let utype = 'user'
+      let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`
+      let mailOptions = {
         from: 'saakethlogs@gmail.com',
         to:req.body.email,
         subject:'Elywalls Confirmation',
         html: `Click on this link to activate your account:
-        <a href = "${confURL}">${confURL}</a>`
+        <i><a href = "${confURL}">${confURL}</a></i>`
       }
-      await transporter.sendMail(mailOption)
+      await transporter.sendMail(mailOptions)
     }})
     
     //TODO directly login after registration
@@ -74,6 +74,85 @@ exports.registerUser = async (req, res, next) => {
     });
   }
 };
+
+exports.registerArtist = async (req, res, next) => {
+  try {
+    const pass = req.body.password;
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(pass, salt);
+    let artist = {
+      name: req.body.name,
+      email: req.body.email,
+      password: hash,
+      phone: req.body.phone,
+      username:req.body.username
+    };
+
+    artist = await Artist.create(artist);
+    jwt.sign({
+      user:artist._id
+    },
+    process.env.EMAIL_SECRET
+    ,{
+      expiresIn:'1d'
+    },async(err,emailToken)=>{
+      if(err){console.log(err)}else{
+      let utype = 'artist'
+      let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`
+      let mailOptions = {
+        from: 'saakethlogs@gmail.com',
+        to:req.body.email,
+        subject:'Elywalls Confirmation',
+        html: `Click on this link to activate your <b>Artist</b> account:
+        <i><a href = "${confURL}">${confURL}</a></i>`
+      }
+      await transporter.sendMail(mailOptions)
+    }})
+    //TODO directly login after registration
+
+    jwt.sign(
+      { id: artist._id },
+      process.env.JWT_SECRET,
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) {
+          return res.json({ err: err });
+        }
+        return res.json({
+          msg: "Artist created",
+          user: artist,
+          token,
+        });
+      }
+    );
+  } catch (err) {
+    return res.json({
+      err: err,
+    });
+  }
+};
+
+exports.confirmProfile = async (req, res, next) => {
+  try {
+
+    const usser=jwt.verify(req.params.token,process.env.EMAIL_SECRET);
+    let res = 0
+    const id = usser.user
+    if(req.params.utype==='artist'){
+      res = await Artist.findByIdAndUpdate({_id:id},
+        {confirmed:true})
+    }else{
+      res = await User.findByIdAndUpdate({_id:id},
+        {confirmed:true})
+      }
+  } catch (error) {
+    return console.log(error)
+  }
+  return res.redirect('http://localhost:3000/confirmed')
+
+};
+
+
 
 exports.login = async (req, res, next) => {
   try {
@@ -222,52 +301,6 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.registerArtist = async (req, res, next) => {
-  try {
-    const pass = req.body.password;
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(pass, salt);
-    let mailOption = {
-      from: 'saakethlogs@gmail.com',
-      to:req.body.email,
-      subject:'Elywalls',
-      text:'workss'
-    }
-    
-    await transporter.sendMail(mailOption)
-
-    let artist = {
-      name: req.body.name,
-      email: req.body.email,
-      password: hash,
-      phone: req.body.phone,
-      username:req.body.username
-    };
-
-    artist = await Artist.create(artist);
-    //TODO directly login after registration
-    jwt.sign(
-      { id: artist._id },
-      process.env.JWT_SECRET,
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) {
-          return res.json({ err: err });
-        }
-        return res.json({
-          msg: "Artist created",
-          user: artist,
-          token,
-        });
-      }
-    );
-  } catch (err) {
-    return res.json({
-      err: err,
-    });
-  }
-};
-
 exports.editProfile = async (req, res, next) => {
   try {
     if(req.user.utype==='artist'){
@@ -298,3 +331,4 @@ exports.editProfile = async (req, res, next) => {
     });
   }
 };
+

@@ -11,6 +11,7 @@ import {PostersGraphic} from  './components/GraphicPostersWall'
 import {PostersTextography} from  './components/TextographyPostersWall' 
 import {ArtistProfile} from  './components/ArtistProfile' 
 import {PostersAdmired} from  './components/AdmiredPostersWall'
+import {ConfirmAccount} from './components/ConfirmAccount'
 import {Home} from  './components/Home'
 import { Login } from "./components/Login";
 import { RegisterUser } from "./components/UserRegister";
@@ -27,6 +28,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={RegisterUser} />
         <Route exact path="/register-artist" component={RegisterArtist} />
+        <Route exact path="/confirmed" component={ConfirmAccount} />
         <Route exact path="/photography" component={PostersPhotography} />
         <Route exact path="/graphic-design" component={PostersGraphic} />
         <Route exact path="/textography" component={PostersTextography} />
