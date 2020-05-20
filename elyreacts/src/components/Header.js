@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import auth from "../auth";
 
@@ -36,105 +36,124 @@ import LinkButton from './LinkButton';
 */
 
 export default () => {
-    // Todo: remove JavaScript header click dependency by using adjacent element selector in CSS
-    const handleHamburgerClick = () => {
-        // document.getElementsByTagName('header')[0].classList.toggle(cn.headerWrapper__headerOpen);
-    };
-  
+  // Todo: remove JavaScript header click dependency by using adjacent element selector in CSS
+  const handleHamburgerClick = () => {
+    // document.getElementsByTagName('header')[0].classList.toggle(cn.headerWrapper__headerOpen);
+  };
+
   const history = useHistory();
-  const { log_status,logout } = useContext(GlobalContext);
+
+  const {
+    log_status: userLoggedIn,
+    logout
+  } = useContext(GlobalContext);
+
   const routeHome = () => {
     let path = `/`;
     history.push(path);
   };
-
   const routeLogin = () => {
     let path = `/login`;
     history.push(path);
   };
-
-  const routeRu = () => {
+  const routeRegisterUser = () => {
     let path = `/register`;
     history.push(path);
   };
-  const routeRa = () => {
+  const routeRegisterArtist = () => {
     let path = `/register-artist`;
     history.push(path);
   };
-  const routeAd = () => {
+  const routeAdmires = () => {
     let path = `/admires`;
     history.push(path);
   };
-  const routePr = () => {
+  const routeProfile = () => {
     let path = `/myaccount`;
     history.push(path);
   };
-  const routeCa = () => {
+  const routeCart = () => {
     let path = `/cart`;
     history.push(path);
   };
-  const routeAp = () => {
+  const routeArtistProfile = () => {
     let path = `/eleworks`;
     history.push(path);
   };
-  const routeLo = () => {
+  const routeLogout = () => {
     logout();
     auth.logout(() => {
       history.push("/");
     });
-  }
+  };
 
-    return (
-        <header className={cn.headerWrapper}>
-            <div className={cn.headerContainer}>
-                <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
+  return (
+    <header className={cn.headerWrapper}>
+      <div className={cn.headerContainer}>
+        <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
 
-                <div className={cn.headerMenuIcon} onClick={handleHamburgerClick}>
-                    <div id={cn.headerMenuIcon__lin1}></div>
-                    <div id={cn.headerMenuIcon__lin2}></div>
+        <div className={cn.headerMenuIcon} onClick={handleHamburgerClick}>
+          <div id={cn.headerMenuIcon__lin1}></div>
+          <div id={cn.headerMenuIcon__lin2}></div>
+        </div>
+
+        <div className={cn.headerLinkContainer}>
+          <nav>
+            <ul>
+              <li><Link to="/">
+                Home
+              </Link></li>
+              <li><Link to="/admires">
+                Likes
+              </Link></li>
+              <li><Link to="/cart">
+                Cart
+              </Link></li>
+            </ul>
+          </nav>
+
+          <div className={cn.accountPanel}>
+            {!userLoggedIn && <>
+              <div className={`${cn.accountRegister}`}>
+                <LinkButton
+                  href="/register"
+                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
+                  Register
+                </LinkButton>
+
+                <div className={cn.accountRegister__dropdown}>
+                  <span className={cn.accountRegisterDropdown__labelOr}>
+                    or
+                  </span>
+                  <Link to="/register-artist" className={cn.accountRegisterDropdown__artistButton}>
+                    Register as Artist
+                  </Link>
                 </div>
+              </div>
 
-                <div className={cn.headerLinkContainer}>
-                    <nav>
-                        <ul>
-                            <li><a href="/">
-                                Home
-                            </a></li>
-                            <li><a href="/">
-                                Likes
-                            </a></li>
-                            <li><a href="/">
-                                Orders
-                            </a></li>
-                        </ul>
-                    </nav>
+              <div className={`${cn.accountLoginLink}`}>
+                <a href="/signin" className={`${cn.accountSigninLink__signinLink}`}>
+                  Sign In
+                </a>
+              </div></>}
 
-                    <div className={cn.accountPanel}>
-                        <div className={`${cn.accountRegister}`}>
-                            <LinkButton
-                                href="/register?as=buyer"
-                                classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                                Register
-                            </LinkButton>
+            {userLoggedIn && <> // Todo: rename classes to better fit purposes
+              <div className={`${cn.accountRegister}`}>
+                <LinkButton
+                  href="/myaccount"
+                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
+                  Account
+                </LinkButton>
+              </div>
 
-                            <div className={cn.accountRegister__dropdown}>
-                                <span className={cn.accountRegisterDropdown__labelOr}>
-                                    or
-                                </span>
-                                <a href="/register?as=artist" className={cn.accountRegisterDropdown__artistButton}>
-                                    Register as Artist
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className={`${cn.accountLoginLink}`}>
-                            <a href="/signin" className={`${cn.accountSigninLink__signinLink}`}>
-                                Sign In
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-    );
+              <div className={`${cn.accountLoginLink}`}>
+                <a href="#" onClick={routeLogout}>
+                  Sign Out
+                </a>
+              </div></>}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
 };

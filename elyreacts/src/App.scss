@@ -39,6 +39,8 @@ h1 {
 
     &.title {
         margin-top: 1rem;
+
+        text-align: center;
     }
 }
 h2 {
@@ -57,6 +59,16 @@ h3 {
 }
 h4 {
     font-size: 0.75rem;
+}
+
+p {
+    max-width: 72ch;
+
+    margin: 0.5rem auto 0 auto;
+
+    &.page-information {
+        text-align: center;
+    }
 }
 
 small {
@@ -125,8 +137,19 @@ button {
     }
 }
 
+input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+}
+
 .page-container {
+    min-height: 100%;
+    width: 100%;
     max-width: $max-width_content;
+
+    // background: #000;
+
     margin: 0 auto;
 }
 
@@ -141,10 +164,10 @@ body {
 #root {
     & > .App {
         display: grid;
-        grid-template-rows: repeat(2, minmax(min-content, 1fr));
+        grid-template-rows: repeat(2, minmax(min-content, max-content));
 
         height: 100vh;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         & > header {
             grid-row: 1 / 2;

@@ -16,11 +16,13 @@ export const Poster = ({ poster, large = false }) => {
   };
 
   return (
-    <a href={poster.permalink || `/poster/${poster.author}/${poster.title}`} className={`${cn.posterContainer}`}>
+    <div className={`${cn.posterContainer}`}>
       <div className={`${cn.posterPreview}`}>
-        {/* // todo: Temporarily replace poster.pictureURL with a random Unsplash image -- every time
-        <img src={poster.pictureURL} alt={poster.title ? poster.title : "Poster"} /> */}
-        <img src={`https://source.unsplash.com/random`} alt="From Unsplash" />
+        <a href={poster.permalink || '/poster/xyz'} className={`${cn.posterLink}`}>
+          {/* // ! Temporarily replace poster.pictureURL with a random Unsplash image -- every time */}
+          {/* <img src={poster.pictureURL} alt={poster.title ? poster.title : "Poster"} /> */}
+          <img src={`https://source.unsplash.com/random`} alt="From Unsplash" />
+        </a>
 
         <div className={`${cn.posterCTA}`}>
           <button className="button-primary">Buy Now</button>
@@ -44,6 +46,6 @@ export const Poster = ({ poster, large = false }) => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
