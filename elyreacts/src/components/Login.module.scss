@@ -1,0 +1,33 @@
+@import "../variables.scss";
+
+.userSignInFormContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 1rem 0;
+}
+
+.userSignInForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    > div > input {
+        border: none;
+        border-left: 0.15rem solid $color_grey_dark;
+        box-sizing: border-box;
+
+        margin: 0.25rem 0 0 0;
+
+        width: 16rem;
+    }
+
+    > button {
+        margin: 1.25rem 0 0 0;
+        width: 16rem;
+    }
+}

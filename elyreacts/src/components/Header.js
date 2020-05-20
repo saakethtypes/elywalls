@@ -132,7 +132,7 @@ export default () => {
               </div>
 
               <div className={`${cn.accountLoginLink}`}>
-                <a href="/signin" className={`${cn.accountSigninLink__signinLink}`}>
+                <a href="/login" className={`${cn.accountSigninLink__signinLink}`}>
                   Sign In
                 </a>
               </div></>}
