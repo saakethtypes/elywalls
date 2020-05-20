@@ -4,14 +4,20 @@ import React from 'react';
 import INDYWALLS_LOGO from '../assets/images/Logo.svg';
 
 import cn from './Header.module.scss';
+import LinkButton from './LinkButton';
 
 export default () => {
+    // Todo: remove JavaScript header click dependency by using adjacent element selector in CSS
+    const handleHamburgerClick = () => {
+        // document.getElementsByTagName('header')[0].classList.toggle(cn.headerWrapper__headerOpen);
+    };
+
     return (
         <header className={cn.headerWrapper}>
             <div className={cn.headerContainer}>
                 <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
 
-                <div className={cn.headerMenuIcon}>
+                <div className={cn.headerMenuIcon} onClick={handleHamburgerClick}>
                     <div id={cn.headerMenuIcon__lin1}></div>
                     <div id={cn.headerMenuIcon__lin2}></div>
                 </div>
@@ -33,9 +39,11 @@ export default () => {
 
                     <div className={cn.accountPanel}>
                         <div className={`${cn.accountRegister}`}>
-                            <a href="/register?as=buyer" className={`link-button ${cn.accountRegisterButton__buyerButton}`}>
+                            <LinkButton
+                                href="/register?as=buyer"
+                                classNames={`${cn.accountRegisterButton__buyerButton}`}>
                                 Register
-                            </a>
+                            </LinkButton>
 
                             <div className={cn.accountRegister__dropdown}>
                                 <span className={cn.accountRegisterDropdown__labelOr}>
