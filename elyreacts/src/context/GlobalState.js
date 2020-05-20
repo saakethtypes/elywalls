@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
+import auth from "../auth";
 
 const initialState = {
   posters: [],
@@ -8,9 +9,11 @@ const initialState = {
   cart: null,
   error: null,
   loading: null,
-  poster: null,
-  artist: null,
-  artists: null,
+  poster:null,
+  artist:null,
+  artists:null,
+  log_status:null,
+  utype:null
 };
 
 export const GlobalContext = createContext(initialState);
@@ -54,8 +57,7 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-
-  async function login(uname, pass) {
+  async function login(uname,pass,props) {
     try {
       const config = {
         headers: {
@@ -64,13 +66,22 @@ export const GlobalProvider = ({ children }) => {
       };
       //TODO redirect to home page
       let usercred = { username: uname, password: pass };
-      const res = await axios.post("/login", config, usercred);
+      const res = await axios.post("/login",usercred,config);
+      if(res.data.logged){
       localStorage.setItem("jwt", res.data.token);
+      console.log("dasa",res)
+
       dispatch({
         type: "LOGIN",
         user_profile: res.data
       });
-
+      auth.login(() => {
+        props.history.push("/");
+      });
+    }else{
+      //TODO notification of error in login
+       console.log("yeah not logged in cuz",res.data.msg)
+    }
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -95,8 +106,9 @@ export const GlobalProvider = ({ children }) => {
           "Content-type": "application/json",
         },
       };
-      await axios.post("/edit-profile", config, editted_profile);
 
+      await axios.post("/edit-profile", editted_profile,config);
+    
       dispatch({
         type: "EDIT_PROFILE",
         editted_user: editted_profile
@@ -113,7 +125,6 @@ export const GlobalProvider = ({ children }) => {
 
   async function getPostersAll() {
     try {
-      console.log("object");
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -586,36 +597,37 @@ export const GlobalProvider = ({ children }) => {
         cart: state.cart,
         error: state.error,
         loading: state.loading,
-        poster: state.poster,
-        artist: state.artist,
-        artists: state.artists,
-        login,
-        logout,
-        registerUser,
-        registerArtist,
-        editProfile,
-        getPostersAll,
-        getPostersGraphic,
-        getPostersPhotoshop,
-        getPostersPhotography,
-        getPostersTextography,
-        getPostersInstafamous,
-        //getPostersLatest,
-        getPostersPopular,
-        getPostersFeatured,
-        getArtist,
-        getPoster,
-        createPoster,
-        deletePoster,
-        editPoster,
-        admirePoster,
-        unadmirePoster,
-        admireArtist,
-        unadmireArtist,
-        addToCart,
-        removeFromCart,
-        getAdmiredPosters,
-        getAdmiredArtists
+        poster:state.poster,
+        artist:state.artist,
+        artists:state.artists,
+        log_status:state.log_status,
+       login,
+       logout,
+       registerUser,
+       registerArtist,
+       editProfile,
+       getPostersAll,
+       getPostersGraphic,
+       getPostersPhotoshop,
+       getPostersPhotography,
+       getPostersTextography,
+       getPostersInstafamous,
+       //getPostersLatest,
+       getPostersPopular,
+       getPostersFeatured,
+       getArtist,
+       getPoster,
+       createPoster,
+       deletePoster,
+       editPoster,
+       admirePoster,
+       unadmirePoster,
+       admireArtist,
+       unadmireArtist,
+       addToCart,
+       removeFromCart,
+       getAdmiredPosters,
+       getAdmiredArtists
       }}
     >
       {children}

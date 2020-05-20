@@ -13,8 +13,8 @@ export const PostersPhotography = () => {
       <div>
           <h1>Photography Posters</h1>
         {posters.map((poster, index) => (
-          <div>
-             < Poster key={poster._id} index={index} poster={poster} /> 
+          <div key={poster._id}>
+             < Poster  index={index} poster={poster} /> 
           </div>
         ))}         
       </div>

@@ -9,14 +9,14 @@ export const PostersAdmired = () => {
     //ex-lint-disable-next-line
   }, []);
 
-  return (
-    <div>
-      <h1>Admired Posters</h1>
-      {posters.map((poster, index) => (
-        <div>
-          <Poster key={poster._id} index={index} poster={poster} />
-        </div>
-      ))}
-    </div>
-  );
-};
+    return (
+      <div>
+          <h1>Admired Posters</h1>
+        {posters.map((poster, index) => (
+          <div key={poster._id}>
+             < Poster index={index} poster={poster} /> 
+          </div>
+        ))}         
+      </div>
+    )
+}

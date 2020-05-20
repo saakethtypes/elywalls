@@ -2,8 +2,17 @@ const User = require("../models/User");
 const Artist = require("../models/Artist");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "saakethlogs@gmail.com",
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 exports.registerUser = async (req, res, next) => {
   try {
@@ -16,10 +25,36 @@ exports.registerUser = async (req, res, next) => {
       email: req.body.email,
       password: hash,
       phone: req.body.phone,
-      delivery_address: req.body.address,
       username: req.body.username,
     };
+
     user = await User.create(user);
+    jwt.sign(
+      {
+        user: user._id,
+      },
+      process.env.EMAIL_SECRET,
+      {
+        expiresIn: "1d",
+      },
+      async (err, emailToken) => {
+        if (err) {
+          console.log(err);
+        } else {
+          let utype = "user";
+          let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
+          let mailOptions = {
+            from: "saakethlogs@gmail.com",
+            to: req.body.email,
+            subject: "Elywalls Confirmation",
+            html: `Click on this link to activate your account:
+        <i><a href = "${confURL}">${confURL}</a></i>`,
+          };
+          await transporter.sendMail(mailOptions);
+        }
+      }
+    );
+
     //TODO directly login after registration
     jwt.sign(
       { id: user._id },
@@ -44,163 +79,44 @@ exports.registerUser = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
-  try {
-    let user = await User.findOne({ email: req.body.email }).then(
-      async (user) => {
-        if (user) {
-          bcrypt.compare(req.body.password, user.password).then((match) =>
-            match
-              ? jwt.sign(
-                  { id: user._id, utype: user.user_type },
-                  process.env.JWT_SECRET,
-                  { expiresIn: 3600 },
-                  (err, token) => {
-                    if (err) {
-                      return res.json({
-                        msg: "Token creation failed",
-                        err: err,
-                      });
-                    }
-                    return res.json({
-                      msg: "User Logged",
-                      token,
-                      logged: true,
-                      profile: user,
-                    });
-                  }
-                )
-              : res.json({ msg: "Wrong password", logged: false })
-          );
-        } else {
-          let artist = await Artist.findOne({ email: req.body.email }).then(
-            async (artist) => {
-              if (artist) {
-                bcrypt
-                  .compare(req.body.password, artist.password)
-                  .then((match) =>
-                    match
-                      ? jwt.sign(
-                          { id: artist._id, utype: artist.user_type },
-                          process.env.JWT_SECRET,
-                          { expiresIn: 3600 },
-                          (err, token) => {
-                            if (err) {
-                              return res.json({
-                                msg: "Token failed",
-                                err: err,
-                              });
-                            }
-                            return res.json({
-                              msg: "Artist Logged",
-                              token,
-                              logged: true,
-                              profile: artist,
-                            });
-                          }
-                        )
-                      : res.json({ msg: "Wrong password", logged: false })
-                  );
-              } else {
-                try{
-                let user = await User.findOne({username: req.body.username}).then(
-                  async (user) => {
-                    if (user) {
-                    bcrypt
-                      .compare(req.body.password, user.password)
-                      .then((match) =>
-                        match
-                          ? jwt.sign(
-                              { id: user._id, utype: user.user_type },
-                              process.env.JWT_SECRET,
-                              { expiresIn: 3600 },
-                              (err, token) => {
-                                if (err) {
-                                  return res.json({
-                                    msg: "Token creation failed",
-                                    err: err,
-                                  });
-                                }
-                                return res.json({
-                                  msg: "User Logged",
-                                  token,
-                                  logged: true,
-                                  profile: user,
-                                });
-                              }
-                            )
-                          : res.json({ msg: "Wrong password", logged: false })
-                      ).catch((err)=>console.log(err));
-                    } else {
-                    let artist = await Artist.findOne({username: req.body.username }).then(
-                      async (artist) => {
-                      if (artist) {
-                        bcrypt
-                          .compare(req.body.password, artist.password)
-                          .then((match) =>
-                            match
-                              ? jwt.sign(
-                                  { id: artist._id, utype: artist.user_type },
-                                  process.env.JWT_SECRET,
-                                  { expiresIn: 3600 },
-                                  (err, token) => {
-                                    if (err) {
-                                      return res.json({
-                                        msg: "Token failed",
-                                        err: err,
-                                      });
-                                    }
-                                    return res.json({
-                                      msg: "Artist Logged",
-                                      token,
-                                      logged: true,
-                                      profile: artist,
-                                    });
-                                  }
-                                )
-                              : res.json({
-                                  msg: "Wrong password",
-                                  logged: false,
-                                })
-                          );
-                      } else {
-                        return res.json({
-                          msg: "Email or Username does not exist",
-                        });
-                      }
-                    });
-                  }
-                })}catch(err){console.log(err) 
-                  res.json({err:err})}
-              }
-            }
-          );
-        }
-      }
-    );
-  } catch (err) {
-    return res.json({
-      err: err,
-    });
-  }
-};
-
 exports.registerArtist = async (req, res, next) => {
   try {
     const pass = req.body.password;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
-
     let artist = {
       name: req.body.name,
       email: req.body.email,
       password: hash,
       phone: req.body.phone,
-      delivery_address: req.body.address,
-      username:req.body.username
+      username: req.body.username,
     };
-
     artist = await Artist.create(artist);
+    jwt.sign(
+      {
+        user: artist._id,
+      },
+      process.env.EMAIL_SECRET,
+      {
+        expiresIn: "1d",
+      },
+      async (err, emailToken) => {
+        if (err) {
+          console.log(err);
+        } else {
+          let utype = "artist";
+          let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
+          let mailOptions = {
+            from: "saakethlogs@gmail.com",
+            to: req.body.email,
+            subject: "Elywalls Confirmation",
+            html: `Click on this link to activate your <b>Artist</b> account:
+        <i><a href = "${confURL}">${confURL}</a></i>`,
+          };
+          await transporter.sendMail(mailOptions);
+        }
+      }
+    );
     //TODO directly login after registration
     jwt.sign(
       { id: artist._id },
@@ -224,33 +140,136 @@ exports.registerArtist = async (req, res, next) => {
   }
 };
 
+exports.confirmProfile = async (req, res, next) => {
+  try {
+    const usser = jwt.verify(req.params.token, process.env.EMAIL_SECRET);
+    let res = 0;
+    const id = usser.user;
+    if (req.params.utype === "artist") {
+      res = await Artist.findByIdAndUpdate({ _id: id }, { confirmed: true });
+      res = await Artist.findById({_id:id})
+    } else {
+      res = await User.findByIdAndUpdate({ _id: id }, { confirmed: true });
+      res = await User.findById({_id:id})
+    }
+  } catch (error) {
+    return console.log(error);
+  }
+  return res.redirect("http://localhost:3000/confirmed");
+};
+
+exports.login = async (req, res, next) => {
+  async function makeLogin(uora) {
+    bcrypt.compare(req.body.password, uora.password).then((match) =>
+      match
+        ? jwt.sign(
+            { id: uora._id, utype: uora.user_type },
+            process.env.JWT_SECRET,
+            { expiresIn: 3600 },
+            (err, token) => {
+              if (err) {
+                return res.json({
+                  msg: "Token creation failed",
+                  err: err,
+                });
+              }
+              return res.json({
+                msg: "User Logged",
+                token,
+                logged: true,
+                profile: uora,
+              });
+            }
+          )
+        : res.json({ msg: "Wrong password", logged: false })
+    );
+  }
+  try {
+    let user = await User.findOne({ email: req.body.username }).then(
+      async (user) => {
+        if (user) {
+          if (user.confirmed) {
+            makeLogin(user);
+          } else {
+            res.json({ msg: "activate your account before logging in." });
+          }
+        } else {
+          let artist = await Artist.findOne({ email: req.body.username }).then(
+            async (artist) => {
+              if (artist) {
+                if (artist.confirmed) {
+                  makeLogin(artist);
+                } else {
+                  res.json({ msg: "activate your account before logging in." });
+                }
+              } else {
+              await User.findOne({
+                  username: req.body.username,
+                }).then(async (user) => {
+                  if (user) {
+                    if (user.confirmed) {
+                      makeLogin(user);
+                    } else {
+                      res.json({
+                        msg: "activate your account before logging in.",
+                      });
+                    }
+                  } else {
+                    let artist = await Artist.findOne({
+                      username: req.body.username,
+                    }).then(async (artist) => {
+                      if (artist) {
+                        if (artist.confirmed) {
+                          makeLogin(artist);
+                        } else {
+                          res.json({
+                            msg: "activate your account before logging in.",
+                          });
+                        }
+                      } else {
+                        res.json({ msg: "Username or email doesnt exist" });
+                      }
+                    });
+                  }
+                });
+              }
+            }
+          );
+        }
+      }
+    );
+  } catch (err) {
+    return res.json({
+      err: err,
+    });
+  }
+};
+
 exports.editProfile = async (req, res, next) => {
   try {
-    if(req.user.utype==='artist'){
+    if (req.user.utype === "artist") {
       const editted_artist = {
-        'quote':req.body.quote,
-        'igLink':req.body.igLink,
-        'name':req.body.name,
-        'email':req.body.email
-      }
-      await Artist.findByIdAndUpdate({_id:req.user.id},
-        {editted_artist})
-    }else{
+        quote: req.body.quote,
+        igLink: req.body.igLink,
+        name: req.body.name,
+        email: req.body.email,
+      };
+      await Artist.findByIdAndUpdate({ _id: req.user.id }, { editted_artist });
+    } else {
       const editted_user = {
-      'name':req.body.name,
-      'email':req.body.email
-    }
-    await User.findByIdAndUpdate({_id:req.user.id},
-      {editted_user})     
+        name: req.body.name,
+        email: req.body.email,
+      };
+      await User.findByIdAndUpdate({ _id: req.user.id }, { editted_user });
     }
     return res.status(200).json({
       success: true,
-      msg:"Editted"
+      msg: "Editted",
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      err: error
+      err: error,
     });
   }
 };

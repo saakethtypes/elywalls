@@ -11,15 +11,15 @@ const appreducer = (state, action) => {
         case "LOGIN":
             return {
                 ...state,
-                ...state.user,
-                user: action.user_profile
+                user: action.user_profile,
+                log_status:true
             };
 
         case "LOGOUT":
             return {
                 ...state,
-                ...state.user,
-                user: []
+                user:null,
+                log_status:false
             }
 
         case "EDIT_PROFILE":
@@ -30,7 +30,6 @@ const appreducer = (state, action) => {
             }
 
         case "ALL_POSTERS":
-            console.log(state.posters)
             return {
                 ...state,
                 posters: action.all_posters
