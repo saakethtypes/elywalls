@@ -1,8 +1,10 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import {BrowserRouter as BRouter,Route,Switch} from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalState";
 import history from './components/history'
+
+import Header from './components/Header';
 
 import {PostersAll} from  './components/PostersAll' 
 import {PostersPhotoshop} from  './components/PhotoshopPostersWall' 
@@ -37,7 +39,6 @@ function App() {
         <Route exact path="/all" component={PostersAll} />
         <Route exact path="/myaccount" component={UserProfile} />
         <Route exact path="/cart" component={PostersAll} />
-
       </GlobalProvider>
     </BRouter>
     </div>

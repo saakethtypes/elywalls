@@ -1,22 +1,26 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext,useState } from "react";
-import {Poster} from "../components/Poster";
+import React, { useEffect, useContext, useState } from "react";
+import { Poster } from "../components/Poster";
+
+import cn from './PostersAll.module.scss';
 
 export const PostersAll = () => {
-    let {posters,getPostersAll} = useContext(GlobalContext)
-    useEffect(()=>{
-          getPostersAll();
-        //ex-lint-disable-next-line
-    },[])
+  let { posters, getPostersAll } = useContext(GlobalContext);
+  useEffect(() => {
+    getPostersAll();
+  }, []);
 
-    return (
-      <div>
-          <h1>All Posters</h1>
+  return (
+    <div className={`page-container ${cn.postersAllWrapper}`}>
+      <h1 className="title">All Posters</h1>
+      <div className={`lower-content-container ${cn.postersAllContainer}`}>
         {posters.map((poster, index) => (
-          <div  key={poster._id}>
-             < Poster index={index} poster={poster} /> 
-          </div>
-        ))}         
+          <Poster
+            key={poster._id}
+            index={index}
+            poster={poster} />
+        ))}
       </div>
-    )
-}
+    </div>
+  );
+};

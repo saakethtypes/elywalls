@@ -1,13 +1,13 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext,useState } from "react";
-import {Poster} from "../components/Poster";
+import React, { useEffect, useContext, useState } from "react";
+import { Poster } from "../components/Poster";
 
 export const PostersAdmired = () => {
-    let {posters,getAdmiredPosters} = useContext(GlobalContext)
-    useEffect(()=>{
-        getAdmiredPosters();
-        //ex-lint-disable-next-line
-    },[])
+  let { posters, getAdmiredPosters } = useContext(GlobalContext);
+  useEffect(() => {
+    getAdmiredPosters();
+    //ex-lint-disable-next-line
+  }, []);
 
     return (
       <div>

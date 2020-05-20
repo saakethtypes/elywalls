@@ -6,7 +6,7 @@ import auth from "../auth";
 const initialState = {
   posters: [],
   user: null,
-  cart:null,
+  cart: null,
   error: null,
   loading: null,
   poster:null,
@@ -57,7 +57,6 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-
   async function login(uname,pass,props) {
     try {
       const config = {
@@ -107,13 +106,14 @@ export const GlobalProvider = ({ children }) => {
           "Content-type": "application/json",
         },
       };
+
       await axios.post("/edit-profile", editted_profile,config);
     
       dispatch({
         type: "EDIT_PROFILE",
-        editted_user: editted_profile    
+        editted_user: editted_profile
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -133,9 +133,9 @@ export const GlobalProvider = ({ children }) => {
       const res = await axios.get("/all", config);
       dispatch({
         type: "ALL_POSTERS",
-        all_posters: res.data.posters         
+        all_posters: res.data.posters.slice(0, 16)         /* todo: .slice is temp */
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -144,7 +144,7 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  
+
   async function getPostersFeatured() {
     try {
       const config = {
@@ -153,12 +153,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/featured", config);
-    
+
       dispatch({
         type: "FEATURED_POSTERS",
-        featured: res.data.posters         
+        featured: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -176,12 +176,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/textography", config);
-    
+
       dispatch({
         type: "TEXTOGRAPHY_POSTERS",
-        textography: res.data.posters          
+        textography: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -189,7 +189,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-    
+
 
   async function getPostersPhotoshop() {
     try {
@@ -199,12 +199,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/photoshop", config);
-    
+
       dispatch({
         type: "PHOTOSHOP_POSTERS",
-        photoshop: res.data.posters         
+        photoshop: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -212,8 +212,8 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-   
-  
+
+
   async function getPostersPhotography() {
     try {
       const config = {
@@ -222,12 +222,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/featured", config);
-    
+
       dispatch({
         type: "PHOTOGRAPHY_POSTERS",
-        photography: res.data.posters          
+        photography: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -235,7 +235,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-   
+
 
   async function getPostersGraphic() {
     try {
@@ -245,12 +245,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/graphic-design", config);
-    
+
       dispatch({
         type: "GRAPHIC_POSTERS",
-        graphic: res.data.posters          
+        graphic: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -268,12 +268,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/instafamous", config);
-    
+
       dispatch({
         type: "INSTAFAMOUS_POSTERS",
-        instafamous: res.data.posters          
+        instafamous: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -281,7 +281,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-  
+
 
   async function getPostersPopular() {
     try {
@@ -291,12 +291,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/popular", config);
-    
+
       dispatch({
         type: "POPULAR_POSTERS",
-        popular: res.data.posters          
+        popular: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -315,12 +315,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/admired-posters", config);
-    
+
       dispatch({
         type: "ADMIRED_POSTERS",
-        user_admiredP: res.data.posters         
+        user_admiredP: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -339,12 +339,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/admired-artists", config);
-    
+
       dispatch({
         type: "ADMIRED_ARTISTS",
-        user_admiredA: res.data.posters          
+        user_admiredA: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -352,7 +352,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-  
+
 
   async function getPoster(pid) {
     try {
@@ -362,12 +362,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get(`/poster/${pid}`, config);
-    
+
       dispatch({
         type: "POSTER_SPECIFIC",
-        poster: res.data.poster         
+        poster: res.data.poster
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -385,12 +385,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get(`/${auname}`, config);
-    
+
       dispatch({
         type: "ARTIST_PROFILE",
-        artist: res.data.artist        
+        artist: res.data.artist
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -409,7 +409,7 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       await axios.get(`/${aid}/admireA`, config);
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -417,7 +417,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
-   
+
 
   async function unadmireArtist(aid) {
     try {
@@ -428,7 +428,7 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       await axios.get(`/${aid}/unadmireA`, config);
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -495,7 +495,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
 
-  async function editPoster(pid,editted_poster) {
+  async function editPoster(pid, editted_poster) {
     try {
       const config = {
         headers: {
@@ -503,7 +503,7 @@ export const GlobalProvider = ({ children }) => {
           "x-auth-token": localStorage.getItem("jwt")
         },
       };
-      await axios.put(`poster/${pid}`, config,editted_poster);
+      await axios.put(`poster/${pid}`, config, editted_poster);
       dispatch({
         type: "EDIT_POSTER",
         editted_poster: editted_poster
@@ -515,8 +515,8 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
- 
-  
+
+
   async function addToCart(pid) {
     try {
       const config = {
@@ -526,12 +526,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.patch(`cart/${pid}`, config);
-    
+
       dispatch({
         type: "ADD_TO_CART",
-        cart: res.data.posters          
+        cart: res.data.posters
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -550,12 +550,12 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       await axios.delete(`cart/${cid}`, config);
-    
+
       dispatch({
         type: "DELETE_FROM_CART",
-        item_removed:cid         
+        item_removed: cid
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -577,9 +577,9 @@ export const GlobalProvider = ({ children }) => {
 
       dispatch({
         type: "CREATE_POSTER",
-        poster_created: res.data.poster_created         
+        poster_created: res.data.poster_created
       });
-    
+
     } catch (err) {
       dispatch({
         type: "ERROR",
@@ -594,7 +594,7 @@ export const GlobalProvider = ({ children }) => {
       value={{
         posters: state.posters,
         user: state.user,
-        cart:state.cart,
+        cart: state.cart,
         error: state.error,
         loading: state.loading,
         poster:state.poster,
@@ -633,4 +633,4 @@ export const GlobalProvider = ({ children }) => {
       {children}
     </GlobalContext.Provider>
   );
-}
+};
