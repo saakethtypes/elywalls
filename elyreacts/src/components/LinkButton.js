@@ -1,6 +1,7 @@
-import cn from './LinkButton.module.scss';
-
 import React from 'react';
+
+// @ts-ignore
+import cn from './styles/LinkButton.module.scss';
 
 export default ({ href, classNames, children }) => {
     return (
