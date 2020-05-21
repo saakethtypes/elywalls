@@ -1,7 +1,8 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 
-import cn from './Poster.module.scss';
+// @ts-ignore
+import cn from './styles/Poster.module.scss';
 
 export const Poster = ({ poster, large = false }) => {
   const { addToCart } = useContext(GlobalContext);

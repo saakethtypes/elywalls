@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
 
-import cn from './UserRegister.module.scss';
+// @ts-ignore
+import cn from './styles/UserRegister.module.scss';
 
 export const RegisterUser = () => {
   const [Fn, setFn] = useState("");

@@ -2,7 +2,8 @@ import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { Poster } from "../components/Poster";
 
-import cn from './PostersAll.module.scss';
+// @ts-ignore
+import cn from './styles/PostersAll.module.scss';
 
 export const PostersAll = () => {
   let { posters, getPostersAll } = useContext(GlobalContext);

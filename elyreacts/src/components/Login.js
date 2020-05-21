@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 
-import cn from './Login.module.scss';
+// @ts-ignore
+import cn from './styles/Login.module.scss';
 
 export const Login = (props) => {
   const [userName, setUsername] = useState("");

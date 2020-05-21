@@ -6,7 +6,8 @@ import auth from "../auth";
 // @ts-ignore
 import INDYWALLS_LOGO from '../assets/images/Logo.svg';
 
-import cn from './Header.module.scss';
+// @ts-ignore
+import cn from './styles/Header.module.scss';
 import LinkButton from './LinkButton';
 
 /* export const Header = () => {
