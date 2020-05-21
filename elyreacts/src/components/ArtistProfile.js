@@ -6,19 +6,19 @@ export const ArtistProfile = ({ auname }) => {
   let { artist, getArtist } = useContext(GlobalContext);
   useEffect(() => {
     getArtist(auname);
-    //ex-lint-disable-next-line
   }, []);
 
   return (
-    <div>
+    <div className="page-container">
       <h1>{artist.name}</h1>
-      <h2>{artist.username}</h2>
+      <small>{artist.username}</small>
+
       <h2>{artist.admires} Admires</h2>
-      {artist.postersmade.map((poster, index) => (
-        <div>
+      <div className="lower-content-container">
+        {artist.postersmade.map((poster, index) => (
           <Poster key={poster._id} index={index} poster={poster} />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
