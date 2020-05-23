@@ -25,8 +25,6 @@ const {
        removeFromCart,
        getPostersAdmired,
        getArtistsAdmired,
-       getAccount,
-       getArtistProfile,
        //   buy,
        //   orderDetails,
        //   createPosterIg
@@ -54,8 +52,6 @@ router.route('/:aid/admireA').patch(auth,admireArtist)
 router.route('/:aid/unadmireA').delete(auth,unadmireArtist)
 router.route('/:posterId/unadmireP').patch(auth, unadmirePoster)
 router.route('/:posterId/admireP').patch(auth, admirePoster)
-router.route('/myaccount').get(auth, getAccount)
-router.route('/profile').get(auth, getArtistProfile)
 
 router.route("/poster/:posterId")
        .delete(auth, deletePoster)

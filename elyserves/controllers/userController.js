@@ -39,7 +39,7 @@ exports.registerUser = async (req, res, next) => {
       },
       async (err, emailToken) => {
         if (err) {
-          console.log(err);
+          console.log("error", err);
         } else {
           let utype = "user";
           let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
@@ -102,7 +102,7 @@ exports.registerArtist = async (req, res, next) => {
       },
       async (err, emailToken) => {
         if (err) {
-          console.log(err);
+          console.log("eer",err);
         } else {
           let utype = "artist";
           let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
@@ -153,7 +153,7 @@ exports.confirmProfile = async (req, res, next) => {
       res = await User.findById({_id:id})
     }
   } catch (error) {
-    return console.log(error);
+    return console.log("err",error);
   }
   return res.redirect("http://localhost:3000/confirmed");
 };
@@ -270,6 +270,39 @@ exports.editProfile = async (req, res, next) => {
     return res.status(500).json({
       success: false,
       err: error,
+    });
+  }
+};
+
+
+exports.getProfileUser = async (req, res, next) => {
+  try {
+     let = result = await User.findById(req.user.id)
+   
+    return res.status(200).json({
+      success: true,
+      profile:result
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: error
+    });
+  }
+};
+
+exports.getProfileArtist = async (req, res, next) => {
+  try {
+    let result = await Artist.findById({_id:req.user.id})
+
+    return res.status(200).json({
+      success: true,
+      profile:result
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: error
     });
   }
 };

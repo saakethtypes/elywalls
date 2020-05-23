@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { PostersAll } from "./PostersAll";
 
 export const Home = () => {
 
@@ -52,7 +53,7 @@ export const Home = () => {
       <button onClick={routePh}>Photography</button>
       <button onClick={routePs}>Aesthethic edits</button>
       <button onClick={routeA}>All posters</button>
-
+      <PostersAll/>
     </div>
   );
 };

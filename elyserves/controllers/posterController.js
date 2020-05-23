@@ -456,43 +456,6 @@ exports.getArtistsAdmired = async (req, res, next) => {
   }
 };
 
-exports.getAccount = async (req, res, next) => {
-  try {
-    let result = 0
-    if(req.user.utype==="artist"){
-      result = await Artist.findById({_id:req.user.id})
-     }
-   if(req.body.utype==="buyer"){
-     result = await User.findById(req.user.id)
-   }
-    return res.status(200).json({
-      success: true,
-      posters:result
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      err: error
-    });
-  }
-};
-
-exports.getArtistProfile = async (req, res, next) => {
-  try {
-    let result = await Artist.findById({_id:req.user.id})
-
-    return res.status(200).json({
-      success: true,
-      posters:result
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      err: error
-    });
-  }
-};
-
 
 // exports.createPosterIg = async (req, res, next) => {
 //   try {

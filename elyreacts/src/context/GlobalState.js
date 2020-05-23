@@ -3,16 +3,32 @@ import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
 
+
+let logUser = localStorage.getItem('currentUser')
+let ls =0
+let logArtist = null
+            if (logUser) {
+                logUser = JSON.parse(logUser)
+                if(logUser.user_type=='artist'){
+                  logArtist = logUser
+                }
+
+                ls = true
+            }
+            else {
+                logUser = null
+                ls = false
+            }
 const initialState = {
   posters: [],
-  user: null,
+  user: logUser,
   cart: null,
   error: null,
   loading: null,
   poster:null,
-  artist:null,
+  artist:logArtist,
   artists:null,
-  log_status:null,
+  log_status:ls,
   utype:null
 };
 
@@ -26,10 +42,12 @@ export const GlobalProvider = ({ children }) => {
     try {
       const config = {
         headers: {
-          "Content-type": "application/json",
+          accept: 'application/json',
         },
+        data: {},
       };
       await axios.post("/register-buyer", user, config);
+      
       //TODO redirect to login page
     } catch (err) {
       dispatch({
@@ -69,11 +87,11 @@ export const GlobalProvider = ({ children }) => {
       const res = await axios.post("/login",usercred,config);
       if(res.data.logged){
       localStorage.setItem("jwt", res.data.token);
-      console.log("dasa",res)
-
+      let loguser = localStorage.setItem('currentUser',JSON.stringify(res.data.profile))
+  
       dispatch({
         type: "LOGIN",
-        user_profile: res.data
+        logged_profile: res.data.profile
       });
       auth.login(() => {
         props.history.push("/");
@@ -90,9 +108,10 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-
   async function logout() {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("currentUser");
+
     dispatch({
       type: "LOGOUT",
     });
@@ -131,9 +150,10 @@ export const GlobalProvider = ({ children }) => {
         },
       };
       const res = await axios.get("/all", config);
+
       dispatch({
         type: "ALL_POSTERS",
-        all_posters: res.data.posters.slice(0, 16)         /* todo: .slice is temp */
+        all_posters: res.data.posters.slice(0, 16)     /* todo: .slice is temp */
       });
 
     } catch (err) {
@@ -588,6 +608,52 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
+  async function getProfileUser() {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          "x-auth-token": localStorage.getItem("jwt")
+        },
+      };
+      const res = await axios.get('/account', config);
+
+      dispatch({
+        type: "PROFILE_B",
+        profile: res.data.profile
+      });
+
+    } catch (err) {
+      dispatch({
+        type: "ERROR",
+        payload: err.data,
+      });
+    }
+  }
+
+  async function getProfileArtist() {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          "x-auth-token": localStorage.getItem("jwt")
+        },
+      };
+      const res = await axios.get('/profile', config);
+
+      dispatch({
+        type: "PROFILE_A",
+        poster_created: res.data.profile
+      });
+
+    } catch (err) {
+      dispatch({
+        type: "ERROR",
+        payload: err.data,
+      });
+    }
+  }
+
 
   return (
     <GlobalContext.Provider
@@ -606,6 +672,8 @@ export const GlobalProvider = ({ children }) => {
        registerUser,
        registerArtist,
        editProfile,
+       getProfileArtist,
+       getProfileUser,
        getPostersAll,
        getPostersGraphic,
        getPostersPhotoshop,

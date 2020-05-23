@@ -11,15 +11,15 @@ const appreducer = (state, action) => {
         case "LOGIN":
             return {
                 ...state,
-                user: action.user_profile,
-                log_status:true
+                user: action.logged_profile,
+                log_status: true
             };
 
         case "LOGOUT":
             return {
                 ...state,
-                user:null,
-                log_status:false
+                user: null,
+                log_status: false
             }
 
         case "EDIT_PROFILE":
@@ -30,10 +30,11 @@ const appreducer = (state, action) => {
             }
 
         case "ALL_POSTERS":
+            
             return {
                 ...state,
                 posters: action.all_posters
-            }            
+            }
 
 
         case "FEATURED_POSTERS":
@@ -76,20 +77,20 @@ const appreducer = (state, action) => {
             return {
                 ...state,
                 posters: action.popular
-            }    
+            }
 
         case "ADMIRED_POSTERS":
             return {
                 ...state,
                 posters: action.user_admiredP
             }
-        
+
         case "ADMIRED_ARTISTS":
             return {
                 ...state,
                 artists: action.user_admiredA
             }
-            
+
         case "POSTER_SINGLE":
             return {
                 ...state,
@@ -101,13 +102,13 @@ const appreducer = (state, action) => {
                 ...state,
                 artist: action.artist
             }
-        
+
         case "EDIT_POSTER":
             return {
                 ...state,
                 poster: action.artist
             }
-        
+
         case "ADD_TO_CART":
             return {
                 ...state,
@@ -117,8 +118,8 @@ const appreducer = (state, action) => {
         case "DELETE_FROM_CART":
             return {
                 ...state,
-                cart:state.cart.filter(item => 
-                    action.item_removed !== item._id ),
+                cart: state.cart.filter(item =>
+                    action.item_removed !== item._id),
             }
 
         case "CREATE_POSTER":
@@ -126,7 +127,7 @@ const appreducer = (state, action) => {
                 ...state,
                 poster: action.poster_created
             }
-        
+
         default:
             return state;
 

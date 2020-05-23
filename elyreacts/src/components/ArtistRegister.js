@@ -47,7 +47,6 @@ export const RegisterArtist = () => {
       setcPass("");
       setSubmitted(true);
     } else {
-      console.log("sss object");
       store.addNotification({
         title: "Shorty",
         message: "Username and Password are way too short",

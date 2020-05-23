@@ -49,38 +49,6 @@ export default () => {
     logout
   } = useContext(GlobalContext);
 
-  const routeHome = () => {
-    let path = `/`;
-    history.push(path);
-  };
-  const routeLogin = () => {
-    let path = `/login`;
-    history.push(path);
-  };
-  const routeRegisterUser = () => {
-    let path = `/register`;
-    history.push(path);
-  };
-  const routeRegisterArtist = () => {
-    let path = `/register-artist`;
-    history.push(path);
-  };
-  const routeAdmires = () => {
-    let path = `/admires`;
-    history.push(path);
-  };
-  const routeProfile = () => {
-    let path = `/myaccount`;
-    history.push(path);
-  };
-  const routeCart = () => {
-    let path = `/cart`;
-    history.push(path);
-  };
-  const routeArtistProfile = () => {
-    let path = `/eleworks`;
-    history.push(path);
-  };
   const routeLogout = () => {
     logout();
     auth.logout(() => {

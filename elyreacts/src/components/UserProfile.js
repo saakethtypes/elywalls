@@ -2,11 +2,15 @@ import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext,useState } from "react";
 
 export const UserProfile = () => {
-    const {user} = useContext(GlobalContext)
+    let {user,getProfileUser} = useContext(GlobalContext)
+    useEffect(()=>{
+          getProfileUser();
+        //ex-lint-disable-next-line
+    },[])
     return (
         <div>
-            <h2>{user.profile.name}</h2>
-    <h3>Views - {user.profile.profileViews}</h3>
+            <h2>{user.name}</h2>
+    {/* <h3>Views - {user.profileViews}</h3> */}
         </div>
     )
 }

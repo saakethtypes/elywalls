@@ -1,6 +1,6 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext,useState } from "react";
-import {Poster} from "../components/Poster";
+import {PostersList} from "../components/PostersList";
 
 export const PostersGraphic = () => {
     let {posters,getPostersGraphic} = useContext(GlobalContext)
@@ -12,12 +12,8 @@ export const PostersGraphic = () => {
 
     return (
       <div>
-          <h1>Graphic Posters</h1>
-        {posters.map((poster, index) => (
-          <div key={poster._id}>
-             < Poster  index={index} poster={poster} /> 
-          </div>
-        ))}         
+                 <PostersList cat = 'Graphic' posters = {posters}/>        
+         
       </div>
     )
 }

@@ -2,10 +2,10 @@ import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { Poster } from "../components/Poster";
 
-export const ArtistProfile = ({ auname }) => {
-  let { artist, getArtist } = useContext(GlobalContext);
+export const ArtistProfile = () => {
+  let { artist, getProfileArtist } = useContext(GlobalContext);
   useEffect(() => {
-    getArtist(auname);
+    getProfileArtist();
   }, []);
 
   return (
