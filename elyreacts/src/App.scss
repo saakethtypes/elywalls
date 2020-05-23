@@ -1,0 +1,179 @@
+@import "./variables.scss";
+
+html {
+    font-family: "Jost", "Montserrat", "Roboto", sans-serif;
+    font-size: 16px;
+}
+
+p > a,
+span > a,
+a {
+    color: $color_link;
+    text-decoration: none;
+
+    transition: $transition_time_link;
+
+    &:hover {
+        color: $color_link_hover;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat";
+
+    color: $color_black;
+}
+
+h1,
+h2 {
+    font-weight: 300;
+}
+
+h1 {
+    font-size: 3rem;
+
+    &.title {
+        margin-top: 1rem;
+
+        text-align: center;
+    }
+}
+h2 {
+    font-size: 2.25rem;
+}
+
+h3,
+h4 {
+    font-weight: 500;
+
+    color: $color_grey_dark;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+h4 {
+    font-size: 0.75rem;
+}
+
+p {
+    max-width: 72ch;
+
+    margin: 0.5rem auto 0 auto;
+
+    &.page-information {
+        text-align: center;
+    }
+}
+
+small {
+    font-size: 0.75rem;
+
+    text-transform: uppercase;
+
+    color: $color_grey_dark;
+}
+
+b,
+strong {
+    font-weight: 700;
+
+    color: $color_black;
+}
+
+i,
+em {
+    font-style: italic;
+
+    color: $color_black;
+}
+
+nav {
+    ul {
+        li {
+            display: inline-block;
+
+            a {
+                margin: 0 0.5rem;
+                padding: 1rem 0.5rem;
+
+                color: $color_black;
+
+                &:hover {
+                    color: $color_indywalls_primary;
+                }
+            }
+        }
+    }
+}
+
+button {
+    padding: 1rem 1.5rem;
+    border: none;
+
+    background: $color_grey_dark;
+
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color_white;
+
+    transition: $transition_time_link;
+
+    &:hover {
+        background: $color_grey_dark_light;
+    }
+
+    &.button-primary {
+        background: $color_indywalls_primary;
+
+        &:hover {
+            background: $color_indywalls_primary_light;
+        }
+    }
+}
+
+input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.page-container {
+    min-height: 100%;
+    width: 100%;
+    max-width: $max-width_content;
+
+    // background: #000;
+
+    margin: 0 auto;
+}
+
+.lower-content-container {
+    margin-top: 1rem;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+#root {
+    & > .App {
+        display: grid;
+        grid-template-rows: repeat(2, minmax(min-content, max-content));
+
+        height: 100vh;
+        overflow-y: auto;
+
+        & > header {
+            grid-row: 1 / 2;
+        }
+        & > div {
+            grid-row: 2 / 3;
+        }
+    }
+}

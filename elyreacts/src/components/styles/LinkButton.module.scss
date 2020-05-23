@@ -1,0 +1,16 @@
+@import "../../variables.scss";
+
+.linkButton {
+    display: inline-block;
+    padding: 0.75em 1em;
+    border-radius: 0.5em;
+
+    background: $color_indywalls_primary;
+
+    color: $color_white;
+
+    &:hover {
+        background: $color_indywalls_primary_light;
+        color: $color_white;
+    }
+}

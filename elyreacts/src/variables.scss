@@ -1,0 +1,26 @@
+$color_white: #fafafa;
+$color_black: #1a1d22;
+$color_grey_dark: #606468;
+$color_grey_dark_light: #7e7f80;
+$color_grey_light: #a2a3a7;
+
+$color_indywalls_primary: #33c758;
+$color_indywalls_primary_light: #56d877;
+
+$color_text: $color_black;
+$color_text_grey: $color_grey_dark;
+$color_link: $color_indywalls_primary;
+$color_link_hover: $color_grey_dark;
+
+$transition_time_link: 0.12s;
+$transition_time_anim: 0.2s;
+$transition_time_anim_long: 0.68s;
+
+// BREAKPOINTS
+$media_width_tablet: 740px;
+$media_width_retina: 1440px;
+
+$max-width_content: 1280px;
+@media only screen and (max-width: $media_width_retina) {
+    $max-width_content: 1440px;
+}

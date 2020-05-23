@@ -1,0 +1,11 @@
+/elyreacts/node_modules
+/elyreacts/Poster Database
+/.pnp
+/.pnp.js
+elyserves/node_modules
+/elyserves/config.env
+# testing
+/elyreacts/coverage
+
+# production
+/elyreacts/build
