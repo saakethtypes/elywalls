@@ -6,27 +6,30 @@ import auth from "../auth";
 
 let logUser = localStorage.getItem('currentUser')
 let ls =0
+let usercart = null
 let logArtist = null
             if (logUser) {
                 logUser = JSON.parse(logUser)
                 if(logUser.user_type=='artist'){
                   logArtist = logUser
+                  usercart = logUser.cart
                 }
-
+                usercart = logUser.cart
                 ls = true
             }
             else {
                 logUser = null
                 ls = false
+                usercart = null
             }
+console.log(usercart)
 const initialState = {
   posters: [],
   user: logUser,
-  cart: null,
+  cart: usercart,
   error: null,
   loading: null,
   poster:null,
-  artist:logArtist,
   artists:null,
   log_status:ls,
   utype:null
@@ -87,6 +90,7 @@ export const GlobalProvider = ({ children }) => {
       const res = await axios.post("/login",usercred,config);
       if(res.data.logged){
       localStorage.setItem("jwt", res.data.token);
+      console.log(res.data.token)
       let loguser = localStorage.setItem('currentUser',JSON.stringify(res.data.profile))
   
       dispatch({
@@ -536,6 +540,29 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
+  async function getCart() {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          "x-auth-token": localStorage.getItem("jwt")
+        },
+      };
+      console.log("object")
+      const res = await axios.get("/cart",config);
+      console.log(res.data)
+      dispatch({
+        type: "CART",
+        cart: res.data.posters
+      });
+
+    } catch (err) {
+      dispatch({
+        type: "ERROR",
+        payload: err.data,
+      });
+    }
+  }
 
   async function addToCart(pid) {
     try {
@@ -544,9 +571,11 @@ export const GlobalProvider = ({ children }) => {
           "Content-type": "application/json",
           "x-auth-token": localStorage.getItem("jwt")
         },
-      };
-      const res = await axios.patch(`cart/${pid}`, config);
+      }
 
+      let x = {"s":0}
+      const res = await axios.patch(`cartadd/${pid}`,x,config);
+      console.log(res.data)
       dispatch({
         type: "ADD_TO_CART",
         cart: res.data.posters
@@ -559,6 +588,7 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
+
 
 
   async function removeFromCart(cid) {
@@ -683,6 +713,7 @@ export const GlobalProvider = ({ children }) => {
        //getPostersLatest,
        getPostersPopular,
        getPostersFeatured,
+       getCart,
        getArtist,
        getPoster,
        createPoster,

@@ -18,6 +18,7 @@ import { Login } from "./components/Login";
 import { RegisterUser } from "./components/UserRegister";
 import { RegisterArtist } from "./components/ArtistRegister";
 import { Profile } from './components/Profile';
+import { Cart } from './components/Cart';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
           <Route exact path="/photoshop" component={PostersPhotoshop} />
           <Route exact path="/all" component={PostersAll} />
           <Route exact path="/myaccount" component={Profile} />
-          <Route exact path="/cart" component={PostersAll} />
+          <Route exact path="/cart" component={Cart} />
         </GlobalProvider>
       </BRouter>
     </div>

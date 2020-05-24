@@ -25,6 +25,7 @@ const {
        removeFromCart,
        getPostersAdmired,
        getArtistsAdmired,
+       getCart,
        //   buy,
        //   orderDetails,
        //   createPosterIg
@@ -57,9 +58,11 @@ router.route("/poster/:posterId")
        .delete(auth, deletePoster)
        .put(auth, editPoster)
        .get(getPoster)
-router.route("/cart/:posterId")
+router.route("/cart").get(auth,getCart)
+
+router.route("/cartadd/:posterId")
        .patch(auth, addToCart)
-router.route("/cart/:cid")
+router.route("/cartdelete/:cid")
        .delete(auth, removeFromCart)
 
 //router.route( auth,'/ig-walls').post(createPosterIg) 

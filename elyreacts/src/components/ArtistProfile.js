@@ -3,19 +3,19 @@ import React, { useEffect, useContext, useState } from "react";
 import { Poster } from "../components/Poster";
 
 export const ArtistProfile = () => {
-  let { artist, getProfileArtist } = useContext(GlobalContext);
+  let { user, getProfileArtist } = useContext(GlobalContext);
   useEffect(() => {
     getProfileArtist();
   }, []);
 
   return (
     <div className="page-container">
-      <h1>{artist.name}</h1>
-      <small>{artist.username}</small>
+      <h1>{user.name}</h1>
+      <small>{user.username}</small>
 
-      <h2>{artist.admires} Admires</h2>
+      <h2>{user.admires} Admires</h2>
       <div className="lower-content-container">
-        {artist.postersmade.map((poster, index) => (
+        {user.postersmade.map((poster, index) => (
           <Poster key={poster._id} index={index} poster={poster} />
         ))}
       </div>
