@@ -3,7 +3,7 @@ import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
 
-let logUser = JSON.parse(localStorage.getItem('currentUser') || '');
+let logUser = JSON.parse(localStorage.getItem('currentUser') || null);
 let ls = false;
 let usercart = null;
 let logArtist = null;
