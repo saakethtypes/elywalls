@@ -93,20 +93,22 @@ export default () => {
                 </a>
               </div></>}
 
-            {userLoggedIn && <> // Todo: rename classes to better fit purposes
+            {/* Todo: rename classes to better fit purposes*/}
+
+            {userLoggedIn && <>
               <nav>
-            <ul>
-              <li><Link to="/">
-                Home
-              </Link></li>
-              <li><Link to="/admires">
-                Likes
-              </Link></li>
-              <li><Link to="/cart">
-                Cart
-              </Link></li>
-            </ul>
-          </nav>
+                <ul>
+                  <li><Link to="/">
+                    Home
+                  </Link></li>
+                  <li><Link to="/admires">
+                    Likes
+                  </Link></li>
+                  <li><Link to="/cart">
+                    Cart
+                  </Link></li>
+                </ul>
+              </nav>
               <div className={`${cn.accountRegister}`}>
                 <LinkButton
                   href="/myaccount"
