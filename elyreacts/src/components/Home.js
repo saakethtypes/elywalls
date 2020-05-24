@@ -7,11 +7,18 @@ import { GlobalContext } from "../context/GlobalState";
 import cn from './styles/Home.module.scss';
 
 export const Home = () => {
-  let { posters: postersFeatured, getPostersFeatured } = useContext(GlobalContext);
+  let {
+    posters: {
+      isLoading,
+      error,
+      posters
+    },
+    getPosters
+  } = useContext(GlobalContext);
 
   //TODO show top 5 featured,popular,instafamous section of print ig wall
   useEffect(() => {
-    getPostersFeatured();
+    getPosters('featured');
   }, []);
 
   return (
@@ -33,7 +40,7 @@ export const Home = () => {
         </ul>
       </div>
 
-      <PostersList posters={postersFeatured} />
+      <PostersList posters={posters} />
     </div>
   );
 };
