@@ -3,14 +3,12 @@ import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
 
-
-let logUser = localStorage.getItem('currentUser');
-let ls = 0;
+let logUser = JSON.parse(localStorage.getItem('currentUser') || '');
+let ls = false;
 let usercart = null;
 let logArtist = null;
 if (logUser) {
-    logUser = JSON.parse(logUser);
-    if (logUser.user_type == 'artist') {
+    if (logUser.user_type === 'artist') {
         logArtist = logUser;
         usercart = logUser.cart;
     }
