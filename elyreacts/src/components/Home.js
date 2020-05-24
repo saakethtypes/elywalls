@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { PostersWall } from "./PostersWall";
+import { PostersList } from "./PostersList";
+import { GlobalContext } from "../context/GlobalState";
 
 // @ts-ignore
 import cn from './styles/Home.module.scss';
 
 export const Home = () => {
+  let { posters: postersFeatured, getPostersFeatured } = useContext(GlobalContext);
+
   //TODO show top 5 featured,popular,instafamous section of print ig wall
+  useEffect(() => {
+    getPostersFeatured();
+  }, []);
 
   return (
     <div className={`page-container`}>
@@ -27,7 +33,7 @@ export const Home = () => {
         </ul>
       </div>
 
-      <PostersWall />
+      <PostersList posters={postersFeatured} />
     </div>
   );
 };
