@@ -1,59 +1,33 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { PostersAll } from "./PostersAll";
+import React from "react";
+import { Link } from "react-router-dom";
+import { PostersWall } from "./PostersWall";
+
+// @ts-ignore
+import cn from './styles/Home.module.scss';
 
 export const Home = () => {
-
-  const history = useHistory();
-
-
-  const routeLogin = () => {
-    let path = `/login`;
-    history.push(path);
-  };
-
-  const routeRu = () => {
-    let path = `/register`;
-    history.push(path);
-  };
-  const routeRa = () => {
-    let path = `/register-artist`;
-    history.push(path);
-  };
-  const routeT = () => {
-    let path = `/textography`;
-    history.push(path);
-  };
-  const routeG = () => {
-    let path = `/graphic-design`;
-    history.push(path);
-  };
-  const routePs = () => {
-    let path = `/photoshop`;
-    history.push(path);
-  };
-  const routePh = () => {
-    let path = `/photography`;
-    history.push(path);
-  };
-  const routeA = () => {
-    let path = `/all`;
-    history.push(path);
-  };
-
   //TODO show top 5 featured,popular,instafamous section of print ig wall
 
   return (
     <div className={`page-container`}>
-      <h3>Home</h3>
-      <h2>Elegant posters for your walls</h2>
-      <br></br>
-      <button onClick={routeT}>Textography</button>
-      <button onClick={routeG}>Graphic-design</button>
-      <button onClick={routePh}>Photography</button>
-      <button onClick={routePs}>Aesthethic edits</button>
-      <button onClick={routeA}>All posters</button>
-      <PostersAll/>
+      <div className={`page-heading`}>
+        <h1 className={`page-title`}>Home</h1>
+        <p>Elegant posters for your walls</p>
+      </div>
+
+      <div className={cn.bannerImage} id={cn.bannerImage}></div>
+
+      <div className={cn.siteSectionLinkContainer}>
+        <ul className="style-none">
+          <li><Link to="/posters">Featured</Link></li>
+          <li><Link to="/posters/textography">Textography</Link></li>
+          <li><Link to="/posters/graphics">Graphics</Link></li>
+          <li><Link to="/posters/photoshop">Photoshop</Link></li>
+          <li><Link to="/posters/all">All Posters</Link></li>
+        </ul>
+      </div>
+
+      <PostersWall />
     </div>
   );
 };

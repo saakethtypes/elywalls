@@ -1,28 +1,18 @@
-import React from 'react'
-import {Poster} from "../components/Poster";
-
+import React from 'react';
+import { Poster } from "../components/Poster";
 
 // @ts-ignore
-import cn from './styles/PostersAll.module.scss';
+import cn from './styles/PostersList.module.scss';
 
 
-export const PostersList = ({posters,cat}) => {
-    console.log(posters)
-    return (
-        <div className={`page-container ${cn.postersAllWrapper}`}>
-          <h1 className="title">{cat} Posters</h1>
-          <div className={`lower-content-container ${cn.postersAllContainer}`}>
-            {posters.map((poster, index) => (
-              <Poster
-                key={poster._id}
-                index={index}
-                poster={poster} />
-            ))}
-          </div>
-        </div>
-      );
-}
-
-
-
-
+export const PostersList = ({ posters = [] }) => {
+  return (
+    <ul className={`${cn.postersListContainer}`}>
+      {posters.map((poster, index) =>
+        <li key={index}>
+          <Poster poster={poster} />
+        </li>
+      )}
+    </ul>
+  );
+};

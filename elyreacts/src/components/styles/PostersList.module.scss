@@ -1,0 +1,14 @@
+.postersListContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
+
+    & > * {
+        margin: 0.5em;
+    }
+}

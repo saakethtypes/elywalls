@@ -6,13 +6,7 @@ import history from './components/history';
 
 import Header from './components/Header';
 
-import { PostersAll } from './components/PostersAll';
-import { PostersPhotoshop } from './components/PhotoshopPostersWall';
-import { PostersPhotography } from './components/PhotgraphyPostersWall';
-import { PostersGraphic } from './components/GraphicPostersWall';
-import { PostersTextography } from './components/TextographyPostersWall';
-import { ArtistProfile } from './components/ArtistProfile';
-import { PostersAdmired } from './components/AdmiredPostersWall';
+import { PostersWall } from './components/PostersWall';
 import { Home } from './components/Home';
 import { Login } from "./components/Login";
 import { RegisterUser } from "./components/UserRegister";
@@ -30,13 +24,12 @@ function App() {
           <Route exact path="/register" component={RegisterUser} />
           <Route exact path="/register-artist" component={RegisterArtist} />
           <Route exact path="/confirmed" component={Login} />
-          <Route exact path="/photography" component={PostersPhotography} />
-          <Route exact path="/graphic-design" component={PostersGraphic} />
-          <Route exact path="/textography" component={PostersTextography} />
-          <Route exact path="/photoshop" component={PostersPhotoshop} />
-          <Route exact path="/all" component={PostersAll} />
           <Route exact path="/myaccount" component={Profile} />
-          <Route exact path="/cart" component={PostersAll} />
+
+          <Route
+            path="/posters/:category?"
+            render={props => <PostersWall category={props.match.params.category} {...props} />}
+          />
         </GlobalProvider>
       </BRouter>
     </div>
