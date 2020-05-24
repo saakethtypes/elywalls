@@ -366,28 +366,30 @@ exports.unadmireArtist = async (req, res, next) => {
 
 exports.addToCart = async (req, res, next) => {
   try {
-    const poster = await Poster.find({_id:req.params.posterId});
+    const poster = await Poster.findById({_id:req.params.posterId});
     const cart_body={
-      "item":poster
+      item:poster
     }
-    const cart_cr = await Cart.create({"item":poster})
-    const cart_item = Cart.findById({_id:cart_cr._id})
+    const cart_cr = await Cart.create({item:poster})
+
     let result = 0
     if(req.user.utype==="artist"){
-       result = await Artist.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_item}})
+       result = await Artist.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
        result = await Artist.findById({_id:req.user.id}) 
        result = result.cart
       }
-    if(req.body.utype==="buyer"){
-      result = await User.findByIdAndUpdate(req.user.id,{$push:{ cart: cart_item}})
+    if(req.user.utype==="buyer"){
+      result = await User.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
       result = await User.findById({_id:req.user.id}) 
       result = result.cart
     }
+    console.log(result)
     return res.status(200).json({
       success: true,
       posters: result
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       success: false,
       err: error
@@ -397,7 +399,13 @@ exports.addToCart = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
   try {
-    await Cart.findByIdAndDelete({_id:req.params.cid});
+    console.log("object")
+    res = await Cart.find({_id:req.params.cid}).then((ress)=>{
+      console.log(ress)
+    })
+    let res = await Cart.findByIdAndDelete({_id:req.params.cid});
+    console.log(req.params.cid)
+    
     return res.status(200).json({
       success: true,
       msg: "Cart item removed"
@@ -410,8 +418,34 @@ exports.removeFromCart = async (req, res, next) => {
   }
 };
 
-exports.getPostersAdmired = async (req, res, next) => {
+exports.getCart = async (req, res, next) => {
   try {
+    let result = 0
+    console.log("ssss")
+    if(req.user.utype==="artist"){
+       result = await Artist.findById({_id:req.user.id}) 
+       result = result.cart
+      }
+    if(req.user.utype==="buyer"){
+      result = await User.findById({_id:req.user.id}) 
+      result = result.cart
+    }
+    return res.status(200).json({
+      success: true,
+      posters: result
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      err: error
+    });
+  }
+};
+
+
+exports.getPostersAdmired = async (req, res, next) => {
+  try {po
     let result = 0
     if(req.user.utype==="artist"){
       result = await Artist.findById({_id:req.user.id})

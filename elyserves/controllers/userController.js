@@ -200,7 +200,7 @@ exports.login = async (req, res, next) => {
                 if (artist.confirmed) {
                   makeLogin(artist);
                 } else {
-                  res.json({ msg: "activate your account before logging in." });
+                  res.json({ msg: "1 activate your account before logging in." });
                 }
               } else {
               await User.findOne({
@@ -211,13 +211,15 @@ exports.login = async (req, res, next) => {
                       makeLogin(user);
                     } else {
                       res.json({
-                        msg: "activate your account before logging in.",
+                        msg: "2activate your account before logging in.",
                       });
                     }
                   } else {
                     let artist = await Artist.findOne({
                       username: req.body.username,
                     }).then(async (artist) => {
+                      console.log(artist)
+
                       if (artist) {
                         if (artist.confirmed) {
                           makeLogin(artist);

@@ -12,6 +12,7 @@ const appreducer = (state, action) => {
             return {
                 ...state,
                 user: action.logged_profile,
+                cart: action.logged_profile.cart,
                 log_status: true
             };
 
@@ -114,10 +115,24 @@ const appreducer = (state, action) => {
                 ...state,
                 cart: action.cart
             }
+        
+        case "CART":
+                return {
+                    ...state,
+                    cart: action.cart
+                }
 
         case "DELETE_FROM_CART":
             return {
                 ...state,
+                user:{
+                    ...state.user,
+                    cart: [
+                        ...state.user.cart.filter(
+                            cartitem => action.item_removed !== cartitem._id
+                        )
+                    ]
+                },
                 cart: state.cart.filter(item =>
                     action.item_removed !== item._id),
             }

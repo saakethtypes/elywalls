@@ -67,19 +67,6 @@ export default () => {
         </div>
 
         <div className={cn.headerLinkContainer}>
-          <nav>
-            <ul>
-              <li><Link to="/">
-                Home
-              </Link></li>
-              <li><Link to="/admires">
-                Likes
-              </Link></li>
-              <li><Link to="/cart">
-                Cart
-              </Link></li>
-            </ul>
-          </nav>
 
           <div className={cn.accountPanel}>
             {!userLoggedIn && <>
@@ -107,6 +94,19 @@ export default () => {
               </div></>}
 
             {userLoggedIn && <> // Todo: rename classes to better fit purposes
+              <nav>
+            <ul>
+              <li><Link to="/">
+                Home
+              </Link></li>
+              <li><Link to="/admires">
+                Likes
+              </Link></li>
+              <li><Link to="/cart">
+                Cart
+              </Link></li>
+            </ul>
+          </nav>
               <div className={`${cn.accountRegister}`}>
                 <LinkButton
                   href="/myaccount"

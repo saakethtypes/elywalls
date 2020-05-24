@@ -5,17 +5,20 @@ import React, { useEffect, useContext, useState } from "react";
 import cn from './styles/Poster.module.scss';
 
 export const Poster = ({ poster, large = false }) => {
-  const { addToCart } = useContext(GlobalContext);
-
+  const { cart,addToCart } = useContext(GlobalContext);
+  let postr  = poster
   poster = {
-    title: "Poster Title",
-    views: 12,
-    admires: 4,
+    id: postr._id,
+    title: postr.title,
+    views: postr.views,
+    admires: postr.admires,
     price: 14.5,
     caption: "A poster by Author, costing $14.50",
-    author: "Erra"
+    author : "ERRA"
   };
-
+  const addtocart = () => {
+    addToCart(poster.id)
+  }
   return (
     <div className={`${cn.posterContainer}`}>
       <div className={`${cn.posterPreview}`}>
@@ -27,7 +30,7 @@ export const Poster = ({ poster, large = false }) => {
 
         <div className={`${cn.posterCTA}`}>
           <button className="button-primary">Buy Now</button>
-          <button className="button-secondary" onClick={addToCart}>Add to Cart</button>
+          <button className="button-secondary" onClick={addtocart}>Add to Cart</button>
         </div>
       </div>
 

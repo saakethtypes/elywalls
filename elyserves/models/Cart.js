@@ -4,7 +4,7 @@ const User = require('./User');
 
 const CartSchema = new mongoose.Schema({
   item: {
-   type: [Poster.schema]
+   type:{type:Poster.Schema}
   },
   quantity: {
     type: Number
