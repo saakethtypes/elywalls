@@ -59,7 +59,9 @@ export default () => {
   return (
     <header className={cn.headerWrapper}>
       <div className={cn.headerContainer}>
-        <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
+        <Link to="/">
+          <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
+        </Link>
 
         <div className={cn.headerMenuIcon} onClick={handleHamburgerClick}>
           <div id={cn.headerMenuIcon__lin1}></div>

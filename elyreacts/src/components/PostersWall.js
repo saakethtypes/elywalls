@@ -24,20 +24,32 @@ export const PostersWall = ({ category = 'featured' }) => {
   if (error) console.error(error);
 
   return (
-    <div className="page-container">
-      <h1>Posters</h1>
-      <p>Category: {category}</p>
+    <div className={`page-container`}>
+      <div className={`page-header`}>
+        <h1 className="page-title">Posters</h1>
+        <p className="page-preface">{category}</p>
+      </div>
 
-      <ul className={`style-none ${cn.categoryContainer}`}>
-        <li><Link to="/posters/textography">Textography</Link></li>
-        <li><Link to="/posters/graphics">Graphics</Link></li>
-        <li><Link to="/posters/photoshop">Photoshop</Link></li>
-        <li><Link to="/posters/photography">Photography</Link></li>
-      </ul>
+      <div className="lower-content-container">
+        <div className={`tiled-list-container ${cn.categoryWrapper}`}>
+          <span>Category</span>
 
-      {isLoading && <span>Loading...</span>}
-      {!isLoading && error && <span>Error - see console</span>}
-      {!isLoading && !error && <PostersList posters={posters} />}
+          <ul className={`style-none tiled-list ${cn.categoryContainer}`}>
+            <li className={category === 'featured' ? "active" : ''}><Link to="/posters/featured">Featured</Link></li>
+            <li className={category === 'popular' ? "active" : ''}><Link to="/posters/popular">Popular</Link></li>
+            <li className={category === 'graphic-design' ? "active" : ''}><Link to="/posters/graphic-design">Graphic Design</Link></li>
+            <li className={category === 'textography' ? "active" : ''}><Link to="/posters/textography">Textography</Link></li>
+            <li className={category === 'photoshop' ? "active" : ''}><Link to="/posters/photoshop">Photoshop</Link></li>
+            <li className={category === 'photography' ? "active" : ''}><Link to="/posters/photography">Photography</Link></li>
+            <li className={category === 'instafamous' ? "active" : ''}><Link to="/posters/instafamous">Insta-famous</Link></li>
+            <li className={category === 'all' ? "active" : ''}><Link to="/posters/all">All</Link></li>
+          </ul>
+        </div>
+
+        {isLoading && <span>Loading...</span>}
+        {!isLoading && error && <span>Error - see console</span>}
+        {!isLoading && !error && <PostersList className={cn.postersList} posters={posters} />}
+      </div>
     </div>
   );
 };
