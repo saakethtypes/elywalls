@@ -21,7 +21,7 @@ const ButtonAction = ({ callback, checkActiveFn, children }) => {
 };
 
 export const Poster = ({ poster }) => {
-  const { cart, addToCart } = useContext(GlobalContext);
+  const { user, log_status, admirePoster, unadmirePoster, addToCart } = useContext(GlobalContext);
 
   const handleAddToCart = () => addToCart(poster._id);
   const handleAdmire = () => console.log("Admired: " + poster._id);
@@ -39,6 +39,37 @@ export const Poster = ({ poster }) => {
     admires: poster.admires || 0
   };
 
+  const checkLike = () => {
+    if (user) {
+      user.admires.map((admiredPoster) => {
+        if (admiredPoster._id == poster._id) {
+          setadmired(true);
+        }
+      });
+    }
+  };
+  useEffect(() => {
+    checkLike();
+  }, []);
+
+  const [admired, setadmired] = useState(false);
+  const [admires, setadmires] = useState(poster.admires);
+  const addtocart = (e) => {
+    e.preventDefault();
+    addToCart(poster);
+  };
+  const admirposter = (e) => {
+    e.preventDefault();
+    setadmires(admires + 1);
+    setadmired(true);
+    admirePoster(poster);
+  };
+  const unadmirposter = (e) => {
+    e.preventDefault();
+    setadmires(admires - 1);
+    setadmired(false);
+    unadmirePoster(poster._id);
+  };
   return (
     <div className={`${cn.container}`}>
       <div className={`${cn.previewContainer}`}>
@@ -46,25 +77,28 @@ export const Poster = ({ poster }) => {
           <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
         </a>
 
-        <div className={`${cn.buttons}`}>
-          <ButtonAction
-            callback={handleAdmire}
-            checkActiveFn={() => false}>
-            ❤
+        {log_status &&
+          <div className={`${cn.buttons}`}>
+            <ButtonAction
+              callback={handleAdmire}
+              checkActiveFn={() => admired}>
+              ❤
           </ButtonAction>
-          <ButtonAction
-            callback={handleAddToCart}
-            checkActiveFn={() => false}>
-            +
+            <ButtonAction
+              callback={handleAddToCart}
+              checkActiveFn={() => false}>
+              +
           </ButtonAction>
+          </div>}
+      </div>;
+
+      <div className={`${cn.posterInfoContainer}`}>
+        <div className={`${cn.simple}`}>
+          <h2>{poster.title}</h2>
+          <small>{`By ${poster.author}`}</small>
+          <strong>{admires}</strong>
+          <strong className={`${cn.price}`}>{poster.price.toFixed(2)}</strong>
         </div>
-      </div>
-
-      <div className={`${cn.caption}`}>
-        <h2>{poster.title}</h2>
-        <small>{`By ${poster.author}`}</small>
-
-        <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
       </div>
     </div>
   );

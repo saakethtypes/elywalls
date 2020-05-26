@@ -270,19 +270,23 @@ exports.getArtist = async (req, res, next) => {
 
 exports.admirePoster = async (req, res, next) => {
   try {
+    let result =0
+    let user = 0 
     await Poster.findByIdAndUpdate({_id:req.params.posterId}
       ,{ $inc: { admires: 1 } });
-    const result = await Poster.findById(req.params.posterId)
+     result = await Poster.findById(req.params.posterId)
     if(req.user.utype==='buyer'){
-      await User.findByIdAndUpdate({_id:req.user.id},
+      user  = await User.findByIdAndUpdate({_id:req.user.id},
         {$push:{admires:result}})
+        console.log(user.admires.length)
     }else{
-      await Artist.findByIdAndUpdate({_id:req.user.id},
+      user  = await Artist.findByIdAndUpdate({_id:req.user.id},
         {$push:{admires:result}})     
     }
     return res.status(200).json({
       success: true,
-      posters:result
+      posters:result.posterId,
+      user : user
     });
   } catch (error) {
     return res.status(500).json({
@@ -294,9 +298,11 @@ exports.admirePoster = async (req, res, next) => {
 
 exports.unadmirePoster = async (req, res, next) => {
   try {
+    let result = 0
       await Poster.findByIdAndUpdate({_id:req.params.posterId}
       ,{ $inc: { admires: -1 } });
-    const result = await Poster.findById(req.params.posterId)  
+    result = await Poster.findById(req.params.posterId) 
+
     if(req.user.utype==='buyer'){
       await User.findByIdAndUpdate({_id:req.user.id},
         {$pull:{admires:{_id:req.params.posterId}}})
@@ -370,26 +376,22 @@ exports.addToCart = async (req, res, next) => {
     const cart_body={
       item:poster
     }
-    const cart_cr = await Cart.create({item:poster})
-
+    let cart_cr = await Cart.create({item:poster})
+    cart_cr = await Cart.find({_id:cart_cr._id})
     let result = 0
     if(req.user.utype==="artist"){
        result = await Artist.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
        result = await Artist.findById({_id:req.user.id}) 
-       result = result.cart
       }
     if(req.user.utype==="buyer"){
       result = await User.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
       result = await User.findById({_id:req.user.id}) 
-      result = result.cart
     }
-    console.log(result)
     return res.status(200).json({
       success: true,
-      posters: result
+      cartObj: cart_cr,
     });
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       success: false,
       err: error
@@ -399,16 +401,15 @@ exports.addToCart = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
   try {
-    console.log("object")
-    res = await Cart.find({_id:req.params.cid}).then((ress)=>{
-      console.log(ress)
-    })
-    let res = await Cart.findByIdAndDelete({_id:req.params.cid});
-    console.log(req.params.cid)
-    
+
+    let cartt = await Cart.find({_id:req.params.cid})
+    await Cart.findByIdAndDelete({_id:req.params.cid});
+
+    let us = await User.findByIdAndUpdate({_id:req.user.id},
+      { $pull: { cart: cartt}})
     return res.status(200).json({
       success: true,
-      msg: "Cart item removed"
+      msg: "Cart item removed",
     });
   } catch (error) {
     return res.status(500).json({
@@ -421,7 +422,6 @@ exports.removeFromCart = async (req, res, next) => {
 exports.getCart = async (req, res, next) => {
   try {
     let result = 0
-    console.log("ssss")
     if(req.user.utype==="artist"){
        result = await Artist.findById({_id:req.user.id}) 
        result = result.cart

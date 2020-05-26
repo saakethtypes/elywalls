@@ -7,7 +7,8 @@ import cn from './styles/Login.module.scss';
 export const Login = (props) => {
   const [userName, setUsername] = useState("");
   const [pass, setPass] = useState("");
-  const { login } = useContext(GlobalContext);
+  const { login,persistLog } = useContext(GlobalContext);
+  
   
   const loginUser = (e) => {
     e.preventDefault();
@@ -15,6 +16,7 @@ export const Login = (props) => {
     setUsername("");
     setPass("");
   };
+  persistLog(props)
   return (
     <div className="page-container">
       <h1 className="title">Sign In</h1>
