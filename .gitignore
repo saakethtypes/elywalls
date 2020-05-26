@@ -9,3 +9,4 @@ elyserves/node_modules
 
 # production
 /elyreacts/build
+/posterDb

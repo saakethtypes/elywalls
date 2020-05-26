@@ -676,7 +676,8 @@ export const GlobalProvider = ({ children }) => {
         try {
 
             const formData = new FormData();
-            formData.append('posterImg',picture,"sssdasd");
+            formData.append('posterImg',picture,String(new_poster.title)+
+            String(new_poster.tags));
             formData.append('title',new_poster.title);
             formData.append('caption',new_poster.caption);
             formData.append('price',new_poster.price);
