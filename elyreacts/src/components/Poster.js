@@ -12,7 +12,9 @@ export const Poster = ({ poster, large = false }) => {
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-     pictureURL: /*poster.pictureURL || */ 'https://source.unsplash.com/random',
+    pictureURL: poster.pictureURL.length>55? poster.pictureURL :  'https://source.unsplash.com/random',
+    // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
+    //therefore delting whole db with invalid poster paths
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
