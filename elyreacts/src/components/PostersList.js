@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Poster } from "../components/Poster";
+import { Poster, FakePoster } from "../components/Poster";
 
 // @ts-ignore
 import cn from './styles/PostersList.module.scss';
@@ -11,9 +11,11 @@ export const PostersList = ({ posters = [], className = '' }) => {
 
   return (
     <ul className={`${className} ${cn.postersListContainer}`}>
+      {posters.length === 0 &&
+        <FakePoster />}
+
       {posters.map((poster, index) =>
         <li key={index}>
-          {/* todo: render fake poster if posters.length === 0 */}
           <Poster poster={poster} />
         </li>
       )}

@@ -70,8 +70,11 @@ p {
 
     margin: 0.5rem auto 0 auto;
 
-    &.page-information {
+    &.page-preface {
+        margin-top: 1.5em;
+
         text-align: center;
+        text-transform: uppercase;
     }
 }
 
@@ -227,6 +230,47 @@ button {
             background: $color_indywalls_primary_light;
         }
     }
+
+    // &.button-icon {
+    //     padding: 0.75rem;
+    //     border: 0.15rem solid $color_grey_dark;
+    //     background: transparent;
+    //     color: $color_grey_dark;
+
+    //     &:hover {
+    //         border-color: $color_indywalls_primary;
+    //         color: $color_indywalls_primary;
+    //     }
+
+    //     &.active {
+    //         border-color: $color_indywalls_primary;
+    //         background: $color_indywalls_primary;
+    //         color: $color_white;
+    //     }
+    // }
+
+    &.button-icon {
+        height: 1em;
+        width: 1em;
+        box-sizing: content-box;
+
+        padding: 0.75rem;
+        border-radius: 50%;
+
+        background: $color_white;
+        color: $color_grey_dark;
+
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+        &:hover {
+            color: $color_indywalls_primary;
+        }
+
+        &.active {
+            background: $color_indywalls_primary;
+            color: $color_white;
+        }
+    }
 }
 
 input {
@@ -248,17 +292,10 @@ input {
 .page-header {
     position: relative;
 
-    width: max-content;
+    max-width: max-content;
 
     margin: 2.5em auto 0 auto;
     padding: 0 1em 1em 1em;
-
-    & > p {
-        margin-top: 1.5em;
-        text-align: center;
-
-        text-transform: uppercase;
-    }
 
     &::after {
         content: "";

@@ -20,11 +20,11 @@ export const Home = () => {
   useEffect(() => {
     getPosters('featured');
 
-    setBannerImage();
+    setHeroImage();
   }, []);
 
-  const setBannerImage = (type = '') => {
-    const bannerImageElement = document.getElementById(cn.bannerImage);
+  const setHeroImage = (type = '') => {
+    const heroImageElement = document.getElementById(cn.heroImage);
 
     const mk = (u) => `url("${u}")`;
 
@@ -50,38 +50,38 @@ export const Home = () => {
         break;
     }
 
-    if (bannerImageElement) {
-      bannerImageElement.style.backgroundImage = mk(bgImage);
+    if (heroImageElement) {
+      heroImageElement.style.backgroundImage = mk(bgImage);
     }
   };
 
   return (
     <div className={`page-container`}>
-      <div className={`page-header`}>
-        <h1 className={`page-title`}>Home</h1>
-        <p>Elegant posters for your walls</p>
-      </div>
-
-      <div className="lower-content-container">
-        <div className={cn.banner}>
-          <div className={cn.bannerImage} id={cn.bannerImage}></div>
-
-          <div className={cn.bannerLinkContainer}>
-            <ul className="style-none tiled-list">
-              <li onMouseEnter={() => setBannerImage('featured')}>
-                <Link to="/posters">Featured</Link></li>
-              <li onMouseEnter={() => setBannerImage('textography')}>
-                <Link to="/posters/textography">Textography</Link></li>
-              <li onMouseEnter={() => setBannerImage('graphic-design')}>
-                <Link to="/posters/graphic-design">Graphic Design</Link></li>
-              <li onMouseEnter={() => setBannerImage('photoshop')}>
-                <Link to="/posters/photoshop">Photoshop</Link></li>
-              <li onMouseEnter={() => setBannerImage('all')}>
-                <Link to="/posters/all">All Posters</Link></li>
-            </ul>
-          </div>
+      <div className={cn.gridContainer}>
+        <div className={`${cn.pageHeader} page-header`}>
+          <h1 className={`page-title`}>Home</h1>
+          <p className={`page-preface`}>Elegant posters for your walls</p>
         </div>
 
+        <div className={cn.heroImage} id={cn.heroImage}></div>
+
+        <div className={cn.sectionLinkContainer}>
+          <ul className="style-none tiled-list">
+            <li onMouseEnter={() => setHeroImage('featured')}>
+              <Link to="/posters">Featured</Link></li>
+            <li onMouseEnter={() => setHeroImage('textography')}>
+              <Link to="/posters/textography">Textography</Link></li>
+            <li onMouseEnter={() => setHeroImage('graphic-design')}>
+              <Link to="/posters/graphic-design">Graphic Design</Link></li>
+            <li onMouseEnter={() => setHeroImage('photoshop')}>
+              <Link to="/posters/photoshop">Photoshop</Link></li>
+            <li onMouseEnter={() => setHeroImage('all')}>
+              <Link to="/posters/all">All Posters</Link></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className={`lower-content-container`}>
         <PostersList posters={posters} />
       </div>
     </div>

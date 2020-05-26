@@ -4,9 +4,29 @@ import React, { useEffect, useContext, useState } from "react";
 // @ts-ignore
 import cn from './styles/Poster.module.scss';
 
-export const Poster = ({ poster, large = false }) => {
+const ButtonAction = ({ callback, checkActiveFn, children }) => {
+  // todo: checkActiveFn is a function which checks the Active state of the button
+  // eg: checkActiveFn could return true if Poster is Admired
+  // this would then add the active class to the button
+
+  const isActive = () => (checkActiveFn ? 'active' : '');
+
+  return (
+    <button
+      className={`button-icon ${isActive}`}
+      onClick={callback}>
+      {children}
+    </button>
+  );
+};
+
+export const Poster = ({ poster }) => {
   const { cart, addToCart } = useContext(GlobalContext);
 
+  const handleAddToCart = () => addToCart(poster._id);
+  const handleAdmire = () => console.log("Admired: " + poster._id);
+
+  // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
     ...poster,
     id: poster._id,
@@ -19,38 +39,49 @@ export const Poster = ({ poster, large = false }) => {
     admires: poster.admires || 0
   };
 
-  const addtocart = () => {
-    addToCart(poster._id);
-  };
-
   return (
-    <div className={`${cn.posterContainer}`}>
-      <div className={`${cn.posterPreview}`}>
-        <a href={poster.id} className={`${cn.posterLink}`}>
+    <div className={`${cn.container}`}>
+      <div className={`${cn.previewContainer}`}>
+        <a href={`/poster/${poster.id}`}>
           <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
         </a>
 
-        <div className={`${cn.posterCTA}`}>
-          <button className="button-primary">Buy Now</button>
-          <button className="button-secondary" onClick={addtocart}>Add to Cart</button>
+        <div className={`${cn.buttons}`}>
+          <ButtonAction
+            callback={handleAdmire}
+            checkActiveFn={() => false}>
+            ❤
+          </ButtonAction>
+          <ButtonAction
+            callback={handleAddToCart}
+            checkActiveFn={() => false}>
+            +
+          </ButtonAction>
         </div>
       </div>
 
-      <div className={`${cn.posterInfoContainer}`}>
-        <div className={`${cn.simple}`}>
-          <h2>{poster.title || 'Untitled'}</h2>
-          <small>{`By ${poster.author || 'Unknown'}`}</small>
+      <div className={`${cn.caption}`}>
+        <h2>{poster.title}</h2>
+        <small>{`By ${poster.author}`}</small>
 
-          <strong className={`${cn.price}`}>{poster.price.toFixed(2) || '0.00'}</strong>
-        </div>
+        <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
+      </div>
+    </div>
+  );
+};
 
-        <div className={`${cn.extended} ${large ? '' : cn.extended_hidden}`}>
-          <p>{poster.caption || `This is a poster by ${poster.author || 'Unknown'}, costing ${poster.price || '0.00'}.`}</p>
-          <div className={`${cn.stats}`}>
-            <span className={`${cn.stats__views}`}>{poster.views}</span>
-            <span className={`${cn.stats__admires}`}>{poster.admires}</span>
-          </div>
-        </div>
+export const FakePoster = ({ }) => {
+  return (
+    <div className={`${cn.container}`}>
+      <div className={`${cn.previewContainer}`}>
+        <a href={`/posters/all`}>
+          <img src={'https://source.unsplash.com/random/640x480'} alt={'Blank image'} />
+        </a>
+      </div>
+
+      <div className={`${cn.caption}`}>
+        <h2>Sorry!</h2>
+        <small>No results found</small>
       </div>
     </div>
   );
