@@ -5,6 +5,7 @@ import auth from "../auth";
 
 let logUser = JSON.parse(localStorage.getItem('currentUser') || null);
 let ls = false;
+console.log("dsfsdf",logUser)
 let usercart = null;
 let logArtist = null;
 if (logUser) {
@@ -12,6 +13,7 @@ if (logUser) {
         logArtist = logUser;
         usercart = logUser.cart;
     }
+
     usercart = logUser.cart;
     ls = true;
 }
@@ -20,7 +22,6 @@ else {
     ls = false;
     usercart = null;
 }
-console.log(usercart);
 const initialState = {
     posters: {
         error: null,
@@ -156,6 +157,8 @@ export const GlobalProvider = ({ children }) => {
                 case "graphic-design": return "/graphic-design";
                 case "instafamous": return "/instafamous";
                 case "popular": return "/popular";
+                case "cart": return "/cart";
+
                 default: return "/all";
             }
         };
@@ -165,15 +168,12 @@ export const GlobalProvider = ({ children }) => {
         });
 
         try {
-            const config = { headers: { "Content-Type": "application/json" } };
+            const config = { headers: { "Content-type": "application/json" } };
             const res = await axios.get(
                 getEndpoint(category),
                 config
             );
-
-            console.log(res.data);
-
-            dispatch({
+              dispatch({
                 type: "GET_POSTERS_SUCCEEDED",
                 payload: res.data.posters
             });
@@ -430,7 +430,6 @@ export const GlobalProvider = ({ children }) => {
                 type: "POSTER_SPECIFIC",
                 poster: res.data.poster
             });
-
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -472,7 +471,9 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             await axios.get(`/${aid}/admireA`, config);
-
+            dispatch({
+                type: "ADMIRE_A",
+            });
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -491,7 +492,9 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             await axios.get(`/${aid}/unadmireA`, config);
-
+            dispatch({
+                type: "UNADMIRE_A",
+            });
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -501,7 +504,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
 
-    async function admirePoster(pid) {
+    async function admirePoster(poster) {
         try {
             const config = {
                 headers: {
@@ -509,7 +512,15 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
-            await axios.get(`/${pid}/admireP`, config);
+        let res = await axios.patch(`/${poster._id}/admireP`, {x:0},config);
+          console.log(res.data.user)
+
+          dispatch({
+            type: "ADMIRE_P",
+            newadmire:poster
+        });
+        console.log("object")
+        localStorage.setItem('currentUser',JSON.stringify(state.user))
 
         } catch (err) {
             dispatch({
@@ -528,7 +539,12 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
-            await axios.get(`/${pid}/unadmireP`, config);
+            await axios.patch(`/${pid}/unadmireP`,{s:0} ,config);
+            dispatch({
+                type: "UNADMIRE_P",
+                unadmired:pid
+            });
+            localStorage.setItem('currentUser',JSON.stringify(state.user))
 
         } catch (err) {
             dispatch({
@@ -548,7 +564,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             await axios.delete(`poster/${pid}`, config);
-
+    
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -579,31 +595,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function getCart() {
-        try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    "x-auth-token": localStorage.getItem("jwt")
-                },
-            };
-            console.log("object");
-            const res = await axios.get("/cart", config);
-            console.log(res.data);
-            dispatch({
-                type: "CART",
-                cart: res.data.posters
-            });
-
-        } catch (err) {
-            dispatch({
-                type: "ERROR",
-                payload: err.data,
-            });
-        }
-    }
-
-    async function addToCart(pid) {
+    async function addToCart(poster) {
         try {
             const config = {
                 headers: {
@@ -613,12 +605,13 @@ export const GlobalProvider = ({ children }) => {
             };
 
             let x = { "s": 0 };
-            const res = await axios.patch(`cartadd/${pid}`, x, config);
-            console.log(res.data);
+            const res = await axios.patch(`cartadd/${poster._id}`, x, config);
             dispatch({
                 type: "ADD_TO_CART",
-                cart: res.data.posters
+                cart: poster
             });
+            localStorage.setItem('currentUser',JSON.stringify(state.user))
+
 
         } catch (err) {
             dispatch({
@@ -638,12 +631,14 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
-            await axios.delete(`cart/${cid}`, config);
+            let res = await axios.delete(`cartdelete/${cid}`, config);
 
             dispatch({
                 type: "DELETE_FROM_CART",
                 item_removed: cid
             });
+            localStorage.setItem('currentUser',JSON.stringify(state.user))
+
 
         } catch (err) {
             dispatch({
@@ -681,7 +676,7 @@ export const GlobalProvider = ({ children }) => {
         try {
             const config = {
                 headers: {
-                    "Content-type": "application/json",
+                    "Content-Type": "application/json",
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
@@ -723,7 +718,6 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-
     return (
         <GlobalContext.Provider
             value={{
@@ -753,7 +747,6 @@ export const GlobalProvider = ({ children }) => {
                 // //getPostersLatest,
                 // getPostersPopular,
                 // getPostersFeatured,
-                getCart,
                 getArtist,
                 getPoster,
                 createPoster,

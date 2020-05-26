@@ -102,7 +102,6 @@ exports.registerArtist = async (req, res, next) => {
       },
       async (err, emailToken) => {
         if (err) {
-          console.log("eer",err);
         } else {
           let utype = "artist";
           let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
@@ -218,7 +217,6 @@ exports.login = async (req, res, next) => {
                     let artist = await Artist.findOne({
                       username: req.body.username,
                     }).then(async (artist) => {
-                      console.log(artist)
 
                       if (artist) {
                         if (artist.confirmed) {
@@ -278,9 +276,10 @@ exports.editProfile = async (req, res, next) => {
 
 
 exports.getProfileUser = async (req, res, next) => {
+  console.log("object")
   try {
-     let = result = await User.findById(req.user.id)
-   
+    console.log("ooo")
+     let result = await User.findById(req.user.id)
     return res.status(200).json({
       success: true,
       profile:result
@@ -308,3 +307,4 @@ exports.getProfileArtist = async (req, res, next) => {
     });
   }
 };
+

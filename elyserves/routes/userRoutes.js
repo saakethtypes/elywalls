@@ -13,9 +13,9 @@ const { registerUser,
 router.route("/register-buyer").post(registerUser);
 router.route("/login").post(login); //res -> artist/user
 router.route("/register-artist").post(registerArtist);
-router.route( auth,"/edit-profile").post(editProfile);
-router.route( auth,"/account").get(getProfileUser);
-router.route( auth,"/profile").get(getProfileArtist);
+router.route( "/edit-profile").post(auth,editProfile);
+router.route( '/account').get(auth,getProfileUser);
+router.route( "/profile").get(auth,getProfileArtist);
 router.route( "/confirmation/:utype/:token").get(confirmProfile);
 
 module.exports = router;

@@ -8,6 +8,14 @@ const appreducer = (state, action) => {
                 error: action.payload
             };
 
+            case "GET_USER":
+                return {
+                    ...state,
+                    user: action.user_current,
+                    cart: action.user_current.cart,
+                    log_status: true
+                };
+
         case "LOGIN":
             return {
                 ...state,
@@ -118,6 +126,26 @@ const appreducer = (state, action) => {
                 artists: action.user_admiredA
             };
 
+        case "ADMIRE_P":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    admires: [...state.user.admires, action.newadmire]
+                }
+            };
+        case "UNADMIRE_P":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    admires: [
+                        ...state.user.admires.filter(
+                            item => action.unadmired !== item._id
+                        )
+                    ]
+                },
+            };
         case "POSTER_SINGLE":
             return {
                 ...state,
@@ -139,13 +167,13 @@ const appreducer = (state, action) => {
         case "ADD_TO_CART":
             return {
                 ...state,
-                cart: action.cart
-            };
-
-        case "CART":
-            return {
-                ...state,
-                cart: action.cart
+                cart: action.cart,
+                user: {
+                    ...state.user,
+                    cart: [
+                        ...state.user.cart, action.cart
+                    ]
+                }
             };
 
         case "DELETE_FROM_CART":
