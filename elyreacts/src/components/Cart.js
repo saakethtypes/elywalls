@@ -3,7 +3,7 @@ import React, { useEffect, useContext,useState } from "react";
 import {Poster} from "../components/Poster";
 
 export const Cart = () => {
-  let { cart,removeFromCart } = useContext(GlobalContext);
+  let { user,removeFromCart } = useContext(GlobalContext);
 
   const remfromcart = (e,cid) => {
     e.preventDefault()
@@ -12,7 +12,7 @@ export const Cart = () => {
     return (
       <div>
           <h1>Cart</h1>
-        {cart.map((poster, index) => (
+        {user.cart.map((poster, index) => (
           <div key={poster._id}>
              < Poster key={poster.item._id} index={index} poster={poster.item} /> 
          <button onClick={e=>remfromcart(e,poster._id)}>Remove</button>

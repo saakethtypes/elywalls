@@ -123,6 +123,27 @@ export const GlobalProvider = ({ children }) => {
         });
     }
 
+      
+  async function persistLog(props) {
+    const token = localStorage.getItem("jwt");
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (token) {
+      const res = await axios.post("/todos/verify",{"token":String(token)},config)
+      let verified = res.data.veri
+        if(!verified){
+          localStorage.removeItem("jwt")
+        }else{
+          auth.login(() => {
+          props.history.push("/home");
+      });
+        }
+      }
+  }
+
 
     async function editProfile(editted_profile) {
         try {
@@ -608,7 +629,7 @@ export const GlobalProvider = ({ children }) => {
             const res = await axios.patch(`cartadd/${poster._id}`, x, config);
             dispatch({
                 type: "ADD_TO_CART",
-                cart: poster
+                cart: res.data.cartObj[0]
             });
             localStorage.setItem('currentUser',JSON.stringify(state.user))
 
@@ -732,6 +753,7 @@ export const GlobalProvider = ({ children }) => {
                 log_status: state.log_status,
                 login,
                 logout,
+                persistLog,
                 registerUser,
                 registerArtist,
                 editProfile,

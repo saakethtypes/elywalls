@@ -376,8 +376,8 @@ exports.addToCart = async (req, res, next) => {
     const cart_body={
       item:poster
     }
-    const cart_cr = await Cart.create({item:poster})
-
+    let cart_cr = await Cart.create({item:poster})
+    cart_cr = await Cart.find({_id:cart_cr._id})
     let result = 0
     if(req.user.utype==="artist"){
        result = await Artist.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
@@ -389,8 +389,7 @@ exports.addToCart = async (req, res, next) => {
     }
     return res.status(200).json({
       success: true,
-      posters: result.cart,
-      profile: result
+      cartObj: cart_cr,
     });
   } catch (error) {
     return res.status(500).json({
@@ -411,7 +410,6 @@ exports.removeFromCart = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       msg: "Cart item removed",
-      profile:us
     });
   } catch (error) {
     return res.status(500).json({

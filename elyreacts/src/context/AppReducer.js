@@ -167,7 +167,6 @@ const appreducer = (state, action) => {
         case "ADD_TO_CART":
             return {
                 ...state,
-                cart: action.cart,
                 user: {
                     ...state.user,
                     cart: [
@@ -186,9 +185,7 @@ const appreducer = (state, action) => {
                             cartitem => action.item_removed !== cartitem._id
                         )
                     ]
-                },
-                cart: state.cart.filter(item =>
-                    action.item_removed !== item._id),
+                }
             };
 
         case "CREATE_POSTER":
