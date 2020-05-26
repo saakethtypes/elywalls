@@ -35,7 +35,7 @@ const PosterSchema = new mongoose.Schema({
     max: [800, "The price of the poster must be below 800 Rs"]
   },
   madeBy: {
-    type: [Artist.schema],
+    type: String,
   },
   pictureURL: {
     type: String,

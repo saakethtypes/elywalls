@@ -13,6 +13,8 @@ import { RegisterUser } from "./components/UserRegister";
 import { RegisterArtist } from "./components/ArtistRegister";
 import { Profile } from './components/Profile';
 import { Cart } from './components/Cart';
+import { Admired } from './components/Admired';
+import { PosterForm } from './components/PosterForm';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route exact path="/confirmed" component={Login} />
           <Route exact path="/myaccount" component={Profile} />
           <Route exact path="/cart" component={Cart} />
+          <Route exact path="/admires" component={Admired} />
+          <Route exact path="/publish-poster" component={PosterForm} />
 
           <Route
             path="/posters/:category?"

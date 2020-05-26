@@ -71,7 +71,8 @@ router.route("/cartdelete/:cid")
 const multer = require('multer');
 
 const fileFilter = (req, file, cb) => {
-       if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+       if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'
+        || file.mimetype === 'image/png' ) {
               cb(null, true);
        } else {
               cb(null, false);
@@ -80,21 +81,21 @@ const fileFilter = (req, file, cb) => {
 const storage = multer.diskStorage({
 
        destination: function (req, file, cb) {
-              cb(null, '../elyreacts/Poster Database');
+              cb(null, '../posterDb');
        },
        filename: function (req, file, cb) {
-              cb(null, String(new Date().getTime()) +
-                     "-" + String(new Date().getUTCDate())
-                     + "-" + String(new Date().getUTCMonth()) + "  " +
-                     String(file.originalname))
+              let ext = String(file.mimetype).split("/")
+              ext = ext[1]
+              cb(null, String(file.originalname) + 
+              String(new Date().getTime())+"."+ext )
        }
 })
 const upload = multer({
        storage: storage,
        limits: { fileSize: 1024 * 1024 * 5 },
        fileFilter: fileFilter
-})
+}).single('posterImg')
 
-router.route('/publishposter').post(auth, upload.single('posterImg'), createPoster)
+router.route('/publish-poster').post(auth, upload, createPoster)
 
 module.exports = router;

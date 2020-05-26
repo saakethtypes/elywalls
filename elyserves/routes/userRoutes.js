@@ -7,6 +7,7 @@ const { registerUser,
         login,
         confirmProfile,
         getProfileUser,
+        verify,
         getProfileArtist,
         editProfile } = require("../controllers/userController");
         
@@ -16,6 +17,8 @@ router.route("/register-artist").post(registerArtist);
 router.route( "/edit-profile").post(auth,editProfile);
 router.route( '/account').get(auth,getProfileUser);
 router.route( "/profile").get(auth,getProfileArtist);
+router.route( "/verify").post(verify);
+
 router.route( "/confirmation/:utype/:token").get(confirmProfile);
 
 module.exports = router;

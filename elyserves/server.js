@@ -7,6 +7,7 @@ dotenv.config({ path: "config.env" });
 
 const app = express()
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
 
 const poster_routes = require("./routes/posterRoutes");
 const user_routes = require("./routes/userRoutes");

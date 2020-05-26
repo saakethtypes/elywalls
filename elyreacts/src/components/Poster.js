@@ -6,24 +6,27 @@ import cn from './styles/Poster.module.scss';
 
 export const Poster = ({ poster, large = false }) => {
   const { user,log_status, admirePoster,unadmirePoster,addToCart } = useContext(GlobalContext);
-
   poster = {
     ...poster,
     id: poster._id,
     title: poster.title || 'Untitled',
-    author: poster.author || 'Unknown',
+    author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    pictureURL: /*poster.pictureURL ||*/ 'https://source.unsplash.com/random',
+     pictureURL: /*poster.pictureURL || */ 'https://source.unsplash.com/random',
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
   };
-  
+  const [admired, setadmired] = useState(false)
+
   const checkLike = () => {
     if(user){
     user.admires.map((admiredPoster)=>{
     if(admiredPoster._id==poster._id){
+      console.log("picadmired - ",admiredPoster._id)
      setadmired(true) 
+    }else{
+      setadmired(false)
     }
   })}
 }
@@ -31,12 +34,20 @@ export const Poster = ({ poster, large = false }) => {
       checkLike()
         }, [])
 
-  const [admired, setadmired] = useState(false)
   const [admires, setadmires] = useState(poster.admires)
   const addtocart = (e) => {
     e.preventDefault()
-    addToCart(poster);
-  };
+    user.cart.map((ucart)=> {
+    if (ucart.item._id==poster._id) {
+      console.log("cart inded")
+    }else{
+    addToCart(poster);}
+    }
+    )
+    if (user.cart.length==0) {
+      addToCart(poster)
+    }
+  }
   const admirposter = (e) => {
     e.preventDefault()
     setadmires(admires+1)
@@ -53,8 +64,12 @@ export const Poster = ({ poster, large = false }) => {
     <div className={`${cn.posterContainer}`}>
       <div className={`${cn.posterPreview}`}>
         <a href={poster.id} className={`${cn.posterLink}`}>
-          <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
-        </a>
+      
+           <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
+      {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */
+          }
+
+          </a>
 
         <div className={`${cn.posterCTA}`}>
           <button className="button-primary">Buy Now</button>
