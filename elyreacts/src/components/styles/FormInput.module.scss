@@ -99,7 +99,9 @@
             }
 
             & > input {
-                display: none;
+                // Hide original radio button
+                position: absolute;
+                opacity: 0;
 
                 &:checked + label {
                     font-weight: bolder;
