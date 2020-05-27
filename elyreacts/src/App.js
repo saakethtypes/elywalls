@@ -9,8 +9,7 @@ import Header from './components/Header';
 import { PostersWall } from './components/PostersWall';
 import { Home } from './components/Home';
 import { Login } from "./components/Login";
-import { RegisterUser } from "./components/UserRegister";
-import { RegisterArtist } from "./components/ArtistRegister";
+import { Register } from "./components/Register";
 import { Profile } from './components/Profile';
 import { Cart } from './components/Cart';
 import { Admired } from './components/Admired';
@@ -24,8 +23,10 @@ function App() {
           <Header />
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={RegisterUser} />
-          <Route exact path="/register-artist" component={RegisterArtist} />
+          <Route
+            path="/register"
+            render={props => <Register {...props} />}
+          />
           <Route exact path="/confirmed" component={Login} />
           <Route exact path="/myaccount" component={Profile} />
           <Route exact path="/cart" component={Cart} />
