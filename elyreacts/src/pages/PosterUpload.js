@@ -1,8 +1,7 @@
 import React, { useContext,useState } from 'react'
 import ImageUploader from "react-images-upload";
-import { UserProfile } from './UserProfile';
 import { GlobalContext } from '../context/GlobalState';
-export const PosterForm = () => {
+export const PosterUpload = () => {
 
     const [pictures, setPictures] = useState();
     const {user,createPoster} = useContext(GlobalContext)

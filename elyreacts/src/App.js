@@ -12,7 +12,7 @@ import { Register } from "./pages/Register";
 import { Profile } from './pages/Profile';
 import { Cart } from './pages/Cart';
 import { Admired } from './pages/Admired';
-import { PosterForm } from './pages/PosterForm';
+import { PosterUpload } from './pages/PosterUpload';
 
 import './App.scss';
 
@@ -32,7 +32,7 @@ function App() {
           <Route exact path="/myaccount" component={Profile} />
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/admires" component={Admired} />
-          <Route exact path="/publish-poster" component={PosterForm} />
+          <Route exact path="/publish-poster" component={PosterUpload} />
 
           <Route
             path="/posters/:category?"
