@@ -36,11 +36,16 @@ export const Poster = ({ poster }) => {
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
     pictureURL:
-      poster.pictureURL ?
-        (poster.pictureURL.length > 55 ? poster.pictureURL : null) :
-        'https://source.unsplash.com/random',
+      // poster.pictureURL ?
+      //   (poster.pictureURL.length > 55 ? poster.pictureURL : null) :
+      'https://source.unsplash.com/random',
     // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
     //therefore delting whole db with invalid poster paths
+    // todo: //
+    // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
+    // images stored on Amazon S3 (or similar CDN)
+    // -- pictureURL should point to the image's location on the CDN
+    // -- alternatively, pictureURL could be a file blob, which is sent to the server as a request, and then the server sends the image data back
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0

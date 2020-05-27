@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 
+import { FormInput } from "../components/FormInput";
+import { Link } from "react-router-dom";
+
 // @ts-ignore
 import cn from './styles/Login.module.scss';
-import { Link } from "react-router-dom";
-import { FormInput } from "./FormInput";
 
 export const Login = (props) => {
   const [username, setUsername] = useState("");

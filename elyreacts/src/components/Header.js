@@ -3,12 +3,13 @@ import { useHistory, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import auth from "../auth";
 
+import LinkButton from './LinkButton';
+
 // @ts-ignore
 import INDYWALLS_LOGO from '../assets/images/Logo.svg';
 
 // @ts-ignore
 import cn from './styles/Header.module.scss';
-import LinkButton from './LinkButton';
 
 /* export const Header = () => {
   
@@ -119,13 +120,13 @@ export default () => {
                   Account
                 </LinkButton>
                 {
-                  user.user_type=='artist'?
-                  <LinkButton
-                  href="/publish-poster"
-                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                  Publish
+                  user.user_type == 'artist' ?
+                    <LinkButton
+                      href="/publish-poster"
+                      classNames={`${cn.accountRegisterButton__buyerButton}`}>
+                      Publish
                 </LinkButton>
-                :null
+                    : null
                 }
               </div>
 

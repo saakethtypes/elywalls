@@ -5,7 +5,7 @@ import { GlobalContext } from "../context/GlobalState";
 
 // @ts-ignore
 import cn from './styles/Register.module.scss';
-import { FormInput, FormRadioInput } from './FormInput';
+import { FormInput, FormRadioInput } from '../components/FormInput';
 
 export const Register = ({
     location

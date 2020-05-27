@@ -1,7 +1,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
-import { Poster } from "../components/Poster";
-import { PostersList } from "./PostersList";
+
+import { PostersList } from "../components/PostersList";
 
 //@ts-ignore
 import cn from './styles/Admired.module.scss';
