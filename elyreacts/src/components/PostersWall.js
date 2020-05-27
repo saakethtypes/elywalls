@@ -43,6 +43,7 @@ export const PostersWall = ({ category = 'featured' }) => {
             <li className={category === 'photography' ? "active" : ''}><Link to="/posters/photography">Photography</Link></li>
             <li className={category === 'instafamous' ? "active" : ''}><Link to="/posters/instafamous">Insta-famous</Link></li>
             <li className={category === 'all' ? "active" : ''}><Link to="/posters/all">All</Link></li>
+ 
           </ul>
         </div>
 

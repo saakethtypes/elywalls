@@ -13,12 +13,8 @@ export const Home = () => {
       error,
       posters
     },
-    getProfileUser,
-    getPosters
+    getPosters,
   } = useContext(GlobalContext);
-  useEffect(() => {
-    getProfileUser();
-  }, []);
 
   //TODO show top 5 featured,popular,instafamous section of print ig wall
   useEffect(() => {

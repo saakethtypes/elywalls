@@ -46,7 +46,9 @@ export default () => {
 
   const {
     log_status: userLoggedIn,
-    logout
+    logout,
+    user,
+    persistLog
   } = useContext(GlobalContext);
 
   const routeLogout = () => {
@@ -55,7 +57,6 @@ export default () => {
       history.push("/");
     });
   };
-
   return (
     <header className={cn.headerWrapper}>
       <div className={cn.headerContainer}>
@@ -117,6 +118,15 @@ export default () => {
                   classNames={`${cn.accountRegisterButton__buyerButton}`}>
                   Account
                 </LinkButton>
+                {
+                  user.user_type=='artist'?
+                  <LinkButton
+                  href="/publish-poster"
+                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
+                  Publish
+                </LinkButton>
+                :null
+                }
               </div>
 
               <div className={`${cn.accountLoginLink}`}>

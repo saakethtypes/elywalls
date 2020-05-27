@@ -23,6 +23,8 @@ const ButtonAction = ({ callback, checkActiveFn, children }) => {
 export const Poster = ({ poster }) => {
   const { user, log_status, admirePoster, unadmirePoster, addToCart } = useContext(GlobalContext);
 
+  const [admired, setAdmired] = useState(false);
+
   const handleAddToCart = () => addToCart(poster._id);
   const handleAdmire = () => console.log("Admired: " + poster._id);
 
@@ -31,9 +33,11 @@ export const Poster = ({ poster }) => {
     ...poster,
     id: poster._id,
     title: poster.title || 'Untitled',
-    author: poster.author || 'Unknown',
+    author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    pictureURL: /*poster.pictureURL ||*/ 'https://source.unsplash.com/random',
+    pictureURL: poster.pictureURL.length > 55 ? poster.pictureURL : 'https://source.unsplash.com/random',
+    // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
+    //therefore delting whole db with invalid poster paths
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
@@ -43,38 +47,55 @@ export const Poster = ({ poster }) => {
     if (user) {
       user.admires.map((admiredPoster) => {
         if (admiredPoster._id == poster._id) {
-          setadmired(true);
+          setAdmired(true);
+        } else {
+          setAdmired(false);
         }
       });
     }
   };
+
   useEffect(() => {
     checkLike();
   }, []);
 
-  const [admired, setadmired] = useState(false);
+
   const [admires, setadmires] = useState(poster.admires);
   const addtocart = (e) => {
     e.preventDefault();
-    addToCart(poster);
+    // todo: reimplement with includes (or contains, don't remember which it is)
+    user.cart.map((ucart) => {
+      if (ucart.item._id === poster._id) {
+        console.log("cart inded");
+      } else {
+        addToCart(poster);
+      }
+    });
+    if (user.cart.length === 0) {
+      addToCart(poster);
+    }
   };
-  const admirposter = (e) => {
-    e.preventDefault();
-    setadmires(admires + 1);
-    setadmired(true);
-    admirePoster(poster);
-  };
-  const unadmirposter = (e) => {
-    e.preventDefault();
-    setadmires(admires - 1);
-    setadmired(false);
-    unadmirePoster(poster._id);
-  };
+
+  // todo: Why are these here??
+  // const admirposter = (e) => {
+  //   e.preventDefault();
+  //   setadmires(admires + 1);
+  //   setAdmired(true);
+  //   admirePoster(poster);
+  // };
+  // const unadmirposter = (e) => {
+  //   e.preventDefault();
+  //   setadmires(admires - 1);
+  //   setAdmired(false);
+  //   unadmirePoster(poster._id);
+  // };
+
   return (
     <div className={`${cn.container}`}>
       <div className={`${cn.previewContainer}`}>
         <a href={`/poster/${poster.id}`}>
           <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
+          {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
         </a>
 
         {log_status &&

@@ -245,6 +245,19 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.verify = async (req,res,next)=>{
+  let token = req.body.token
+
+  jwt.verify(token,process.env.JWT_SECRET,(err)=>{
+    if(err){
+      res.send({veri:false})}
+      else{
+        res.send({veri:true})
+      }
+  }) 
+}
+
+
 exports.editProfile = async (req, res, next) => {
   try {
     if (req.user.utype === "artist") {

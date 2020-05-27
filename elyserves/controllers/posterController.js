@@ -26,15 +26,19 @@ exports.createPoster = async (req, res, next) => {
     } 
     const poster = {
         "title":req.body.title,
-        "pictureURL": req.file.path,
+        "pictureURL": '../'+String(req.file.path),
         "category":req.body.category,
-        "tags":req.body.tags
+        "tags":req.body.tags,
+        "price":req.body.price,
+        "madeBy":req.body.madeBy
     }
-
     const new_poster = await Poster.create(poster);
+    console.log(req.body.category)
+
         //pushing to artist works    
-    await Artist.findByIdAndUpdate({_id:req.body.aid},
+    await Artist.findByIdAndUpdate({_id:req.user.id},
       {$push:{ postersmade:new_poster}})
+      console.log("pushed")
     //pushing to specific category
     if(req.body.category=="Photoshop"){
       await Photoshop.findByIdAndUpdate({_id:mongodb.ObjectId(static_id_ps)}
@@ -51,7 +55,7 @@ exports.createPoster = async (req, res, next) => {
     }
     return res.status(201).json({
       success: true,
-      data: new_poster
+      poster_created: new_poster
     });
   } catch(error) {
     if (error.name === "ValidationError") {
@@ -299,20 +303,21 @@ exports.admirePoster = async (req, res, next) => {
 exports.unadmirePoster = async (req, res, next) => {
   try {
     let result = 0
+    let user =0 
       await Poster.findByIdAndUpdate({_id:req.params.posterId}
       ,{ $inc: { admires: -1 } });
     result = await Poster.findById(req.params.posterId) 
 
     if(req.user.utype==='buyer'){
-      await User.findByIdAndUpdate({_id:req.user.id},
+      user = await User.findByIdAndUpdate({_id:req.user.id},
         {$pull:{admires:{_id:req.params.posterId}}})
     }else{
-      await Artist.findByIdAndUpdate({_id:req.user.id},
+      user  = await Artist.findByIdAndUpdate({_id:req.user.id},
         {$pull:{admires:{_id:req.params.posterId}}})     
     }
     return res.status(200).json({
       success: true,
-      posters:result
+      user:user
     });
   } catch (error) {
     return res.status(500).json({

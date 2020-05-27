@@ -132,13 +132,14 @@ export const GlobalProvider = ({ children }) => {
       },
     };
     if (token) {
-      const res = await axios.post("/todos/verify",{"token":String(token)},config)
+      const res = await axios.post("/verify",{"token":String(token)},config)
       let verified = res.data.veri
         if(!verified){
           localStorage.removeItem("jwt")
+          localStorage.removeItem("currentUser");
         }else{
           auth.login(() => {
-          props.history.push("/home");
+          props.history.push("/");
       });
         }
       }
@@ -560,7 +561,8 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
-            await axios.patch(`/${pid}/unadmireP`,{s:0} ,config);
+            let res = await axios.patch(`/${pid}/unadmireP`,{s:0} ,config);
+            console.log(res.data.user)
             dispatch({
                 type: "UNADMIRE_P",
                 unadmired:pid
@@ -659,7 +661,7 @@ export const GlobalProvider = ({ children }) => {
                 item_removed: cid
             });
             localStorage.setItem('currentUser',JSON.stringify(state.user))
-
+            console.log("sssssremoved")
 
         } catch (err) {
             dispatch({
@@ -670,16 +672,28 @@ export const GlobalProvider = ({ children }) => {
     }
 
 
-    async function createPoster(new_poster) {
+    async function createPoster(new_poster,picture) {
         try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    "x-auth-token": localStorage.getItem("jwt")
-                },
-            };
-            const res = await axios.post('publish-poster/', config, new_poster);
 
+            const formData = new FormData();
+            formData.append('posterImg',picture,String(new_poster.title)+
+            String(new_poster.tags));
+            formData.append('title',new_poster.title);
+            formData.append('caption',new_poster.caption);
+            formData.append('price',new_poster.price);
+            formData.append('tags',new_poster.tags);
+            formData.append('madeBy',new_poster.madeBy);
+            formData.append('category',new_poster.category);
+
+            const config = {
+
+                headers: {
+                    "x-auth-token": localStorage.getItem("jwt")                },
+            };
+            console.log(picture)
+            const res = await axios.post('/publish-poster',formData,config);
+            console.log("doneuploaded broo")
+            console.log(res.data.poster_created)
             dispatch({
                 type: "CREATE_POSTER",
                 poster_created: res.data.poster_created
