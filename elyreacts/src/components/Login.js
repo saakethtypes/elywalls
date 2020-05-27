@@ -3,45 +3,54 @@ import { GlobalContext } from "../context/GlobalState";
 
 // @ts-ignore
 import cn from './styles/Login.module.scss';
+import { Link } from "react-router-dom";
+import { FormInput } from "./FormInput";
 
 export const Login = (props) => {
-  const [userName, setUsername] = useState("");
-  const [pass, setPass] = useState("");
-  const { login,persistLog } = useContext(GlobalContext);
-  
-  
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, persistLog } = useContext(GlobalContext);
+
+
   const loginUser = (e) => {
     e.preventDefault();
-    login(userName, pass, props);
+    login(username, password, props);
     setUsername("");
-    setPass("");
+    setPassword("");
   };
-  persistLog(props)
+
+  persistLog(props);
+
   return (
     <div className="page-container">
-      <h1 className="title">Sign In</h1>
+      <div className="page-heading">
+        <h1 className="page-title">Sign In</h1>
+        <p className="page-preface">Sign in to Admire and purchase products, or <Link to="/register">click here to register</Link>.</p>
+      </div>
       <div className={cn.userSignInFormContainer}>
         <form className={cn.userSignInForm} onSubmit={loginUser}>
-          <div id="Username">
-            <input
-              type="text"
-              value={userName}
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div id="Pass">
-            <input
-              type="password"
-              placeholder="Password"
-              value={pass}
-              onChange={(e) => setPass(e.target.value)}
-            />
-          </div>
-          <button className="button" type="submit">
+          <FormInput
+            type="text"
+            name="username"
+            inputProps={{
+              required: true,
+              value: username,
+              onChange: (e) => setUsername(e.target.value)
+            }}
+          />
+
+          <FormInput
+            type="password"
+            name="password"
+            inputProps={{
+              required: true,
+              value: password,
+              onChange: (e) => setPassword(e.target.value)
+            }}
+          />
+          <button type="submit">
             Login
           </button>
-          
         </form>
       </div>
     </div>

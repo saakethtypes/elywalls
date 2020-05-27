@@ -83,7 +83,7 @@ export default () => {
                   <span className={cn.accountRegisterDropdown__labelOr}>
                     or
                   </span>
-                  <Link to="/register-artist" className={cn.accountRegisterDropdown__artistButton}>
+                  <Link to="/register?type=artist" className={cn.accountRegisterDropdown__artistButton}>
                     Register as Artist
                   </Link>
                 </div>
