@@ -35,7 +35,10 @@ export const Poster = ({ poster }) => {
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    pictureURL: poster.pictureURL.length > 55 ? poster.pictureURL : 'https://source.unsplash.com/random',
+    pictureURL:
+      poster.pictureURL ?
+        (poster.pictureURL.length > 55 ? poster.pictureURL : null) :
+        'https://source.unsplash.com/random',
     // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
     //therefore delting whole db with invalid poster paths
     price: poster.price || 0.0,
@@ -111,15 +114,13 @@ export const Poster = ({ poster }) => {
               +
           </ButtonAction>
           </div>}
-      </div>;
+      </div>
 
-      <div className={`${cn.posterInfoContainer}`}>
-        <div className={`${cn.simple}`}>
-          <h2>{poster.title}</h2>
-          <small>{`By ${poster.author}`}</small>
-          <strong>{admires}</strong>
-          <strong className={`${cn.price}`}>{poster.price.toFixed(2)}</strong>
-        </div>
+      <div className={`${cn.caption}`}>
+        <h2>{poster.title}</h2>
+        <small>{`By ${poster.author}`}</small>
+        {/*<strong>{admires}</strong>*/}
+        <strong className={`${cn.price}`}>{poster.price.toFixed(2)}</strong>
       </div>
     </div>
   );
