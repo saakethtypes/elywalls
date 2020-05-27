@@ -70,8 +70,10 @@ p {
 
     margin: 0.5rem auto 0 auto;
 
+    line-height: 1.5em;
+
     &.page-preface {
-        margin-top: 1.5em;
+        margin-top: 1.5rem;
 
         text-align: center;
         text-transform: uppercase;
@@ -80,9 +82,8 @@ p {
 
 small {
     font-size: 0.75rem;
-
+    line-height: 1.25em;
     text-transform: uppercase;
-
     color: $color_grey_dark;
 }
 
@@ -274,7 +275,39 @@ button {
     }
 }
 
-input {
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 1rem 0;
+
+    & > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & > button {
+            margin: 1.5rem 0 0 0;
+            width: 16rem;
+        }
+    }
+
+    & > small {
+        max-width: 16rem;
+        margin-top: 0.5rem;
+
+        text-align: center;
+    }
+}
+
+input,
+select,
+option {
     font-family: inherit;
     font-size: 1rem;
     padding: 0.25rem 0.5rem;

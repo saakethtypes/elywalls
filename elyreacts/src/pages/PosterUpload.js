@@ -1,98 +1,131 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from '../context/GlobalState';
+
+import { FormInput, FormCheckboxInput, FormDropdownInput } from '../components/FormInput';
 
 //@ts-ignore
 import cn from './styles/PosterUpload.module.scss';
 
+const MAX_IMAGE_SIZE = 15242880;
+
 export const PosterUpload = () => {
-  const [pictures, setPictures] = useState();
   const { user, createPoster } = useContext(GlobalContext);
-  const onDrop = picture => {
+
+  const [pictures, setPictures] = useState();
+  const [title, setTitle] = useState("");
+  const [caption, setCaption] = useState("");
+  const [price, setPrice] = useState(9.95);
+  const [tags, setTags] = useState("");
+  const [category, setCategory] = useState("");
+  const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
+
+  const handleImageUpload = picture => {
     setPictures(picture);
   };
-  const [title, settitle] = useState("");
-  const [caption, setcaption] = useState("");
-  const [price, setprice] = useState(170);
-  const [category, setcategory] = useState("");
-  const [tags, settags] = useState("");
-  const publish = (e) => {
-    e.preventDefault();
-    let poster_data = {
-      title: title,
-      caption: caption,
-      price: price,
-      madeBy: user.name,
-      category: category,
-      tags: tags
-    };
-    if (pictures[0].size > 200 && title.length > 0) {
-      //todo rename file with tags,artist,title
-      createPoster(poster_data, pictures[0]);
-      settitle("");
-      setcaption("");
-      setprice(170);
-      setcategory("");
-      settags("");
-      setPictures();
 
+  const handleFormSubmit = e => {
+    e.preventDefault();
+
+    if (
+      pictures &&
+      title &&
+      caption &&
+      price &&
+      category &&
+      tags
+    ) {
+      if (pictures[0].size > 200 && title.length > 0) {
+        //todo rename file with tags,artist,title
+        // todo: Check for current user before allowing poster upload
+        createPoster({
+          title,
+          caption,
+          price,
+          madeBy: user.name,
+          category,
+          tags
+        }, pictures[0]);
+      }
+    } else {
+      // todo: Notify user
+      console.log("something was blank");
+      console.dir({
+        title,
+        caption,
+        price,
+        madeBy: user.name,
+        category,
+        tags
+      });
     }
   };
   return (
-    <div>
-      Upload
+    <div className="page-container">
+
+      <div className="page-heading">
+        <h1 className="page-title">Upload Poster</h1>
+        <p className="page-preface">Upload your artwork</p>
+      </div>
+
       <ImageUploader
         withIcon={true}
-        onChange={onDrop}
+        onChange={handleImageUpload}
         imgExtension={[".jpeg", ".jpg", ".gif", ".png", ".gif"]}
-        maxFileSize={15242880}
+        maxFileSize={MAX_IMAGE_SIZE}
       />
 
-      <form onSubmit={publish}>
-        <div>
-          <input
+      <div className="form-container">
+        <form onSubmit={handleFormSubmit}>
+          <FormInput
+            name="title"
+            type="text"
             value={title}
+            onChange={e => setTitle(e.target.value)}
+            autoComplete="off" />
+          <FormInput
+            name="caption"
             type="text"
-            placeholder="Title"
-            onChange={e => settitle(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <input
             value={caption}
-            placeholder="Caption"
-            onChange={e => setcaption(e.target.value)}
-            type="text"
-          ></input>
-        </div>
-        <div>
-          <input
-            value={price}
-            placeholder="Set Price"
-            onChange={e => setprice(e.target.value)}
+            onChange={e => setCaption(e.target.value)}
+            autoComplete="off" />
+          <FormInput
+            name="price"
             type="number"
-          ></input>
-        </div>
-        <div>
-          <input
+            value={price}
+            onChange={e => setPrice(e.target.value)}
+            inputProps={{
+              step: "0.01",
+              min: 0
+            }} />
+          <FormInput
+            name="tags"
+            type="text"
             value={tags}
-            placeholder="Set Tags seperated by space"
-            onChange={e => settags(e.target.value)}
-            type="text"
-          ></input>
-        </div>
-        {/* //TODO : List option of all categories (ps,graphic,photgraphy)  */}
-        <div>
-          <input
+            onChange={e => setTags(e.target.value)}
+            autoComplete="off" />
+          <FormDropdownInput
+            name="category"
             value={category}
-            placeholder="Category"
-            onChange={e => setcategory(e.target.value)}
-            type="text"
-          ></input>
-        </div>
-        <button onClick={publish}>Publish Your Work</button>
-        <p>I hereby declare by publishing that this work is my creative doing and not stolen</p>
-      </form>
+            options={[
+              "Option A",
+              "Option B",
+              "Option C"
+            ]}
+            onChange={e => setCategory(e.target.value)} />
+
+          {/* todo/fix: When checked state changes, the scroll of the page becomes bugged */}
+          <FormCheckboxInput
+            name="declaredOwnWork"
+            displayName="This is my own work"
+            checked={declaredOwnWork}
+            onChange={e => setDeclaredOwnWork(e.target.checked)} />
+
+          <button className="button-primary" type="submit">Publish</button>
+        </form>
+
+        <small>By publishing your work, you declare that the work and all contained elements are entirely your work.</small>
+      </div>
     </div>
   );
 };

@@ -96,7 +96,7 @@ export const Register = ({
                 <p className="page-preface">Register with Elywalls to buy or sell prints.</p>
             </div>
 
-            <div className={cn.registrationFormContainer}>
+            <div className={`form-container ${cn.registrationFormContainer}`}>
                 <form onSubmit={handleFormSubmit} className={cn.registrationForm}>
                     <FormInput
                         type="text"
