@@ -28,11 +28,6 @@ export const Register = ({
     const { registerUser } = useContext(GlobalContext);
     const { registerArtist } = useContext(GlobalContext);
 
-    const getQueryParam = (queryParam) => {
-        const query = new URLSearchParams(location.search);
-        return query.get(queryParam);
-    };
-
     const getEmailDomain = emailString => {
         return emailString.split('@')[-0];
     };
@@ -185,11 +180,11 @@ export const Register = ({
                         options={[
                             {
                                 value: "buy",
-                                isDefault: getQueryParam('type') !== "artist" // True by default, false if artist
+                                isDefault: false
                             },
                             {
                                 value: "sell",
-                                isDefault: getQueryParam('type') === "artist" // False by default, true if artist
+                                isDefault: false
                             }
                         ]}
                         onChange={e => setAccountType(e.target.value)} />
