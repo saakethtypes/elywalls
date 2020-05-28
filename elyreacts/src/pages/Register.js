@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
@@ -37,8 +37,12 @@ export const Register = ({
         return emailString.split('@')[-0];
     };
 
+    useEffect(() => console.log(accountType));
+
     const handleFormSubmit = e => {
         e.preventDefault();
+
+        console.log("Creating user");
 
         if (
             fullname.length > 4 &&
@@ -47,7 +51,18 @@ export const Register = ({
             email.length > 5 &&
             password === passwordConfirmation
         ) {
-            if (accountType === "user") {
+            console.log("Credentials are valid");
+
+            if (accountType === "buy") {
+                console.log("Creating user account");
+                console.dir({
+                    name: fullname,
+                    username,
+                    password,
+                    email,
+                    phone
+                });
+
                 registerUser({
                     name: fullname,
                     username,
@@ -55,7 +70,16 @@ export const Register = ({
                     email,
                     phone
                 });
-            } else {
+            } else if (accountType === "sell") {
+                console.log("Creating artist account");
+                console.dir({
+                    name: fullname,
+                    username,
+                    password,
+                    email,
+                    phone
+                });
+
                 registerArtist({
                     name: fullname,
                     username,
@@ -63,6 +87,8 @@ export const Register = ({
                     email,
                     phone
                 });
+            } else {
+                console.log("Invalid accountType");
             }
 
             // setFullname("");
@@ -73,6 +99,7 @@ export const Register = ({
             // setPhone("");
             setIsSubmitted(true);
         } else {
+            console.log("Details verification failed");
             // Todo: Verify credentials better
             store.addNotification({
                 title: "Registration Failed",
