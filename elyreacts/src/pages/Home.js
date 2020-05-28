@@ -82,7 +82,7 @@ export const Home = () => {
       </div>
 
       <div className={`lower-content-container`}>
-        <PostersList posters={posters} />
+        {posters && <PostersList posters={posters} />}
       </div>
     </div>
   );
