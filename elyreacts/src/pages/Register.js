@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
 
 // @ts-ignore
 import cn from './styles/Register.module.scss';
-import { FormInput, FormRadioInput } from './FormInput';
+import { FormInput, FormRadioInput } from '../components/FormInput';
 
 export const Register = ({
     location
@@ -37,17 +37,32 @@ export const Register = ({
         return emailString.split('@')[-0];
     };
 
+    useEffect(() => console.log(accountType));
+
     const handleFormSubmit = e => {
         e.preventDefault();
 
+        console.log("Creating user");
+
         if (
-            fullname.length > 4 &&
-            password.length > 7 &&
+            fullname.length > 3 &&
+            password.length > 3 &&
             username.length > 3 &&
             email.length > 5 &&
             password === passwordConfirmation
         ) {
-            if (accountType === "user") {
+            console.log("Credentials are valid");
+
+            if (accountType === "buy") {
+                console.log("Creating user account");
+                console.dir({
+                    name: fullname,
+                    username,
+                    password,
+                    email,
+                    phone
+                });
+
                 registerUser({
                     name: fullname,
                     username,
@@ -55,7 +70,16 @@ export const Register = ({
                     email,
                     phone
                 });
-            } else {
+            } else if (accountType === "sell") {
+                console.log("Creating artist account");
+                console.dir({
+                    name: fullname,
+                    username,
+                    password,
+                    email,
+                    phone
+                });
+
                 registerArtist({
                     name: fullname,
                     username,
@@ -63,16 +87,19 @@ export const Register = ({
                     email,
                     phone
                 });
+            } else {
+                console.log("Invalid accountType");
             }
 
-            // setFullname("");
-            // setUsername("");
-            // setPassword("");
-            // setPasswordConfirmation("");
-            // setEmail(""); // todo: getEmailDomain will NOT work if this resets the field.
-            // setPhone("");
+            setFullname("");
+            setUsername("");
+            setPassword("");
+            setPasswordConfirmation("");
+            setEmail(""); // todo: getEmailDomain will NOT work if this resets the field.
+            setPhone("");
             setIsSubmitted(true);
         } else {
+            console.log("Details verification failed");
             // Todo: Verify credentials better
             store.addNotification({
                 title: "Registration Failed",
@@ -96,7 +123,7 @@ export const Register = ({
                 <p className="page-preface">Register with Elywalls to buy or sell prints.</p>
             </div>
 
-            <div className={cn.registrationFormContainer}>
+            <div className={`form-container ${cn.registrationFormContainer}`}>
                 <form onSubmit={handleFormSubmit} className={cn.registrationForm}>
                     <FormInput
                         type="text"
@@ -172,7 +199,7 @@ export const Register = ({
                 </form>
             </div>
             {isSubmitted &&
-                <div>Please check your email to activate your account. <a href={getEmailDomain(email)}>Open Email</a></div>}
+                <div>Please check your email to activate your account. <a href='https://gmail.com'>Open Email</a></div>}
         </div>
     );
 };

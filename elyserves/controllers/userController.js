@@ -190,7 +190,7 @@ exports.login = async (req, res, next) => {
           if (user.confirmed) {
             makeLogin(user);
           } else {
-            res.json({ msg: "activate your account before logging in." });
+            res.json({ msg: "0activate your account before logging in." });
           }
         } else {
           let artist = await Artist.findOne({ email: req.body.username }).then(
@@ -223,7 +223,7 @@ exports.login = async (req, res, next) => {
                           makeLogin(artist);
                         } else {
                           res.json({
-                            msg: "activate your account before logging in.",
+                            msg: "4activate your account before logging in.",
                           });
                         }
                       } else {

@@ -1,9 +1,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
-
 // @ts-ignore
 import cn from './styles/Poster.module.scss';
-
 const ButtonAction = ({ callback, checkActiveFn, children }) => {
   // todo: checkActiveFn is a function which checks the Active state of the button
   // eg: checkActiveFn could return true if Poster is Admired
@@ -24,7 +22,11 @@ export const Poster = ({ poster }) => {
   const { user, log_status, admirePoster, unadmirePoster, addToCart } = useContext(GlobalContext);
 
   const [admired, setAdmired] = useState(false);
-
+  var purl = String(poster.pictureURL)
+  purl = purl.split('Db')
+  purl = purl[1]
+  console.log(purl)
+  const picUrl = require('../assets/postersDb'+purl)
   const handleAddToCart = () => addToCart(poster._id);
   const handleAdmire = () => console.log("Admired: " + poster._id);
 
@@ -35,12 +37,16 @@ export const Poster = ({ poster }) => {
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    pictureURL:
-      poster.pictureURL ?
-        (poster.pictureURL.length > 55 ? poster.pictureURL : null) :
-        'https://source.unsplash.com/random',
+      // poster.pictureURL ?
+      //   (poster.pictureURL.length > 55 ? poster.pictureURL : null) :
+      // 'https://source.unsplash.com/random',
     // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
     //therefore delting whole db with invalid poster paths
+    // todo: //
+    // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
+    // images stored on Amazon S3 (or similar CDN)
+    // -- pictureURL should point to the image's location on the CDN
+    // -- alternatively, pictureURL could be a file blob, which is sent to the server as a request, and then the server sends the image data back
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
@@ -92,12 +98,11 @@ export const Poster = ({ poster }) => {
   //   setAdmired(false);
   //   unadmirePoster(poster._id);
   // };
-
   return (
     <div className={`${cn.container}`}>
       <div className={`${cn.previewContainer}`}>
         <a href={`/poster/${poster.id}`}>
-          <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
+          <img src={picUrl} alt={poster.title ? poster.title : "Untitled Poster"} />
           {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
         </a>
 

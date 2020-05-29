@@ -3,38 +3,13 @@ import { useHistory, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import auth from "../auth";
 
+import LinkButton from './LinkButton';
+
 // @ts-ignore
 import INDYWALLS_LOGO from '../assets/images/Logo.svg';
 
 // @ts-ignore
 import cn from './styles/Header.module.scss';
-import LinkButton from './LinkButton';
-
-/* export const Header = () => {
-  
-
-  return (
-    <div>
-      <div onClick={routeHome}>Elywalls</div>
-      <br />
-      {log_status ? (
-        <div>
-          <button onClick={routeAd}>Admires</button>
-          <button onClick={routePr}>Profile</button>
-          <button onClick={routeCa}>Cart</button>
-          <button onClick={routeLo}>Logout</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={routeLogin}>Login</button>
-          <button onClick={routeRu}>Register</button>
-          <button onClick={routeRa}>Register as artist</button>
-        </div>
-      )}
-    </div>
-  );
-};
-*/
 
 export default () => {
   // Todo: remove JavaScript header click dependency by using adjacent element selector in CSS
@@ -57,6 +32,7 @@ export default () => {
       history.push("/");
     });
   };
+
   return (
     <header className={cn.headerWrapper}>
       <div className={cn.headerContainer}>
@@ -91,9 +67,9 @@ export default () => {
               </div>
 
               <div className={`${cn.accountLoginLink}`}>
-                <a href="/login" className={`${cn.accountSigninLink__signinLink}`}>
+                <Link to="/login" className={`${cn.accountSigninLink__signinLink}`}>
                   Sign In
-                </a>
+                </Link>
               </div></>}
 
             {/* Todo: rename classes to better fit purposes*/}
@@ -119,13 +95,13 @@ export default () => {
                   Account
                 </LinkButton>
                 {
-                  user.user_type=='artist'?
-                  <LinkButton
-                  href="/publish-poster"
-                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                  Publish
+                  user.user_type == 'artist' ?
+                    <LinkButton
+                      href="/publish-poster"
+                      classNames={`${cn.accountRegisterButton__buyerButton}`}>
+                      Publish
                 </LinkButton>
-                :null
+                    : null
                 }
               </div>
 

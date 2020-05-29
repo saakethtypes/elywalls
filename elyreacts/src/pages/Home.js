@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { PostersList } from "./PostersList";
+import { PostersList } from "../components/PostersList";
 import { GlobalContext } from "../context/GlobalState";
 
 // @ts-ignore

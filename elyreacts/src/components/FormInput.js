@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PT from 'prop-types';
 
 // @ts-ignore
 import cn from './styles/FormInput.module.scss';
+
+
+const getLabel = (name) => {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+};
 
 const FormInput = ({
     type,
@@ -10,27 +15,22 @@ const FormInput = ({
     displayName,
     value,
     autoComplete,
+    onChange,
     inputProps,
     className
 }) => {
-    const getInputLabel = () => {
-        if (displayName)
-            return displayName.charAt(0).toUpperCase() + displayName.slice(1);
-        else
-            return name.charAt(0).toUpperCase() + name.slice(1);
-    };
-
     return (
-        <div className={`${type === "checkbox" ? cn.checkboxContainer : cn.container} ${className}`}>
+        <div className={`${cn.container} ${className}`}>
             <input
                 type={type}
                 name={name}
                 id={name}
                 value={value}
                 autoComplete={autoComplete}
+                onChange={onChange}
                 {...inputProps} />
             <label htmlFor={name}>
-                {getInputLabel()}
+                {getLabel(displayName || name)}
             </label>
         </div>
     );
@@ -40,8 +40,9 @@ FormInput.propTypes = {
     type: PT.string.isRequired,
     name: PT.string.isRequired,
     displayName: PT.string,
-    value: PT.string,
+    value: PT.any,
     autoComplete: PT.string,
+    onChange: PT.func,
     inputProps: PT.object,
     className: PT.string
 };
@@ -54,22 +55,11 @@ const FormRadioInput = ({
     inputProps,
     className
 }) => {
-    const getInputLabel = () => {
-        if (displayName)
-            return displayName.charAt(0).toUpperCase() + displayName.slice(1);
-        else
-            return name.charAt(0).toUpperCase() + name.slice(1);
-    };
-
-    const getLabel = (optionValue) => {
-        return optionValue.charAt(0).toUpperCase() + optionValue.slice(1);
-    };
-
     return (
         <div
             onChange={onChange}
             className={`${cn.radioContainer} ${className}`}>
-            <label>{getInputLabel()}</label>
+            <label>{getLabel(displayName || name)}</label>
             <div className={cn.radioOptionsContainer}>
                 {options.map((option) =>
                     <div key={option.value} className={cn.radioOption}>
@@ -78,7 +68,8 @@ const FormRadioInput = ({
                             name={name}
                             id={option.value}
                             value={option.value}
-                            defaultChecked={option.isDefault} />
+                            defaultChecked={option.isDefault}
+                            {...inputProps} />
                         <label
                             htmlFor={option.value}>
                             {getLabel(option.value)}
@@ -102,7 +93,76 @@ FormRadioInput.propTypes = {
     className: PT.string
 };
 
+const FormCheckboxInput = ({
+    name,
+    displayName,
+    checked,
+    onChange,
+    inputProps,
+    className
+}) => {
+    useEffect(() => console.log(checked), [checked]);
+    return (
+        <div className={`${cn.checkboxContainer} ${className}`}>
+            <input
+                type="checkbox"
+                name={name}
+                id={name}
+                defaultChecked={checked}
+                onChange={onChange}
+                {...inputProps} />
+            <label htmlFor={name}>
+                {getLabel(displayName || name)}
+            </label>
+        </div>
+    );
+};
+
+FormCheckboxInput.propTypes = {
+    name: PT.string.isRequired,
+    displayName: PT.string,
+    checked: PT.bool,
+    onChange: PT.func,
+    inputProps: PT.object,
+    className: PT.string
+};
+
+const FormDropdownInput = ({
+    name,
+    displayName,
+    value,
+    options,
+    onChange,
+    className
+}) => {
+    return (
+        <div className={`${cn.dropdownContainer} ${className}`}>
+            <select id={name} value={value} onChange={onChange}>
+                {options.map((option) =>
+                    <option key={option} value={option}>{option}</option>
+                )}
+            </select>
+
+            <label htmlFor={name}>
+                {getLabel(displayName || name)}
+            </label>
+        </div>
+    );
+};
+
+FormDropdownInput.propTypes = {
+    name: PT.string.isRequired,
+    displayName: PT.string,
+    value: PT.string,
+    options: PT.arrayOf(PT.string).isRequired,
+    onChange: PT.func,
+    inputProps: PT.object,
+    className: PT.string
+};
+
 export {
     FormInput,
-    FormRadioInput
+    FormRadioInput,
+    FormCheckboxInput,
+    FormDropdownInput
 };

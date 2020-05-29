@@ -31,7 +31,7 @@ const PosterSchema = new mongoose.Schema({
   price: {
     type: Number,
     default:200,
-    min: [160, "The price of the poster must be a minimum of 160 Rs"],
+    min: [2, "The price of the poster must be a minimum of 160 Rs"],
     max: [800, "The price of the poster must be below 800 Rs"]
   },
   madeBy: {

@@ -8,17 +8,16 @@ const Textography = require("../models/Textography");
 const Graphic = require("../models/Graphic");
 const Photoshop = require("../models/Photoshop");
 const mongodb = require("mongodb");
-const static_id_p = "5ebce049d846a66da88d2c0a"  
-const static_id_ps = "5ebce048d846a66da88d2c07"
-const static_id_g = "5ebce048d846a66da88d2c08"
-const static_id_t = "5ebce048d846a66da88d2c09"
+const static_id_p = "5ed11ac6b5a7ab1bad0752f7"  
+const static_id_ps = "5ed11b2eca5f881c2719cb90"
+const static_id_g = "5ed11b2dca5f881c2719cb8c"
+const static_id_t = "5ed11b2dca5f881c2719cb8e"
 const dotenv = require('dotenv')
 const {v4} = require('uuid');
 dotenv.config({ path: "../config.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
-exports.createPoster = async (req, res, next) => {
-  
+exports.createPoster = async (req, res, next) => {  
   //TODO rename file and check dimmensions in react with tags 
   try {
     if(req.files === null){
@@ -26,19 +25,19 @@ exports.createPoster = async (req, res, next) => {
     } 
     const poster = {
         "title":req.body.title,
-        "pictureURL": '../'+String(req.file.path),
+        "pictureURL":String(req.file.path),
         "category":req.body.category,
         "tags":req.body.tags,
         "price":req.body.price,
         "madeBy":req.body.madeBy
     }
-    const new_poster = await Poster.create(poster);
+    const new_poster = await Poster.create(poster)
     console.log(req.body.category)
 
         //pushing to artist works    
-    await Artist.findByIdAndUpdate({_id:req.user.id},
-      {$push:{ postersmade:new_poster}})
-      console.log("pushed")
+
+    console.log("pushed")
+
     //pushing to specific category
     if(req.body.category=="Photoshop"){
       await Photoshop.findByIdAndUpdate({_id:mongodb.ObjectId(static_id_ps)}

@@ -1,19 +1,21 @@
 import React from 'react';
-import './App.scss';
 import { BrowserRouter as BRouter, Route, Switch } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalState";
 import history from './components/history';
 
 import Header from './components/Header';
 
-import { PostersWall } from './components/PostersWall';
-import { Home } from './components/Home';
-import { Login } from "./components/Login";
-import { Register } from "./components/Register";
-import { Profile } from './components/Profile';
-import { Cart } from './components/Cart';
-import { Admired } from './components/Admired';
-import { PosterForm } from './components/PosterForm';
+import { PostersWall } from './pages/PostersWall';
+import { Home } from './pages/Home';
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { Profile } from './pages/Profile';
+import { Cart } from './pages/Cart';
+import { Admired } from './pages/Admired';
+import { PosterUpload } from './pages/PosterUpload';
+import { ConfirmAccount } from './pages/ConfirmAccount'
+
+import './App.scss';
 
 function App() {
   return (
@@ -27,11 +29,11 @@ function App() {
             path="/register"
             render={props => <Register {...props} />}
           />
-          <Route exact path="/confirmed" component={Login} />
+          <Route exact path="/confirmed" component={ConfirmAccount} />
           <Route exact path="/myaccount" component={Profile} />
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/admires" component={Admired} />
-          <Route exact path="/publish-poster" component={PosterForm} />
+          <Route exact path="/publish-poster" component={PosterUpload} />
 
           <Route
             path="/posters/:category?"
