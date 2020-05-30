@@ -15,9 +15,11 @@ export const Admired = () => {
         <p className="page-preface">{user.name}'s Admires</p>
       </div>
 
-      <PostersList
-        className={cn.postersList}
-        posters={user.admires} />
+      <div className="lower-content-container">
+        <PostersList
+          className={cn.postersList}
+          posters={user.admires} />
+      </div>
     </div>
   );
 };

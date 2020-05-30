@@ -10,7 +10,7 @@ import { PostersWall } from './pages/PostersWall';
 import { Home } from './pages/Home';
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { Profile } from './pages/Profile';
+import { Account } from './pages/Account';
 import { Cart } from './pages/Cart';
 import { Admired } from './pages/Admired';
 import { PosterUpload } from './pages/PosterUpload';
@@ -31,7 +31,7 @@ function App() {
             render={props => <Register {...props} />}
           />
           <Route exact path="/confirmed" component={ConfirmAccount} />
-          <Route exact path="/myaccount" component={Profile} />
+          <Route exact path="/account" component={Account} />
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/admires" component={Admired} />
           <Route exact path="/publish-poster" component={PosterUpload} />

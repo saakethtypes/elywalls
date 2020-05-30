@@ -53,7 +53,7 @@ export default () => {
             {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
             {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
 
-            {user && user.user_type === "artist" && <Link to="/todo:myposts">Published</Link>}
+            {user && user.user_type === "artist" && <Link to="/account?view=published">Published</Link>}
             {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
           </nav>
 
@@ -68,7 +68,7 @@ export default () => {
               </div>}
             {!user && <Link to="/login">Sign In</Link>}
 
-            {user && <LinkButton primary to="/myaccount">Account</LinkButton>}
+            {user && <LinkButton primary to="/account">Account</LinkButton>}
             {user && <Link to="/logout">Sign Out</Link>}
           </div>
         </div>
