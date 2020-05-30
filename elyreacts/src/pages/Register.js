@@ -45,8 +45,8 @@ export const Register = ({
         console.log("Creating user");
 
         if (
-            fullname.length > 4 &&
-            password.length > 7 &&
+            fullname.length > 3 &&
+            password.length > 3 &&
             username.length > 3 &&
             email.length > 5 &&
             password === passwordConfirmation
@@ -91,12 +91,12 @@ export const Register = ({
                 console.log("Invalid accountType");
             }
 
-            // setFullname("");
-            // setUsername("");
-            // setPassword("");
-            // setPasswordConfirmation("");
-            // setEmail(""); // todo: getEmailDomain will NOT work if this resets the field.
-            // setPhone("");
+            setFullname("");
+            setUsername("");
+            setPassword("");
+            setPasswordConfirmation("");
+            setEmail(""); // todo: getEmailDomain will NOT work if this resets the field.
+            setPhone("");
             setIsSubmitted(true);
         } else {
             console.log("Details verification failed");
@@ -199,7 +199,7 @@ export const Register = ({
                 </form>
             </div>
             {isSubmitted &&
-                <div>Please check your email to activate your account. <a href={getEmailDomain(email)}>Open Email</a></div>}
+                <div>Please check your email to activate your account. <a href='https://gmail.com'>Open Email</a></div>}
         </div>
     );
 };

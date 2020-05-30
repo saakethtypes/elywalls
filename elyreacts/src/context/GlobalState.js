@@ -2,8 +2,14 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
+let logUser = "placeholder for loggedUser"
 
-let logUser = JSON.parse(localStorage.getItem('currentUser') || null);
+try{
+    logUser  = JSON.parse(localStorage.getItem('currentUser'))
+}catch{
+    localStorage.clear()
+    sessionStorage.clear()
+}
 let ls = false;
 console.log("dsfsdf",logUser)
 let usercart = null;
@@ -87,13 +93,15 @@ export const GlobalProvider = ({ children }) => {
                     "Content-type": "application/json",
                 },
             };
+            console.log("hi")
             //TODO redirect to home page
             let usercred = { username: uname, password: pass };
             const res = await axios.post("/login", usercred, config);
+            console.log(res.data)
             if (res.data.logged) {
-                localStorage.setItem("jwt", res.data.token);
-                console.log(res.data.token);
-                let loguser = localStorage.setItem('currentUser', JSON.stringify(res.data.profile));
+                localStorage.setItem('currentUser', JSON.stringify(res.data.profile));
+                localStorage.setItem("jwt", res.data.token,(err)=>console.log(err));
+                console.log("object")
 
                 dispatch({
                     type: "LOGIN",

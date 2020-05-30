@@ -79,9 +79,8 @@ const fileFilter = (req, file, cb) => {
        }
 }
 const storage = multer.diskStorage({
-
        destination: function (req, file, cb) {
-              cb(null, '../posterDb');
+              cb(null, '../elyreacts/src/assets/postersDb');
        },
        filename: function (req, file, cb) {
               let ext = String(file.mimetype).split("/")

@@ -345,6 +345,10 @@ option {
 
 .lower-content-container {
     margin-top: 2.5rem;
+
+    & > p {
+        text-align: center;
+    }
 }
 
 body {

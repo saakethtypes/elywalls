@@ -1,9 +1,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
-
 // @ts-ignore
 import cn from './styles/Poster.module.scss';
-
 const ButtonAction = ({ callback, checkActiveFn, children }) => {
   // todo: checkActiveFn is a function which checks the Active state of the button
   // eg: checkActiveFn could return true if Poster is Admired
@@ -24,7 +22,11 @@ export const Poster = ({ poster }) => {
   const { user, log_status, admirePoster, unadmirePoster, addToCart } = useContext(GlobalContext);
 
   const [admired, setAdmired] = useState(false);
-
+  var purl = String(poster.pictureURL);
+  purl = purl.split('Db');
+  purl = purl[1];
+  console.log(purl);
+  const picUrl = require('../assets/postersDb' + purl);
   const handleAddToCart = () => addToCart(poster._id);
   const handleAdmire = () => console.log("Admired: " + poster._id);
 
@@ -97,12 +99,11 @@ export const Poster = ({ poster }) => {
   //   setAdmired(false);
   //   unadmirePoster(poster._id);
   // };
-
   return (
     <div className={`${cn.container}`}>
       <div className={`${cn.previewContainer}`}>
         <a href={`/poster/${poster.id}`}>
-          <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
+          <img src={picUrl} alt={poster.title ? poster.title : "Untitled Poster"} />
           {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
         </a>
 
