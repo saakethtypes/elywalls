@@ -113,7 +113,7 @@ export const Register = ({
 
     return (
         <div className="page-container">
-            <div className="page-heading">
+            <div className="page-header">
                 <h1 className="page-title">Register</h1>
                 <p className="page-preface">Register with Elywalls to buy or sell prints.</p>
             </div>

@@ -13,7 +13,7 @@ export const Login = (props) => {
   const { login, persistLog } = useContext(GlobalContext);
 
 
-  const loginUser = (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     login(username, password, props);
     setUsername("");
@@ -24,12 +24,13 @@ export const Login = (props) => {
 
   return (
     <div className="page-container">
-      <div className="page-heading">
+      <div className="page-header">
         <h1 className="page-title">Sign In</h1>
         <p className="page-preface">Sign in to Admire and purchase products, or <Link to="/register">click here to register</Link>.</p>
       </div>
-      <div className={cn.userSignInFormContainer}>
-        <form className={cn.userSignInForm} onSubmit={loginUser}>
+
+      <div className={`form-container`}>
+        <form onSubmit={handleFormSubmit}>
           <FormInput
             type="text"
             name="username"
@@ -49,7 +50,7 @@ export const Login = (props) => {
               onChange: (e) => setPassword(e.target.value)
             }}
           />
-          <button type="submit">
+          <button className="button-primary" type="submit">
             Login
           </button>
         </form>

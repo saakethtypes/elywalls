@@ -4,30 +4,36 @@ import React, { useEffect, useContext, useState } from "react";
 // @ts-ignore
 import cn from './styles/Poster.module.scss';
 
-const ButtonAction = ({ callback, checkActiveFn, children }) => {
+const ButtonAction = ({
+  onClickHandler,
+  activated = false,
+  children
+}) => {
   // todo: checkActiveFn is a function which checks the Active state of the button
   // eg: checkActiveFn could return true if Poster is Admired
   // this would then add the active class to the button
-
-  const isActive = () => (checkActiveFn ? 'active' : '');
-
   return (
     <button
-      className={`button-icon ${isActive}`}
-      onClick={callback}>
-      {children}
+      className={ `button-icon ${activated ? 'active' : ''}` }
+      onClick={ onClickHandler }>
+      { children }
     </button>
   );
 };
 
 export const Poster = ({ poster }) => {
-  const { user, log_status, admirePoster, unadmirePoster, addToCart } = useContext(GlobalContext);
+  const {
+    user,
+    log_status,
+    admirePoster,
+    unadmirePoster,
+    addToCart
+  } = useContext(GlobalContext);
 
-  const [admired, setAdmired] = useState(false);
+  const [isAdmired, setIsAdmired] = useState(false);
+  const [admires, setAdmires] = useState(poster.admires);
 
-  const handleAddToCart = () => addToCart(poster._id);
-  const handleAdmire = () => console.log("Admired: " + poster._id);
-
+  // Sanitise poster data
   // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
     ...poster,
@@ -51,81 +57,75 @@ export const Poster = ({ poster }) => {
     admires: poster.admires || 0
   };
 
-  const checkLike = () => {
-    if (user) {
-      user.admires.map((admiredPoster) => {
-        if (admiredPoster._id == poster._id) {
-          setAdmired(true);
-        } else {
-          setAdmired(false);
-        }
-      });
+  // useEffect(() => {
+  //   setIsAdmired(checkAdmired());
+  // }, []);
+
+  const checkAdmired = () => {
+    let match = [];
+
+    if (user)
+      match = user.admires.filter((ap) => ap._id === poster._id);
+
+    // Return true if Admired, otherwise return false
+    console.log(match, match.length);
+    return match.length > 0;
+  };
+
+  const checkCart = () => {
+    let match = [];
+
+    if (user)
+      match = user.cart.filter((ap) => ap.item._id === poster._id);
+
+    return match.length > 0;
+  };
+
+  const handleClickAdmire = (e) => {
+    console.log("handleClickAdmire");
+    if (!checkAdmired()) {
+      console.log("Admiring");
+      admirePoster(poster);
+      setIsAdmired(true);
+    } else {
+      console.log("Unadmiring");
+      unadmirePoster(poster);
+      setIsAdmired(false);
     }
   };
 
-  useEffect(() => {
-    checkLike();
-  }, []);
+  const handleClickCart = (e) => {
 
-
-  const [admires, setadmires] = useState(poster.admires);
-  const addtocart = (e) => {
-    e.preventDefault();
-    // todo: reimplement with includes (or contains, don't remember which it is)
-    user.cart.map((ucart) => {
-      if (ucart.item._id === poster._id) {
-        console.log("cart inded");
-      } else {
-        addToCart(poster);
-      }
-    });
-    if (user.cart.length === 0) {
-      addToCart(poster);
-    }
   };
-
-  // todo: Why are these here??
-  // const admirposter = (e) => {
-  //   e.preventDefault();
-  //   setadmires(admires + 1);
-  //   setAdmired(true);
-  //   admirePoster(poster);
-  // };
-  // const unadmirposter = (e) => {
-  //   e.preventDefault();
-  //   setadmires(admires - 1);
-  //   setAdmired(false);
-  //   unadmirePoster(poster._id);
-  // };
 
   return (
-    <div className={`${cn.container}`}>
-      <div className={`${cn.previewContainer}`}>
-        <a href={`/poster/${poster.id}`}>
-          <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
-          {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
+    <div className={ `${cn.container}` }>
+      <div className={ `${cn.previewContainer}` }>
+        <a href={ `/poster/${poster.id}` }>
+          <img src={ poster.pictureURL } alt={ poster.title ? poster.title : "Untitled Poster" } />
+          {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */ }
         </a>
 
-        {log_status &&
-          <div className={`${cn.buttons}`}>
+        { log_status &&
+          <div className={ `${cn.buttons}` }>
             <ButtonAction
-              callback={handleAdmire}
-              checkActiveFn={() => admired}>
+              onClickHandler={ handleClickAdmire }
+              activated={ checkAdmired() }>
               ❤
           </ButtonAction>
             <ButtonAction
-              callback={handleAddToCart}
-              checkActiveFn={() => false}>
+              onClickHandler={ handleClickCart }
+              activated={ checkCart() }>
               +
           </ButtonAction>
-          </div>}
+          </div> }
       </div>
 
-      <div className={`${cn.caption}`}>
-        <h2>{poster.title}</h2>
-        <small>{`By ${poster.author}`}</small>
-        {/*<strong>{admires}</strong>*/}
-        <strong className={`${cn.price}`}>{poster.price.toFixed(2)}</strong>
+      <div className={ `${cn.caption}` }>
+        <h3>{ poster.title }</h3>
+        <small>{ `By ${poster.author}` }</small>
+        {/*<strong>{admires}</strong>*/ }
+        <strong className={ `${cn.price}` }>{ poster.price.toFixed(2) }</strong>
       </div>
     </div>
   );
@@ -133,14 +133,14 @@ export const Poster = ({ poster }) => {
 
 export const FakePoster = ({ }) => {
   return (
-    <div className={`${cn.container}`}>
-      <div className={`${cn.previewContainer}`}>
-        <a href={`/posters/all`}>
-          <img src={'https://source.unsplash.com/random/640x480'} alt={'Blank image'} />
+    <div className={ `${cn.container}` }>
+      <div className={ `${cn.previewContainer}` }>
+        <a href={ `/posters/all` }>
+          <img src={ 'https://source.unsplash.com/random/640x480' } alt={ 'Blank image' } />
         </a>
       </div>
 
-      <div className={`${cn.caption}`}>
+      <div className={ `${cn.caption}` }>
         <h2>Sorry!</h2>
         <small>No results found</small>
       </div>

@@ -34,82 +34,42 @@ export default () => {
   };
 
   return (
-    <header className={cn.headerWrapper}>
-      <div className={cn.headerContainer}>
+    <header className={cn.container}>
+      <div className={cn.content}>
         <Link to="/">
           <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
         </Link>
 
-        <div className={cn.headerMenuIcon} onClick={handleHamburgerClick}>
-          <div id={cn.headerMenuIcon__lin1}></div>
-          <div id={cn.headerMenuIcon__lin2}></div>
+        <div className={cn.hamburger} onClick={handleHamburgerClick}>
+          <div></div>
+          <div></div>
         </div>
 
-        <div className={cn.headerLinkContainer}>
+        <div className={cn.linkContainer}>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/posters">Posters</Link>
 
-          <div className={cn.accountPanel}>
-            {!userLoggedIn && <>
-              <div className={`${cn.accountRegister}`}>
-                <LinkButton
-                  href="/register"
-                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                  Register
-                </LinkButton>
+            {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
+            {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
 
-                <div className={cn.accountRegister__dropdown}>
-                  <span className={cn.accountRegisterDropdown__labelOr}>
-                    or
-                  </span>
-                  <Link to="/register?type=artist" className={cn.accountRegisterDropdown__artistButton}>
-                    Register as Artist
-                  </Link>
-                </div>
-              </div>
+            {user && user.user_type === "artist" && <Link to="/todo:myposts">Published</Link>}
+            {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
+          </nav>
 
-              <div className={`${cn.accountLoginLink}`}>
-                <Link to="/login" className={`${cn.accountSigninLink__signinLink}`}>
-                  Sign In
+          <div className={cn.account}>
+            {!user && <LinkButton className={cn.buttonRegister} primary to="/register">Register</LinkButton>}
+            {!user &&
+              <div className={cn.buttonRegister__dropdown}>
+                <span>or</span>
+                <Link to="/register?type=artist">
+                  Register as Artist
                 </Link>
-              </div></>}
+              </div>}
+            {!user && <Link to="/login">Sign In</Link>}
 
-            {/* Todo: rename classes to better fit purposes*/}
-
-            {userLoggedIn && <>
-              <nav>
-                <ul>
-                  <li><Link to="/">
-                    Home
-                  </Link></li>
-                  <li><Link to="/admires">
-                    Likes
-                  </Link></li>
-                  <li><Link to="/cart">
-                    Cart
-                  </Link></li>
-                </ul>
-              </nav>
-              <div className={`${cn.accountRegister}`}>
-                <LinkButton
-                  href="/myaccount"
-                  classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                  Account
-                </LinkButton>
-                {
-                  user.user_type == 'artist' ?
-                    <LinkButton
-                      href="/publish-poster"
-                      classNames={`${cn.accountRegisterButton__buyerButton}`}>
-                      Publish
-                </LinkButton>
-                    : null
-                }
-              </div>
-
-              <div className={`${cn.accountLoginLink}`}>
-                <a href="#" onClick={routeLogout}>
-                  Sign Out
-                </a>
-              </div></>}
+            {user && <LinkButton primary to="/myaccount">Account</LinkButton>}
+            {user && <Link to="/logout">Sign Out</Link>}
           </div>
         </div>
       </div>
