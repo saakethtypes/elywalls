@@ -17,6 +17,7 @@ import { PosterUpload } from './pages/PosterUpload';
 import { ConfirmAccount } from './pages/ConfirmAccount';
 
 import './App.scss';
+import { Poster } from './pages/Poster';
 
 function App() {
   return (
@@ -39,6 +40,11 @@ function App() {
           <Route
             path="/posters/:category?"
             render={props => <PostersWall category={props.match.params.category} {...props} />}
+          />
+
+          <Route
+            path="/poster/:id"
+            render={props => <Poster posterID={props.match.params.id} {...props} />}
           />
 
           <Footer />
