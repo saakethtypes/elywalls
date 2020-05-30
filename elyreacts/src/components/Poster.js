@@ -14,9 +14,9 @@ const ButtonAction = ({
   // this would then add the active class to the button
   return (
     <button
-      className={ `button-icon ${activated ? 'active' : ''}` }
-      onClick={ onClickHandler }>
-      { children }
+      className={`button-icon ${activated ? 'active' : ''}`}
+      onClick={onClickHandler}>
+      {children}
     </button>
   );
 };
@@ -30,7 +30,10 @@ export const Poster = ({ poster }) => {
     addToCart
   } = useContext(GlobalContext);
 
+  // The following booleans are only used for state updates in this component.
+  // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
   const [isAdmired, setIsAdmired] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [admires, setAdmires] = useState(poster.admires);
 
   // Sanitise poster data
@@ -57,90 +60,99 @@ export const Poster = ({ poster }) => {
     admires: poster.admires || 0
   };
 
-  // useEffect(() => {
-  //   setIsAdmired(checkAdmired());
-  // }, []);
-
-  const checkAdmired = () => {
+  const checkAdmires = () => {
+    // Check the users' Admired posters
     let match = [];
 
     if (user)
       match = user.admires.filter((ap) => ap._id === poster._id);
+    else
+      console.warn("user is undefined");
 
-    // Return true if Admired, otherwise return false
-    console.log(match, match.length);
     return match.length > 0;
   };
 
   const checkCart = () => {
+    // Check the users' cart
     let match = [];
 
     if (user)
       match = user.cart.filter((ap) => ap.item._id === poster._id);
+    else
+      console.warn("user is undefined");
 
     return match.length > 0;
   };
 
   const handleClickAdmire = (e) => {
-    console.log("handleClickAdmire");
-    if (!checkAdmired()) {
-      console.log("Admiring");
+    if (!checkAdmires()) {
       admirePoster(poster);
       setIsAdmired(true);
+      setAdmires(admires + 1);
     } else {
-      console.log("Unadmiring");
       unadmirePoster(poster);
       setIsAdmired(false);
+      setAdmires(admires - 1);
     }
   };
 
   const handleClickCart = (e) => {
-
+    if (!checkCart()) {
+      addToCart(poster);
+      setIsAddedToCart(true);
+    } else {
+      // todo: Notify user - Already added to cart
+      console.log("Already added to cart");
+    }
   };
 
   return (
-    <div className={ `${cn.container}` }>
-      <div className={ `${cn.previewContainer}` }>
-        <a href={ `/poster/${poster.id}` }>
-          <img src={ poster.pictureURL } alt={ poster.title ? poster.title : "Untitled Poster" } />
-          {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */ }
+    <div className={`${cn.container}`}>
+      <div className={`${cn.previewContainer}`}>
+        <a href={`/poster/${poster.id}`}>
+          <img src={poster.pictureURL} alt={poster.title ? poster.title : "Untitled Poster"} />
+          {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
         </a>
 
-        { log_status &&
-          <div className={ `${cn.buttons}` }>
+        {log_status &&
+          <div className={`${cn.buttons}`}>
             <ButtonAction
-              onClickHandler={ handleClickAdmire }
-              activated={ checkAdmired() }>
+              onClickHandler={handleClickAdmire}
+              activated={isAdmired}>
               ❤
           </ButtonAction>
             <ButtonAction
-              onClickHandler={ handleClickCart }
-              activated={ checkCart() }>
+              onClickHandler={handleClickCart}
+              activated={isAddedToCart}>
               +
           </ButtonAction>
-          </div> }
+          </div>}
       </div>
 
-      <div className={ `${cn.caption}` }>
-        <h3>{ poster.title }</h3>
-        <small>{ `By ${poster.author}` }</small>
-        {/*<strong>{admires}</strong>*/ }
-        <strong className={ `${cn.price}` }>{ poster.price.toFixed(2) }</strong>
+      <div className={`${cn.caption}`}>
+        <h3>{poster.title}</h3>
+        <small>{`By ${poster.author}`}</small>
+        <div className={cn.admiresContainer}>
+          <span>❤</span>
+          <strong>{admires}</strong>
+        </div>
+        <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
       </div>
     </div>
   );
 };
 
-export const FakePoster = ({ }) => {
+export const FakePoster = () => {
   return (
-    <div className={ `${cn.container}` }>
-      <div className={ `${cn.previewContainer}` }>
-        <a href={ `/posters/all` }>
-          <img src={ 'https://source.unsplash.com/random/640x480' } alt={ 'Blank image' } />
+    <div className={`${cn.container}`}>
+      <div className={`${cn.previewContainer}`}>
+        <a href={`/posters/all`}>
+          {/* // todo: make this a placeholder image, like a sad face or something */}
+          <img src={'https://source.unsplash.com/random/640x480'} alt={'Blank image'} />
         </a>
       </div>
 
-      <div className={ `${cn.caption}` }>
+      <div className={`${cn.caption}`}>
         <h2>Sorry!</h2>
         <small>No results found</small>
       </div>
