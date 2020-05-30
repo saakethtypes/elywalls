@@ -1,8 +1,27 @@
 @import "./variables.scss";
 
 html {
+    height: 100vh;
+    overflow: hidden;
     font-family: "Jost", "Montserrat", "Roboto", sans-serif;
     font-size: 16px;
+}
+body {
+    height: 100%;
+    overflow: auto;
+}
+#root {
+    & > .App {
+        display: grid;
+        grid-template-rows: repeat(2, minmax(min-content, max-content));
+
+        & > header {
+            grid-row: 1 / 2;
+        }
+        & > div {
+            grid-row: 2 / 3;
+        }
+    }
 }
 
 * {
@@ -33,22 +52,14 @@ h6 {
     color: $color_black;
 }
 
-h1,
+h1 {
+    font-weight: 300;
+    font-size: 3rem;
+}
 h2 {
     font-weight: 300;
-}
-
-h1 {
-    font-size: 3rem;
-
-    &.page-title {
-        margin-top: 1rem;
-
-        text-align: center;
-    }
-}
-h2 {
-    font-size: 2.25rem;
+    font-size: 2rem;
+    text-transform: uppercase;
 }
 
 h3,
@@ -71,13 +82,6 @@ p {
     margin: 0.5rem auto 0 auto;
 
     line-height: 1.5em;
-
-    &.page-preface {
-        margin-top: 1.5rem;
-
-        text-align: center;
-        text-transform: uppercase;
-    }
 }
 
 small {
@@ -190,20 +194,14 @@ ul {
 }
 
 nav {
-    ul {
-        li {
-            display: inline-block;
+    a {
+        margin: 0 0.5rem;
+        padding: 1rem 0.5rem;
 
-            a {
-                margin: 0 0.5rem;
-                padding: 1rem 0.5rem;
+        color: $color_black;
 
-                color: $color_black;
-
-                &:hover {
-                    color: $color_indywalls_primary;
-                }
-            }
+        &:hover {
+            color: $color_indywalls_primary;
         }
     }
 }
@@ -283,7 +281,7 @@ button {
 
     width: 100%;
 
-    margin: 1rem 0;
+    margin: 2.5rem 0;
 
     & > form {
         display: flex;
@@ -314,11 +312,10 @@ option {
 }
 
 .page-container {
-    min-height: 100%;
     width: 100%;
     max-width: $max-width_content;
 
-    padding: 0 1em;
+    padding: 0 2em;
 
     margin: 0 auto;
 }
@@ -328,18 +325,29 @@ option {
 
     max-width: max-content;
 
-    margin: 2.5em auto 0 auto;
-    padding: 0 1em 1em 1em;
+    margin: 2.5rem auto 1rem auto; // 1rem to replace bottom padding
+    padding: 1rem;
 
     &::after {
         content: "";
         position: absolute;
         bottom: 0;
-        left: 37.5%;
+        left: 37.5%; // 25% + (25% / 2)
         width: 25%;
         height: 0.15rem;
 
         background: $color_indywalls_primary;
+    }
+
+    & > h1 {
+        text-align: center;
+    }
+
+    & > p {
+        margin-top: 1.5rem;
+
+        text-align: center;
+        text-transform: uppercase;
     }
 }
 
@@ -351,23 +359,15 @@ option {
     }
 }
 
-body {
-    height: 100vh;
-    overflow: hidden;
-}
-#root {
-    & > .App {
-        display: grid;
-        grid-template-rows: repeat(2, minmax(min-content, max-content));
+.featured-container {
+    display: grid;
+    grid-auto-rows: minmax(min-content, max-content);
+    grid-gap: 1rem;
+    justify-items: center;
 
-        height: 100vh;
-        overflow-y: auto;
+    margin-top: 2.5rem;
 
-        & > header {
-            grid-row: 1 / 2;
-        }
-        & > div {
-            grid-row: 2 / 3;
-        }
+    & > a {
+        padding: 1rem 2.5rem;
     }
 }

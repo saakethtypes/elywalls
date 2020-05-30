@@ -4,6 +4,7 @@ import { GlobalProvider } from "./context/GlobalState";
 import history from './components/history';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 import { PostersWall } from './pages/PostersWall';
 import { Home } from './pages/Home';
@@ -39,6 +40,8 @@ function App() {
             path="/posters/:category?"
             render={props => <PostersWall category={props.match.params.category} {...props} />}
           />
+
+          <Footer />
         </GlobalProvider>
       </BRouter>
     </div>
