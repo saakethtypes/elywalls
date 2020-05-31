@@ -291,7 +291,6 @@ exports.editProfile = async (req, res, next) => {
 exports.getProfileUser = async (req, res, next) => {
   console.log("object")
   try {
-    console.log("ooo")
      let result = await User.findById(req.user.id)
     return res.status(200).json({
       success: true,

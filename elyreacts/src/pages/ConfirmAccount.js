@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 
 export const ConfirmAccount = () => {
     return (
-        <div>
-            <h1>Your account has been Confirmed and crafted.</h1>
-            <Link to="/login">
-                  Sign In
-                </Link>
+        <div className="page-container">
+            <div className="page-header">
+                <h1 className="page-title">Account</h1>
+                <p className="page-preface">Your account has been verified</p>
+            </div>
+
+            <div className="lower-content-container">
+                <p>Your account has been verified - now <Link to="/login">click here to sign in</Link>.</p>
+            </div>
         </div>
     );
 };

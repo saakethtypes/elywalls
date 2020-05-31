@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+
+footer.container {
+    width: 100%;
+
+    margin-top: 2.5rem;
+
+    background: $color_black;
+}
+
+.content {
+    min-height: 12rem;
+    max-width: $max-width_content;
+
+    margin: 0 auto;
+    padding: 1rem 2rem;
+
+    color: $color_white;
+
+    & > span {
+        color: $color_indywalls_primary;
+    }
+}

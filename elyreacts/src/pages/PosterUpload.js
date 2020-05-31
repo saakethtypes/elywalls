@@ -8,6 +8,7 @@ import { FormInput, FormCheckboxInput, FormDropdownInput } from '../components/F
 import cn from './styles/PosterUpload.module.scss';
 
 const MAX_IMAGE_SIZE = 15242880;
+const INITIAL_PRICE = 160;
 
 export const PosterUpload = () => {
   const { user, createPoster } = useContext(GlobalContext);
@@ -15,7 +16,7 @@ export const PosterUpload = () => {
   const [pictures, setPictures] = useState();
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
-  const [price, setPrice] = useState(160);
+  const [price, setPrice] = useState(INITIAL_PRICE);
   const [tags, setTags] = useState("");
   const [category, setCategory] = useState("");
   const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
@@ -47,13 +48,14 @@ export const PosterUpload = () => {
           tags
         }, pictures[0]);
 
-        setPictures()
-        setTitle("")
-        setCaption("")
-        setPrice(160)
-        setTags("")
-        setCategory("")
-        setDeclaredOwnWork(false)
+        // todo: You don't really need to do these - just redirect after the poster has uploaded successfully
+        setPictures();
+        setTitle("");
+        setCaption("");
+        setPrice(INITIAL_PRICE);
+        setTags("");
+        setCategory("");
+        setDeclaredOwnWork(false);
       }
     } else {
       // todo: Notify user

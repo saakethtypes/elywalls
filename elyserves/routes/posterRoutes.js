@@ -71,6 +71,7 @@ router.route("/cartdelete/:cid")
 const multer = require('multer');
 
 const fileFilter = (req, file, cb) => {
+       console.log(file.mimetype)
        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'
         || file.mimetype === 'image/png' ) {
               cb(null, true);

@@ -20,6 +20,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET)
 exports.createPoster = async (req, res, next) => {  
   //TODO rename file and check dimmensions in react with tags 
   try {
+    console.log("uploading..")
     if(req.files === null){
       return res.json({msg:"No file uploaded"})
     } 
@@ -31,6 +32,7 @@ exports.createPoster = async (req, res, next) => {
         "price":req.body.price,
         "madeBy":req.body.madeBy
     }
+    console.log(poster)
     const new_poster = await Poster.create(poster)
     console.log(req.body.category)
 

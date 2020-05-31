@@ -1,0 +1,212 @@
+@import "../../variables.scss";
+
+.contentContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, minmax(max-content, auto));
+
+    width: 100%;
+}
+
+.imageContainer {
+    position: relative;
+    display: inline-block;
+
+    max-height: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+
+    & > img {
+        height: 100%;
+        max-width: 100%;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .buttons {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        grid-gap: 0.5rem;
+
+        margin: 1rem;
+
+        transition: $transition_time_anim;
+    }
+}
+
+.informationContainer {
+    display: grid;
+    grid-template-columns: auto minmax(auto, min-content);
+    grid-template-rows: repeat(4, minmax(auto, max-content));
+    grid-template-areas:
+        "title      admires"
+        "author     views"
+        "caption    caption"
+        "price      price"
+        "form       form";
+    //! grid-gap cannot be used as the title and author must remain together
+
+    width: 100%;
+
+    padding: 1.5rem;
+
+    & > * {
+        align-self: center;
+    }
+
+    & > h3 {
+        grid-area: title;
+    }
+    & > small {
+        grid-area: author;
+
+        margin-top: 0.5rem;
+    }
+    // todo: consider moving below 2 elements into a new .stats div
+    & > .admiresContainer {
+        grid-area: admires;
+        justify-self: end;
+
+        & > span {
+            display: inline-block;
+            width: 2rem;
+        }
+    }
+    & > .viewsContainer {
+        grid-area: views;
+        justify-self: end;
+
+        & > span {
+            display: inline-block;
+            width: 2rem;
+        }
+    }
+    & > p {
+        grid-area: caption;
+        justify-self: center;
+
+        margin-top: 2.5rem;
+    }
+    & > strong.price {
+        grid-area: price;
+        justify-self: center;
+
+        margin-top: 0.5rem;
+    }
+    & > div.formContainer {
+        grid-area: form;
+        justify-self: center;
+    }
+}
+
+@media only screen and (min-width: $media_width_tablet) {
+    .contentContainer {
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(2, minmax(min-content, 1fr));
+    }
+    .informationContainer {
+        grid-template-rows: repeat(7, minmax(min-content, max-content));
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "admires"
+            "views"
+            "title"
+            "author"
+            "caption"
+            "price"
+            "form";
+
+        & > * {
+            align-self: start;
+        }
+
+        & > .admiresContainer {
+            justify-self: start;
+        }
+        & > .viewsContainer {
+            justify-self: start;
+
+            margin-top: 0.5rem;
+        }
+        & > h3 {
+            grid-area: title;
+
+            margin-top: 1.5rem;
+        }
+        & > small {
+            grid-area: author;
+        }
+        & > p {
+            justify-self: start;
+            text-align: left;
+
+            // reset L+R margins to 0, to re-center in grid
+            margin: 1.5rem 0 0 0;
+        }
+        & > strong.price {
+            justify-self: start;
+
+            margin-top: 2.5rem;
+        }
+        & > div.formContainer {
+            justify-self: start;
+            width: max-content;
+
+            margin: 0.5rem 0;
+        }
+    }
+}
+
+/**/
+
+.caption {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) auto minmax(0, max-content);
+    grid-template-rows: repeat(2, max-content);
+
+    grid-template-areas:
+        "admires    title   price"
+        "admires    author  price";
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 1em 0.5rem;
+
+    & > h3 {
+        grid-area: title;
+        text-transform: uppercase;
+    }
+    & > small {
+        grid-area: author;
+
+        margin-top: 0.5em;
+    }
+    & > .admiresContainer {
+        grid-area: admires;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin-right: 0.5rem;
+
+        & > strong {
+            margin-top: 0.25rem;
+        }
+    }
+    & > strong.price {
+        grid-area: price;
+        align-self: center;
+
+        margin-left: 0.5rem;
+    }
+}
