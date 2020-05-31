@@ -32,8 +32,23 @@ export const Poster = ({
         unadmirePoster,
         addToCart
     } = useContext(GlobalContext);
+    // The above are constant. poster cannot be constant, as it must be mutated to check it.
+    // However, the checking inside this file is temporary. When the data is checked in
+    //  another file, this can be made a constant.
     let { poster } = useContext(GlobalContext);
 
+    useEffect(() => {
+        getPoster(posterID);
+    }, []);
+
+    let picUrl = null;
+    let purl = poster.pictureURL.split('Db')[1];
+    try {
+        picUrl = require("../assets/postersDb" + purl);
+    } catch (err) {
+        console.log(`Failed to import file: ../assets/postersDb/${purl}`);
+        picUrl = 'https://source.unsplash.com/random'; // todo: TEMPORARY WHILE I DON'T HAVE THE PICTURES LOCALLY
+    }
     // The following booleans are only used for state updates in this component.
     // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
     const [isAdmired, setIsAdmired] = useState(false);
@@ -42,9 +57,7 @@ export const Poster = ({
     const [addToCartQuantity, setAddToCartQuantity] = useState(0);
     const [inCartQuantity, setInCartQuantity] = useState(0); // todo: Set to num of posters already in user's cart
 
-    useEffect(() => {
-        getPoster(posterID);
-    });
+    // let ss = require('../assets/postersDb/Hello Worldmr robot elliot tvseries1590922099565.jpeg');
 
     // Sanitise poster data
     // todo: Verify data server-side (or at least earlier in the flow, than this component)
@@ -56,9 +69,6 @@ export const Poster = ({
         category: poster && poster.category || 'Unknown',
         caption: poster && poster.caption ||
             `A poster in the category ${poster && poster.category || 'Unknown'}, created by ${poster && poster.madeBy || 'Unknown'}.`,
-        pictureURL:
-            // `../assets/postersDb${String(poster.pictureURL).split('Db')[1]}`
-            'https://source.unsplash.com/random',
         // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
         //therefore delting whole db with invalid poster paths
         // todo: //
@@ -113,8 +123,10 @@ export const Poster = ({
         setIsAddedToCart(true);
         setInCartQuantity(inCartQuantity + addToCartQuantity);
 
-        for (let i = 0; i <= addToCartQuantity; i++)
-            addToCart(poster);
+        // for (let i = 0; i <= addToCartQuantity; i++)
+        //     addToCart(poster);
+
+        // todo: Add to cart
     };
 
     return (
@@ -126,8 +138,8 @@ export const Poster = ({
 
             <div className={`${cn.contentContainer} lower-content-container`}>
                 <div className={cn.imageContainer}>
-                    <img src={poster.pictureURL} alt={poster.title} />
-
+                    {/* Unsplash source is here because @sam-cross cannot load posters off the local disk */}
+                    <img src={picUrl || 'https://source.unsplash.com/random'} alt={poster.title} />
                     {log_status &&
                         <div className={`${cn.buttons}`}>
                             <ButtonAction

@@ -2,14 +2,8 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
-let logUser = "placeholder for loggedUser"
 
-try{
-    logUser  = JSON.parse(localStorage.getItem('currentUser'))
-}catch{
-    localStorage.clear()
-    sessionStorage.clear()
-}
+let logUser = JSON.parse(localStorage.getItem('currentUser') || null);
 let ls = false;
 console.log("dsfsdf",logUser)
 let usercart = null;
@@ -99,9 +93,8 @@ export const GlobalProvider = ({ children }) => {
             const res = await axios.post("/login", usercred, config);
             console.log(res.data)
             if (res.data.logged) {
-                localStorage.setItem('currentUser', JSON.stringify(res.data.profile));
-                localStorage.setItem("jwt", res.data.token,(err)=>console.log(err));
-                console.log("object")
+                localStorage.setItem('currentUser', JSON.stringify(res.data.profile))
+                localStorage.setItem("jwt", res.data.token);
 
                 dispatch({
                     type: "LOGIN",
@@ -110,6 +103,7 @@ export const GlobalProvider = ({ children }) => {
                 auth.login(() => {
                     props.history.push("/");
                 });
+                console.log("logged in ")
             } else {
                 //TODO notification of error in login
                 console.log("yeah not logged in cuz", res.data.msg);
@@ -123,9 +117,10 @@ export const GlobalProvider = ({ children }) => {
     }
 
     async function logout() {
+        console.log("logout")
         localStorage.removeItem("jwt");
         localStorage.removeItem("currentUser");
-
+        
         dispatch({
             type: "LOGOUT",
         });
@@ -184,6 +179,7 @@ export const GlobalProvider = ({ children }) => {
                 case "featured": return "/featured";
                 case "textography": return "/textography";
                 case "photoshop": return "/photoshop";
+                case "photography": return "/photography";
                 case "graphic-design": return "/graphic-design";
                 case "instafamous": return "/instafamous";
                 case "popular": return "/popular";
@@ -448,6 +444,7 @@ export const GlobalProvider = ({ children }) => {
 
 
     async function getPoster(pid) {
+        console.log("object")
         try {
             const config = {
                 headers: {
@@ -455,9 +452,8 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get(`/poster/${pid}`, config);
-
             dispatch({
-                type: "POSTER_SPECIFIC",
+                type: "POSTER_SINGLE",
                 poster: res.data.poster
             });
         } catch (err) {
@@ -552,7 +548,7 @@ export const GlobalProvider = ({ children }) => {
         console.log("object")
         localStorage.setItem('currentUser',JSON.stringify(state.user))
 
-        } catch (err) {
+        } catch (err) { 
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -570,7 +566,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let res = await axios.patch(`/${pid}/unadmireP`,{s:0} ,config);
-            console.log(res.data.user)
+            console.log(res.data)
             dispatch({
                 type: "UNADMIRE_P",
                 unadmired:pid
@@ -642,7 +638,7 @@ export const GlobalProvider = ({ children }) => {
                 cart: res.data.cartObj[0]
             });
             localStorage.setItem('currentUser',JSON.stringify(state.user))
-
+            console.log("Added")
 
         } catch (err) {
             dispatch({
@@ -663,7 +659,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let res = await axios.delete(`cartdelete/${cid}`, config);
-
+            console.log(cid)
             dispatch({
                 type: "DELETE_FROM_CART",
                 item_removed: cid
@@ -702,10 +698,11 @@ export const GlobalProvider = ({ children }) => {
             const res = await axios.post('/publish-poster',formData,config);
             console.log("doneuploaded broo")
             console.log(res.data.poster_created)
+
             dispatch({
                 type: "CREATE_POSTER",
                 poster_created: res.data.poster_created
-            });
+            })  
 
         } catch (err) {
             dispatch({
@@ -723,6 +720,7 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
+            console.log("ssacc")
             const res = await axios.get('/account', config);
 
             dispatch({
@@ -746,11 +744,9 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt")
                 },
             };
-            const res = await axios.get('/profile', config);
-
             dispatch({
                 type: "PROFILE_A",
-                poster_created: res.data.profile
+                poster_created: state.user.postersmade
             });
 
         } catch (err) {

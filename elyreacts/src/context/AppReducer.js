@@ -189,9 +189,12 @@ const appreducer = (state, action) => {
             };
 
         // case "CREATE_POSTER":
+        //     console.log("s")
         //     return {
         //         ...state,
-        //         poster: action.poster_created
+        //         user:{...state.user,
+        //         postersmade: [...state.user.postersmade,action.poster_created]
+        //         }
         //     };
 
         default:

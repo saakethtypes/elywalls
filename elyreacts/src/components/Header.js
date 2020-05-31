@@ -26,7 +26,9 @@ export default () => {
     persistLog
   } = useContext(GlobalContext);
 
-  const routeLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
+
     logout();
     auth.logout(() => {
       history.push("/");
@@ -53,6 +55,7 @@ export default () => {
             {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
             {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
 
+            {/* Artist account shouldn't have cart should it? Why would it need a cart? */}
             {user && user.user_type === "artist" && <Link to="/account?view=published">Published</Link>}
             {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
           </nav>
@@ -69,7 +72,7 @@ export default () => {
             {!user && <Link to="/login">Sign In</Link>}
 
             {user && <LinkButton primary to="/account">Account</LinkButton>}
-            {user && <Link to="/logout">Sign Out</Link>}
+            {user && <Link onClick={handleLogout} to="/logout">Sign Out</Link>}
           </div>
         </div>
       </div>

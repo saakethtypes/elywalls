@@ -35,6 +35,17 @@ export const Poster = ({ poster }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [admires, setAdmires] = useState(poster.admires);
 
+  let picUrl = null;
+  let purl = poster.pictureURL.split('Db')[1];
+  try {
+    picUrl = require("../assets/postersDb" + purl);
+  } catch (err) {
+    console.log(`Failed to import file: ../assets/postersDb/${purl}`);
+    picUrl = 'https://source.unsplash.com/random'; // todo: TEMPORARY WHILE I DON'T HAVE THE PICTURES LOCALLY
+  }
+
+  // Sanitise poster data
+
   // Sanitise poster data
   // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
@@ -43,9 +54,7 @@ export const Poster = ({ poster }) => {
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    pictureURL:
-      // `../assets/postersDb${String(poster.pictureURL).split('Db')[1]}`
-      'https://source.unsplash.com/random',
+    //'https://source.unsplash.com/random',
     // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
     //therefore delting whole db with invalid poster paths
     // todo: //
@@ -57,6 +66,7 @@ export const Poster = ({ poster }) => {
     views: poster.views || 0,
     admires: poster.admires || 0
   };
+
 
   const checkAdmires = () => {
     // Check the users' Admired posters
@@ -84,7 +94,8 @@ export const Poster = ({ poster }) => {
 
   const handleClickAdmire = (e) => {
     if (!checkAdmires()) {
-      admirePoster(poster);
+      // todo: Why is this commented?
+      // admirePoster(poster);
       setIsAdmired(true);
       setAdmires(admires + 1);
     } else {
@@ -108,7 +119,7 @@ export const Poster = ({ poster }) => {
     <div className={`${cn.container}`}>
       <div className={`${cn.previewContainer}`}>
         <a href={`/poster/${poster.id}`}>
-          <img src={poster.pictureURL} alt={poster.title} />
+          <img src={picUrl} alt={poster.title} />
           {/* TODO: Need to delete the posters database from mongo //  require(poster.pictureURL) */}
         </a>
 
