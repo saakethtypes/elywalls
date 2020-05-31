@@ -138,7 +138,8 @@ exports.getPoster = async (req, res, next) => {
 
 exports.getPostersPhotoshop = async (req, res, next) => {
   try {
-    const result = await Photoshop.find();
+    let result = await Photoshop.find({});
+    result = result[0].items
     return res.status(200).json({
       success: true,
       posters:result
@@ -153,7 +154,9 @@ exports.getPostersPhotoshop = async (req, res, next) => {
 
 exports.getPostersGraphic = async (req, res, next) => {
   try {
-    const result = await Graphic.find();
+    let result = await Graphic.find({});
+    result = result[0].items
+
     return res.status(200).json({
       success: true,
       posters:result
@@ -168,7 +171,9 @@ exports.getPostersGraphic = async (req, res, next) => {
 
 exports.getPostersPhotography = async (req, res, next) => {
   try {
-    const result = await Photography.find();
+    let result = await Photography.find({});
+    result = result[0].items
+    console.log(result.length)
     return res.status(200).json({
       success: true,
       posters:result
@@ -183,7 +188,9 @@ exports.getPostersPhotography = async (req, res, next) => {
 
 exports.getPostersTextography = async (req, res, next) => {
   try {
-    const result = await Textography.find({});
+    let result = await Textography.find({});
+    result = result[0].items
+
     return res.status(200).json({
       success: true,
       posters:result
@@ -388,6 +395,8 @@ exports.addToCart = async (req, res, next) => {
     if(req.user.utype==="artist"){
        result = await Artist.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
        result = await Artist.findById({_id:req.user.id}) 
+       console.log(result.cart.length)
+
       }
     if(req.user.utype==="buyer"){
       result = await User.findByIdAndUpdate({_id:req.user.id},{$push:{ cart: cart_cr}})
@@ -407,12 +416,23 @@ exports.addToCart = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
   try {
-
+    console.log("removing")
     let cartt = await Cart.find({_id:req.params.cid})
+    console.log(cartt)
     await Cart.findByIdAndDelete({_id:req.params.cid});
 
-    let us = await User.findByIdAndUpdate({_id:req.user.id},
+    if(req.user.utype==="artist"){
+      result = await Artist.findByIdAndUpdate({_id:req.user.id},
+        { $pull: { cart: {_id: req.params.cid}}})
+      result = await Artist.findById({_id:req.user.id}) 
+      console.log(result.cart.length)
+     }
+   if(req.user.utype==="buyer"){
+    result = await User.findByIdAndUpdate({_id:req.user.id},
       { $pull: { cart: cartt}})
+     result = await User.findById({_id:req.user.id}) 
+   }
+
     return res.status(200).json({
       success: true,
       msg: "Cart item removed",

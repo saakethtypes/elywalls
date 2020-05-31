@@ -53,6 +53,7 @@ export default () => {
             {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
             {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
 
+            {user && user.user_type === "artist" && <Link to="/cart">Cart</Link>}
             {user && user.user_type === "artist" && <Link to="/account?view=published">Published</Link>}
             {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
           </nav>

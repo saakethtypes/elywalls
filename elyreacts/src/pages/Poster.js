@@ -38,10 +38,10 @@ export const Poster = ({
         getPoster(posterID);
     },[]);
 
-    console.log(poster)
-   let picUrl = 0
-    try{  picUrl = String("../assets"+poster.pictureURL.split('Db')[1])
-    console.log(picUrl)}catch{let x = 0}
+   let picUrl = null
+    try{  let purl = poster.pictureURL.split('Db')[1] 
+    picUrl = require("../assets/postersDb"+purl)
+}catch{let x = 0}
     // The following booleans are only used for state updates in this component.
     // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
     const [isAdmired, setIsAdmired] = useState(false);
@@ -50,7 +50,7 @@ export const Poster = ({
     const [addToCartQuantity, setAddToCartQuantity] = useState(0);
     const [inCartQuantity, setInCartQuantity] = useState(0); // todo: Set to num of posters already in user's cart
 
-    let ss = '../assets/tersDb/Hello Worldmr robot elliot tvseries1590922099565.jpeg'
+    let ss = require('../assets/postersDb/Hello Worldmr robot elliot tvseries1590922099565.jpeg')
 
 
 
@@ -64,8 +64,6 @@ export const Poster = ({
         category: poster && poster.category || 'Unknown',
         caption: poster && poster.caption ||
             `A poster in the category ${poster && poster.category || 'Unknown'}, created by ${poster && poster.madeBy || 'Unknown'}.`,
-        pictureURL:
-         picUrl|| ss,
         // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
         //therefore delting whole db with invalid poster paths
         // todo: //
@@ -135,8 +133,8 @@ export const Poster = ({
 
             <div className={`${cn.contentContainer} lower-content-container`}>
                 <div className={cn.imageContainer}>
-  {picUrl !== 0?           <img src={require(poster.pictureURL)} alt={poster.title} />
- :                   <img src={ss} alt={poster.title} />
+  {picUrl !== null?           <img src={picUrl} alt={poster.title} />
+ :                   <img src={picUrl} alt={poster.title} />
 }
                     {log_status &&
                         <div className={`${cn.buttons}`}>

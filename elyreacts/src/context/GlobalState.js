@@ -179,6 +179,7 @@ export const GlobalProvider = ({ children }) => {
                 case "featured": return "/featured";
                 case "textography": return "/textography";
                 case "photoshop": return "/photoshop";
+                case "photography": return "/photography";
                 case "graphic-design": return "/graphic-design";
                 case "instafamous": return "/instafamous";
                 case "popular": return "/popular";
@@ -637,7 +638,7 @@ export const GlobalProvider = ({ children }) => {
                 cart: res.data.cartObj[0]
             });
             localStorage.setItem('currentUser',JSON.stringify(state.user))
-
+            console.log("Added")
 
         } catch (err) {
             dispatch({
@@ -658,7 +659,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let res = await axios.delete(`cartdelete/${cid}`, config);
-
+            console.log(cid)
             dispatch({
                 type: "DELETE_FROM_CART",
                 item_removed: cid

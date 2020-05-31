@@ -37,7 +37,6 @@ export const Poster = ({ poster }) => {
   var purl = String(poster.pictureURL)
   purl = purl.split('Db')
   purl = purl[1]
-  console.log(purl)
   const picUrl = require('../assets/postersDb'+purl)
   // Sanitise poster data
 
