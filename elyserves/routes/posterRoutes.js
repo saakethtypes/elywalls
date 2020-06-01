@@ -14,6 +14,7 @@ const {
        getPostersFeatured,
        getArtist,
        getPoster,
+       getCarts,
        createPoster,
        deletePoster,
        editPoster,
@@ -25,7 +26,7 @@ const {
        removeFromCart,
        getPostersAdmired,
        getArtistsAdmired,
-       getCart,
+       
        //   buy,
        //   orderDetails,
        //   createPosterIg
@@ -46,7 +47,7 @@ router.route('/graphic-design').get(getPostersGraphic)
 router.route('/photoshop').get(getPostersPhotoshop)
 router.route('/photography').get(getPostersPhotography)
 router.route('/textography').get(getPostersTextography)
-router.route('/:auname/').get(getArtist)
+router.route('/artist/:auname/').get(getArtist)
 router.route('/admired-posters').get(auth,getPostersAdmired)
 router.route('/admired-artists').get(auth,getArtistsAdmired)
 router.route('/:aid/admireA').patch(auth,admireArtist)
@@ -57,8 +58,8 @@ router.route('/:posterId/admireP').patch(auth, admirePoster)
 router.route("/poster/:posterId")
        .delete(auth, deletePoster)
        .put(auth, editPoster)
-       .get(getPoster)
-router.route("/cart").get(auth,getCart)
+       .get(getPoster);
+router.route('/cart').get(auth,getCarts) 
 
 router.route("/cartadd/:posterId")
        .patch(auth, addToCart)

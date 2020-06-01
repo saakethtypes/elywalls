@@ -146,6 +146,17 @@ const appreducer = (state, action) => {
                     ]
                 },
             };
+
+        case "CART_GET":
+            return {
+                ...state,
+                cart:action.cartItems,
+                // user:{
+                //     ...state.user,
+                //     cart:action.cartItems
+                // }
+            } 
+            
         case "POSTER_SINGLE":
             return {
                 ...state,
@@ -167,25 +178,19 @@ const appreducer = (state, action) => {
         case "ADD_TO_CART":
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    cart: [
-                        ...state.user.cart, action.cart
+                cart: [
+                    ...state.cart, action.cart
                     ]
-                }
             };
 
         case "DELETE_FROM_CART":
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    cart: [
-                        ...state.user.cart.filter(
+                cart: [
+                        ...state.cart.filter(
                             cartitem => action.item_removed !== cartitem._id
                         )
-                    ]
-                }
+                        ]
             };
 
         // case "CREATE_POSTER":

@@ -23,46 +23,61 @@ const ButtonAction = ({
 export const Poster = ({ poster }) => {
   const {
     user,
+    cart,
     log_status,
     admirePoster,
     unadmirePoster,
-    addToCart
+    addToCart,
   } = useContext(GlobalContext);
 
-  // The following booleans are only used for state updates in this component.
-  // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
-  const [isAdmired, setIsAdmired] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
-  const [admires, setAdmires] = useState(poster.admires);
-  var purl = String(poster.pictureURL)
-  purl = purl.split('Db')
-  purl = purl[1]
-  const picUrl = require('../assets/postersDb'+purl)
-  // Sanitise poster data
+  // DO NOT check admired/cart status with these values directly.
+  // checkCart/checkAdmired will use the current user values eventually.
+  
+  
+  //WORKS IF LOGGED IN 
+  // const [isAddedToCart, setIsAddedToCart] = useState(false)
+  // const [isAdmired, setIsAdmired] = useState(false)
+  // if(user){
+  // setIsAdmired(
+  //   user.admires.filter((ap) => ap._id === poster._id).length !== 0
+  // );
+  // setIsAddedToCart(
+  //   cart.filter((ap) => ap.item._id === poster._id).length !== 0
+  // );}
 
-  // todo: Verify data server-side (or at least earlier in the flow, than this component)
+  //WORKS IF LOGGED IN
+  const [isAdmired, setIsAdmired] = useState(
+    user.admires.filter((ap) => ap._id === poster._id).length !== 0
+  );
+  const [isAddedToCart, setIsAddedToCart] = useState(
+    cart.filter((ap) => ap.item._id === poster._id).length !== 0
+  );
+
+  const [admires, setAdmires] = useState(poster.admires);
+  let picUrl = null;
+  let purl = poster.pictureURL.split('Db')[1];
+  try {
+    picUrl = require("../assets/postersDb" + purl);
+  } catch (err) {
+    picUrl = 'https://source.unsplash.com/random';
+  } 
+
   poster = {
     ...poster,
     id: poster._id,
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-      //'https://source.unsplash.com/random',
-    // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
-    //therefore delting whole db with invalid poster paths
-    // todo: //
-    // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
-    // images stored on Amazon S3 (or similar CDN)
-    // -- pictureURL should point to the image's location on the CDN
-    // -- alternatively, pictureURL could be a file blob, which is sent to the server as a request, and then the server sends the image data back
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
   };
-  
+
 
   const checkAdmires = () => {
     // Check the users' Admired posters
+    // todo/fixme: This doesn't work because user is never updated.
+    // todo/fixme: Using this component's state to check admires for the time being
     let match = [];
 
     if (user)
@@ -70,15 +85,18 @@ export const Poster = ({ poster }) => {
     else
       console.warn("user is undefined");
 
+    console.log(match.length);
     return match.length > 0;
   };
 
   const checkCart = () => {
     // Check the users' cart
+    // todo/fixme: This doesn't work because user is never updated.
+    // todo/fixme: Using this component's state to check cart for the time being
     let match = [];
 
     if (user)
-      match = user.cart.filter((ap) => ap.item._id === poster._id);
+      match = cart.filter((ap) => ap.item._id === poster._id);
     else
       console.warn("user is undefined");
 
@@ -87,10 +105,12 @@ export const Poster = ({ poster }) => {
 
   const handleClickAdmire = (e) => {
     if (!checkAdmires()) {
-      // admirePoster(poster);
+      console.log(`Like poster ${poster._id}`);
+      admirePoster(poster);
       setIsAdmired(true);
       setAdmires(admires + 1);
     } else {
+      console.log(`Unlike poster ${poster._id}`);
       unadmirePoster(poster);
       setIsAdmired(false);
       setAdmires(admires - 1);
@@ -99,7 +119,8 @@ export const Poster = ({ poster }) => {
 
   const handleClickCart = (e) => {
     if (!checkCart()) {
-      addToCart(poster);
+      addToCart(poster._id);
+      console.log("co")
       setIsAddedToCart(true);
     } else {
       // todo: Notify user - Already added to cart

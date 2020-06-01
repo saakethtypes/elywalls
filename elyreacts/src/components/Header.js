@@ -23,7 +23,8 @@ export default () => {
     log_status: userLoggedIn,
     logout,
     user,
-    persistLog
+    persistLog,
+    getCart
   } = useContext(GlobalContext);
 
   const routeLogout = () => {
@@ -32,6 +33,16 @@ export default () => {
       history.push("/");
     });
   };
+
+  if(user){
+  useEffect(()=>{
+    getCart()
+  },[])
+
+  // useEffect(()=>{
+  //   getAdmires()
+  // },[])
+}
 
   return (
     <header className={cn.container}>
@@ -48,11 +59,12 @@ export default () => {
         <div className={cn.linkContainer}>
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/posters">Posters</Link>
+            
 
             {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
             {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
 
+            {user && user.user_type === "artist" && <Link to="/admires">Admires</Link>}
             {user && user.user_type === "artist" && <Link to="/cart">Cart</Link>}
             {user && user.user_type === "artist" && <Link to="/account?view=published">Published</Link>}
             {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
