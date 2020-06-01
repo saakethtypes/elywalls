@@ -1,11 +1,12 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
+
 // @ts-ignore
 import cn from './styles/Poster.module.scss';
 
 const ButtonAction = ({
   onClickHandler,
-  activated = false,
+  activated,
   children
 }) => {
   // todo: checkActiveFn is a function which checks the Active state of the button
@@ -29,10 +30,16 @@ export const Poster = ({ poster }) => {
     addToCart
   } = useContext(GlobalContext);
 
-  // The following booleans are only used for state updates in this component.
-  // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
-  const [isAdmired, setIsAdmired] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  // DO NOT check admired/cart status with these values directly.
+  // checkCart/checkAdmired will use the current user values eventually.
+  const [isAdmired, setIsAdmired] = useState(
+    // If user.admires contains this poster, isAdmired will be true
+    user.admires.filter((ap) => ap._id === poster._id).length !== 0
+  );
+  const [isAddedToCart, setIsAddedToCart] = useState(
+    // If user.cart contains this poster, isAddedToCart will be true
+    user.cart.filter((ap) => ap.item._id === poster._id).length !== 0
+  );
   const [admires, setAdmires] = useState(poster.admires);
 
   let picUrl = null;
@@ -40,13 +47,11 @@ export const Poster = ({ poster }) => {
   try {
     picUrl = require("../assets/postersDb" + purl);
   } catch (err) {
-    console.log(`Failed to import file: ../assets/postersDb/${purl}`);
-    picUrl = 'https://source.unsplash.com/random'; // todo: TEMPORARY WHILE I DON'T HAVE THE PICTURES LOCALLY
+    // todo: TEMPORARILY WHILE I DON'T HAVE THE PICTURES LOCALLY
+    // This MUST be removed in production
+    picUrl = 'https://source.unsplash.com/random';
   }
 
-  // Sanitise poster data
-
-  // Sanitise poster data
   // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
     ...poster,
@@ -54,14 +59,6 @@ export const Poster = ({ poster }) => {
     title: poster.title || 'Untitled',
     author: poster.madeBy || 'Unknown',
     caption: poster.caption || 'Caption',
-    //'https://source.unsplash.com/random',
-    // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
-    //therefore delting whole db with invalid poster paths
-    // todo: //
-    // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
-    // images stored on Amazon S3 (or similar CDN)
-    // -- pictureURL should point to the image's location on the CDN
-    // -- alternatively, pictureURL could be a file blob, which is sent to the server as a request, and then the server sends the image data back
     price: poster.price || 0.0,
     views: poster.views || 0,
     admires: poster.admires || 0
@@ -70,35 +67,45 @@ export const Poster = ({ poster }) => {
 
   const checkAdmires = () => {
     // Check the users' Admired posters
-    let match = [];
+    // todo/fixme: This doesn't work because user is never updated.
+    // todo/fixme: Using this component's state to check admires for the time being
+    // let match = [];
 
-    if (user)
-      match = user.admires.filter((ap) => ap._id === poster._id);
-    else
-      console.warn("user is undefined");
+    // if (user)
+    //   match = user.admires.filter((ap) => ap._id === poster._id);
+    // else
+    //   console.warn("user is undefined");
 
-    return match.length > 0;
+    // console.log(match.length);
+    // return match.length > 0;
+
+    return isAdmired;
   };
 
   const checkCart = () => {
     // Check the users' cart
-    let match = [];
+    // todo/fixme: This doesn't work because user is never updated.
+    // todo/fixme: Using this component's state to check cart for the time being
+    // let match = [];
 
-    if (user)
-      match = user.cart.filter((ap) => ap.item._id === poster._id);
-    else
-      console.warn("user is undefined");
+    // if (user)
+    //   match = user.cart.filter((ap) => ap.item._id === poster._id);
+    // else
+    //   console.warn("user is undefined");
 
-    return match.length > 0;
+    // return match.length > 0;
+
+    return isAddedToCart;
   };
 
   const handleClickAdmire = (e) => {
     if (!checkAdmires()) {
-      // todo: Why is this commented?
-      // admirePoster(poster);
+      console.log(`Like poster ${poster._id}`);
+      admirePoster(poster);
       setIsAdmired(true);
       setAdmires(admires + 1);
     } else {
+      console.log(`Unlike poster ${poster._id}`);
       unadmirePoster(poster);
       setIsAdmired(false);
       setAdmires(admires - 1);
