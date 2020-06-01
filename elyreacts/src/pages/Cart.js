@@ -1,23 +1,47 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext,useState } from "react";
-import {Poster} from "../components/Poster";
+import React, { useEffect, useContext, useState } from "react";
+import { Poster } from "../components/Poster";
+
+import cn from './styles/Cart.module.scss';
+
+export const PostersListCart = ({
+  posters = []
+}) => {
+  const {
+    removeFromCart
+  } = useContext(GlobalContext);
+
+  return (
+    <ul className={`${cn.postersListContainer}`}>
+      {posters.map((poster, index) =>
+        <li key={index}>
+          <Poster poster={poster} />
+          <button className={cn.buttonRemove} onClick={() => removeFromCart(poster._id)}>
+            Remove
+          </button>
+        </li>
+      )}
+    </ul>
+  );
+};
 
 export const Cart = () => {
-  let { user,removeFromCart } = useContext(GlobalContext);
+  const {
+    user
+  } = useContext(GlobalContext);
 
-  const remfromcart = (e,cid) => {
-    e.preventDefault()
-    removeFromCart(cid)
-  }
-    return (
-      <div>
-          <h1>Cart</h1>
-        {user.cart.map((poster, index) => (
-          <div key={poster._id}>
-             < Poster key={poster.item._id} index={index} poster={poster.item} /> 
-         <button onClick={e=>remfromcart(e,poster._id)}>Remove</button>
-          </div>
-        ))}         
+  return (
+    <div className="page-container">
+      <div className="page-header">
+        <h1>Cart</h1>
+        <p>Posters you've added to your cart</p>
       </div>
-    )
-}
+
+      <div className="lower-content-container">
+        <PostersListCart posters={user.cart} />
+      </div>
+
+      {/* todo: add checkout */}
+    </div>
+  );
+};

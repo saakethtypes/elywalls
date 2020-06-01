@@ -21,13 +21,16 @@ const ButtonAction = ({
   );
 };
 
-export const Poster = ({ poster }) => {
+export const Poster = ({
+  poster
+}) => {
   const {
     user,
     log_status,
     admirePoster,
     unadmirePoster,
-    addToCart
+    addToCart,
+    removeFromCart
   } = useContext(GlobalContext);
 
   // DO NOT check admired/cart status with these values directly.
@@ -43,8 +46,8 @@ export const Poster = ({ poster }) => {
   const [admires, setAdmires] = useState(poster.admires);
 
   let picUrl = null;
-  let purl = poster.pictureURL.split('Db')[1];
   try {
+    let purl = poster.pictureURL.split('Db')[1];
     picUrl = require("../assets/postersDb" + purl);
   } catch (err) {
     // todo: TEMPORARILY WHILE I DON'T HAVE THE PICTURES LOCALLY
@@ -112,7 +115,7 @@ export const Poster = ({ poster }) => {
     }
   };
 
-  const handleClickCart = (e) => {
+  const handleClickAddToCart = (e) => {
     if (!checkCart()) {
       addToCart(poster);
       setIsAddedToCart(true);
@@ -120,6 +123,11 @@ export const Poster = ({ poster }) => {
       // todo: Notify user - Already added to cart
       console.log("Already added to cart");
     }
+  };
+
+  const handleClickRemoveFromCart = (e) => {
+    removeFromCart(poster._id);
+    setIsAddedToCart(false);
   };
 
   return (
@@ -138,7 +146,7 @@ export const Poster = ({ poster }) => {
               ❤
           </ButtonAction>
             <ButtonAction
-              onClickHandler={handleClickCart}
+              onClickHandler={handleClickAddToCart}
               activated={isAddedToCart}>
               +
           </ButtonAction>
