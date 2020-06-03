@@ -93,6 +93,7 @@ export const GlobalProvider = ({ children }) => {
                 localStorage.setItem('currentUser', JSON.stringify(res.data.profile))
                 localStorage.setItem("jwt", res.data.token);
 
+
                 dispatch({
                     type: "LOGIN",
                     logged_profile: res.data.profile
@@ -653,7 +654,8 @@ export const GlobalProvider = ({ children }) => {
             };
 
             let x = { "s": 0 };
-            const res = await axios.patch(`cartadd/${pid}`, x, config);
+            const res = await axios.patch(`/cartadd/${pid}`, x, config);
+console.log(res)
             dispatch({
                 type: "ADD_TO_CART",
                 cart: res.data.cartObj[0]
@@ -668,7 +670,30 @@ export const GlobalProvider = ({ children }) => {
         }
     }
  
+    
+    async function setCartItemQuantity(cid,q,p) {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                "x-auth-token": localStorage.getItem("jwt")
+            },
+        };
+        try {
+            await axios.patch(`savequantity/${cid}`,{"q":q,"pwq":p} ,config);
 
+            dispatch({
+                type: "CART_QUANTITY",
+                ci: cid,
+                quantity:q,
+                poster_price:p
+            });
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
 
     async function removeFromCart(cid) {
         try {
@@ -706,9 +731,7 @@ export const GlobalProvider = ({ children }) => {
             formData.append('tags',new_poster.tags);
             formData.append('madeBy',new_poster.madeBy);
             formData.append('category',new_poster.category);
-
             const config = {
-
                 headers: {
                     "x-auth-token": localStorage.getItem("jwt")                },
             };
@@ -763,10 +786,10 @@ export const GlobalProvider = ({ children }) => {
             console.log(res.data)
             dispatch({
                 type: "PROFILE_A",
-                poster_created: state.user.postersmade
+                posters_made: res.data.profile.postersmade
             });
 
-        } catch (err) {
+        } catch (err) { 
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -816,6 +839,7 @@ export const GlobalProvider = ({ children }) => {
                 admireArtist,
                 unadmireArtist,
                 addToCart,
+                setCartItemQuantity,
                 removeFromCart,
                 getAdmiredPosters,
                 getAdmiredArtists

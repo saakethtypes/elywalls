@@ -30,7 +30,8 @@ exports.createPoster = async (req, res, next) => {
         "category":req.body.category,
         "tags":req.body.tags,
         "price":req.body.price,
-        "madeBy":req.body.madeBy
+        "madeBy":req.body.madeBy,
+        "caption":req.body.caption
     }
     const new_poster = await Poster.create(poster)
 
@@ -404,6 +405,32 @@ exports.addToCart = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       cartObj: cart_cr,
+    });
+  } catch (error) {
+    return res.status(517).json({
+      success: false,
+      err: error
+    });
+  }
+};
+
+exports.cartQuantity = async (req, res, next) => {
+  console.log(req.body.q)
+  try {
+    const cart = await Cart.findByIdAndUpdate({_id:req.params.cartId},
+      {quantity:req.body.q,price_with_quantity:req.body.pwq});
+    if(req.user.utype==="artist"){
+        result = await Artist.findByIdAndUpdate({_id:req.user.id,'cart': {
+          $elemMatch: {_id:req.params.cartId}}},
+          { $set:{ 'cart.$.quantity': req.body.q, 'cart.$.price_with_quantity':req.body.p}})
+       }
+    if(req.user.utype==="buyer"){
+      // result = await User.findByIdAndUpdate({_id:req.user.id},{ cart: 
+      //   { $set:quantity: req.body.q, price_with_quantity:req.body.p}})
+     }
+    return res.status(200).json({
+      success: true,
+      msg:"Cart quantity updated"
     });
   } catch (error) {
     return res.status(517).json({

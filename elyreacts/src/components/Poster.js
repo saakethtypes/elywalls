@@ -33,25 +33,12 @@ export const Poster = ({ poster }) => {
   // DO NOT check admired/cart status with these values directly.
   // checkCart/checkAdmired will use the current user values eventually.
   
-  
-  //WORKS IF LOGGED IN 
-  // const [isAddedToCart, setIsAddedToCart] = useState(false)
-  // const [isAdmired, setIsAdmired] = useState(false)
-  // if(user){
-  // setIsAdmired(
-  //   user.admires.filter((ap) => ap._id === poster._id).length !== 0
-  // );
-  // setIsAddedToCart(
-  //   cart.filter((ap) => ap.item._id === poster._id).length !== 0
-  // );}
-
-  //WORKS IF LOGGED IN
   const [isAdmired, setIsAdmired] = useState(
-    user.admires.filter((ap) => ap._id === poster._id).length !== 0
-  );
+    user && user.admires.filter((ap) => ap._id === poster._id).length !== 0
+  ) || false;
   const [isAddedToCart, setIsAddedToCart] = useState(
-    cart.filter((ap) => ap.item._id === poster._id).length !== 0
-  );
+    cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0
+  ) ||false;
 
   const [admires, setAdmires] = useState(poster.admires);
   let picUrl = null;

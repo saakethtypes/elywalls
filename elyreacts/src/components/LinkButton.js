@@ -10,19 +10,20 @@ export default ({
     className = '',
     classNames = '',
     primary = false,
+    onClick = null,
     children
 }) => {
     href = href || to;
 
     if (href.charAt(0) === "/") {
         return (
-            <Link to={to || href} className={`${className} ${classNames} ${cn.linkButton} ${primary ? cn.primary : ''}`}>
+            <Link to={to || href} className={`${className} ${classNames} ${cn.linkButton} ${primary ? cn.primary : ''}`} onClick={onClick}>
                 {children}
             </Link>
         );
     } else {
         return (
-            <a href={to || href} className={`${className} ${classNames} ${cn.linkButton} ${primary ? cn.primary : ''}`}>
+            <a href={to || href} className={`${className} ${classNames} ${cn.linkButton} ${primary ? cn.primary : ''}`} onClick={onClick}>
                 {children}
             </a>
         );

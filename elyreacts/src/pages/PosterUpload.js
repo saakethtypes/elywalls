@@ -43,7 +43,7 @@ export const PosterUpload = () => {
           title,
           caption,
           price,
-          madeBy: user.name,
+          madeBy: user.name,  
           category,
           tags
         }, pictures[0]);

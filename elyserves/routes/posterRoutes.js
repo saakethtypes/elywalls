@@ -23,6 +23,7 @@ const {
        admireArtist,
        unadmireArtist,
        addToCart,
+       cartQuantity,
        removeFromCart,
        getPostersAdmired,
        getArtistsAdmired,
@@ -54,6 +55,7 @@ router.route('/:aid/admireA').patch(auth,admireArtist)
 router.route('/:aid/unadmireA').delete(auth,unadmireArtist)
 router.route('/:posterId/unadmireP').patch(auth, unadmirePoster)
 router.route('/:posterId/admireP').patch(auth, admirePoster)
+router.route('/saveQuantity/:cartId').patch(auth, cartQuantity)
 
 router.route("/poster/:posterId")
        .delete(auth, deletePoster)

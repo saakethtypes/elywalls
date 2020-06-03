@@ -115,7 +115,7 @@ export const Poster = ({
             setAdmires(admires - 1);
         }
     };
-
+    console.log(poster)
     const handleFormSubmit = (e) => {
         e.preventDefault();
 

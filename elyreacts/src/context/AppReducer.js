@@ -183,6 +183,18 @@ const appreducer = (state, action) => {
                     ]
             };
 
+        case "CART_QUANTITY":
+            return {
+                ...state,
+                cart: state.cart.map(cartitem=>
+                         action.ci ===cartitem._id?
+                        { ...cartitem,
+                            quantity : action.quantity,
+                            price_with_quantity: action.poster_price     
+                             }:
+                        cartitem) 
+                    }
+
         case "DELETE_FROM_CART":
             return {
                 ...state,
@@ -193,14 +205,16 @@ const appreducer = (state, action) => {
                         ]
             };
 
-        // case "CREATE_POSTER":
-        //     console.log("s")
-        //     return {
-        //         ...state,
-        //         user:{...state.user,
-        //         postersmade: [...state.user.postersmade,action.poster_created]
-        //         }
-        //     };
+        case "PROFILE_A":
+            return {
+                ...state,
+                user:{
+                    ...state.user,
+                    postersmade: 
+                        action.posters_made
+                    
+                }
+            };
 
         default:
             return state;
