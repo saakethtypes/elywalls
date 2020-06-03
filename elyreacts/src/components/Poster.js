@@ -37,11 +37,13 @@ export const Poster = ({
   // checkCart/checkAdmired will use the current user values eventually.
   const [isAdmired, setIsAdmired] = useState(
     // If user.admires contains this poster, isAdmired will be true
-    user.admires.filter((ap) => ap._id === poster._id).length !== 0
+    user && user.admires.filter((ap) => ap._id === poster._id).length !== 0 || false
+    // Will be false if user does not exist (is logged out)
   );
   const [isAddedToCart, setIsAddedToCart] = useState(
     // If user.cart contains this poster, isAddedToCart will be true
-    user.cart.filter((ap) => ap.item._id === poster._id).length !== 0
+    user && user.cart.filter((ap) => ap.item._id === poster._id).length !== 0 || false
+    // Will be false if user does not exist (is logged out)
   );
   const [admires, setAdmires] = useState(poster.admires);
 
