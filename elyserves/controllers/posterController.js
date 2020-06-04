@@ -415,19 +415,24 @@ exports.addToCart = async (req, res, next) => {
 };
 
 exports.cartQuantity = async (req, res, next) => {
-  console.log(req.body.q)
   try {
     const cart = await Cart.findByIdAndUpdate({_id:req.params.cartId},
       {quantity:req.body.q,price_with_quantity:req.body.pwq});
+
     if(req.user.utype==="artist"){
-        result = await Artist.findByIdAndUpdate({_id:req.user.id,'cart': {
-          $elemMatch: {_id:req.params.cartId}}},
-          { $set:{ 'cart.$.quantity': req.body.q, 'cart.$.price_with_quantity':req.body.p}})
+        result = await Artist.updateOne({_id:req.user.id,cart: 
+          { $elemMatch: { _id: req.params.cartId }
+        }},
+          { $set:{ 'cart.$.quantity':req.body.q , 'cart.$.price_with_quantity':req.body.pwq}}
+          )
        }
     if(req.user.utype==="buyer"){
-      // result = await User.findByIdAndUpdate({_id:req.user.id},{ cart: 
-      //   { $set:quantity: req.body.q, price_with_quantity:req.body.p}})
-     }
+      result = await User.updateOne({_id:req.user.id,cart: 
+        { $elemMatch: { _id: req.params.cartId }
+      }},
+        { $set:{ 'cart.$.quantity':req.body.q , 'cart.$.price_with_quantity':req.body.pwq}}
+        )
+    }
     return res.status(200).json({
       success: true,
       msg:"Cart quantity updated"
@@ -544,91 +549,84 @@ exports.getArtistsAdmired = async (req, res, next) => {
   }
 };
 
+exports.pay = async (req, res, next) => {
+  try {
 
-// exports.createPosterIg = async (req, res, next) => {
-//   try {
-//     let result = 0
-//     if(req.user.utype==="artist"){
-//       result = await Artist.findById({_id:req.user.id})
-//       result = result.admires
-//      }
-//    if(req.body.utype==="buyer"){
-//      result = await User.findById(req.user.id)
-//      result = result.admires  
-//    }//TODO add madeby to poster
-//     return res.status(200).json({
-//       success: true,
-//       poster_created:result
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       err: error
-//     });
-//   }
-// };
+    let result = 0
 
-//exports.buy = async (req, res, next) => {
-//   try {
-
-//     let result = 0
-
-//     if(req.user.utype==="artist"){
-//       let artist = await Artist.findById(req.user.id)
-//       let cart_items = artist.cart
+    if(req.user.utype==="artist"){
+      let artist = await Artist.findById(req.user.id)
+      let cart_items = artist.cart
      
-         //TODO for each cart.item update its purchases by cart.quantity
-         //this proved the top selling functionanlity
+        //  TODO for each cart.item update its purchases by cart.quantity
+        //  this proved the top selling functionanlity
+        //create order and push to orderhistory 
+        //email order
+      result = await Artist.findByIdAndUpdate({_id:req.user.id}
+        ,{$push:{bought_posters:cart_items}})
+        await Artist.findByIdAndUpdate({_id:req.user.id}
+          ,{cart:[]})
+        console.log(req.body.token)
+        console.log(req.body.totalPrice)
+      const price = req.body.totalPrice
+      const token = req.body.token
+      console.log(price,token)
+      const idempotencyKey = v4();
+      
+      return stripe.customers.create({
+        email: token.email,
+        source: token.id
+      }).then(customer => {
+        stripe.charges.create({
+          amount: price * 100,
+          currency: 'INR',
+          customer: customer.id,
+          description:"Posters purchase bill"}
+          ,{idempotencyKey}) 
+      }).then(
+        response => res.json(response)
+      ).catch(err=>res.json({err:err}))
+     }
+   if(req.body.utype==="buyer"){
+     result = await User.findById(req.user.id)
+     result = result.admires  
+   }
+    return res.status(200).json({
+      success: true,
+      posters:result
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: error
+    });
+  }
+};
 
-//       result = await Artist.findByIdAndUpdate({_id:req.user.id}
-//         ,{$push:{bought_posters:cart_items}})
-//         await Artist.findByIdAndUpdate({_id:req.user.id}
-//           ,{cart:[]})
-        
-//       const price = req.body.price
-//       const p_title = req.body.title
-//       const token = req.body.token
-      
-//       const idempotencyKey = v4();
-      
-//       return stripe.customers.create({
-//         email: token.email,
-//         source: token.id
-//       }).then(customer => {
-//         stripe.charges.create({
-//           amount: price * 100,
-//           currency: 'INR',
-//           customer: customer.id,
-//           email:token.email,
-//           address: {
-//             city: null,
-//             country: null,
-//             line1: null,
-//             line2: null,
-//             postal_code: null,
-//             state: null
-//           },
-//           description:p_title}
-//           ,{idempotencyKey}) 
-//       }).then(
-//         response => res.json(response)
-//       ).catch(err=>res.json({err:err}))
-//      }
-//    if(req.body.utype==="buyer"){
-//      result = await User.findById(req.user.id)
-//      result = result.admires  
-//    }
-//     return res.status(200).json({
-//       success: true,
-//       posters:result
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       err: error
-//     });
-//   }
-// };
+exports.createPosterIg = async (req, res, next) => {
+  try {
+    let result = 0
+    if(req.user.utype==="artist"){
+      result = await Artist.findById({_id:req.user.id})
+      result = result.admires
+     }
+   if(req.body.utype==="buyer"){
+     result = await User.findById(req.user.id)
+     result = result.admires  
+   }//TODO add madeby to poster
+    return res.status(200).json({
+      success: true,
+      poster_created:result
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      err: error
+    });
+  }
+};
+
+
 
 
 

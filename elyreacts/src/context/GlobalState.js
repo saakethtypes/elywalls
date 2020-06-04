@@ -34,7 +34,8 @@ const initialState = {
     poster: null,
     artists: null,
     log_status: ls,
-    utype: null
+    utype: null,
+    total:0
 };
 
 export const GlobalContext = createContext(initialState);
@@ -224,9 +225,12 @@ export const GlobalProvider = ({ children }) => {
 
             let ress = await axios.get("/cart",config).catch((err)=>{console.log(err.response)});
             console.log(ress.data)
+            let total = 0
+            ress.data.cartitems.map((ci)=>{total= total+ci.price_with_quantity})
             dispatch({
                 type: "CART_GET",
-                cartItems: ress.data.cartitems
+                cartItems: ress.data.cartitems,
+                total: total
             });
 
             localStorage.setItem('currentUser',JSON.stringify(state.user))
@@ -797,6 +801,27 @@ console.log(res)
         }
     }
     
+    async function pay(body) {
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt")
+                },
+            };
+            await axios.post(`/pay`, body, config);
+            dispatch({
+                type: "PAY",
+            });
+            console.log("Paid")
+
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
 
     return (
         <GlobalContext.Provider
@@ -810,6 +835,7 @@ console.log(res)
                 artist: state.artist,
                 artists: state.artists,
                 log_status: state.log_status,
+                total:state.total,
                 login,
                 logout,
                 persistLog,
@@ -820,6 +846,7 @@ console.log(res)
                 getProfileUser,
                 getPosters,
                 getCart,
+                pay,
                 // getPostersAll,
                 // getPostersGraphic,
                 // getPostersPhotoshop,

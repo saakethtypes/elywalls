@@ -151,6 +151,7 @@ const appreducer = (state, action) => {
             return {
                 ...state,
                 cart:action.cartItems,
+                total:action.total
                 // user:{
                 //     ...state.user,
                 //     cart:action.cartItems

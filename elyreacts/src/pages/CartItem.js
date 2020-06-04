@@ -5,8 +5,7 @@ import { GlobalContext } from '../context/GlobalState';
 
 export const CartItem = ({ci}) => {
     let { removeFromCart,setCartItemQuantity } = useContext(GlobalContext);
-
-    const [quantity, setquantity] = useState(1)
+    const [quantity, setquantity] = useState(ci.quantity)
     const remfromcart = (e,cid) => {
         e.preventDefault()
         removeFromCart(cid)

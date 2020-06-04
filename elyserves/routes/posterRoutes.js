@@ -28,7 +28,7 @@ const {
        getPostersAdmired,
        getArtistsAdmired,
        
-       //   buy,
+       pay,
        //   orderDetails,
        //   createPosterIg
 //TODO ask user to describe in tags of what is in the picture to rename the file like that 
@@ -69,7 +69,7 @@ router.route("/cartdelete/:cid")
        .delete(auth, removeFromCart)
 
 //router.route( auth,'/ig-walls').post(createPosterIg) 
-//router.route('/buy').post(auth,buy)
+router.route('/pay').post(auth,pay)
 //router.route('/order-details').get(auth,orderDetails)    
 const multer = require('multer');
 
