@@ -45,7 +45,7 @@ export const Cart = () => {
         token= {makePayment}
         name = "Pay with card"
         amount={totalPrice}
-        billingAddress={totalPrice}
+        billingAddress 
         >
         <button> Pay {totalPrice}</button>
         </StripeCheckout>

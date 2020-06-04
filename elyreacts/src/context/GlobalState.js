@@ -242,6 +242,32 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    async function getAdmiredPosters() {
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json" ,
+                    "x-auth-token": localStorage.getItem("jwt")
+                }
+            }
+
+            let ress = await axios.get("/admired-posters",config)
+            console.log(ress.data)
+            
+            dispatch({
+                type: "CART_GET",
+                admires: ress.data.posters,
+            });
+
+            localStorage.setItem('currentUser',JSON.stringify(state.user))
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+
     /*
     async function getPostersAll() {
         try {
@@ -426,29 +452,6 @@ export const GlobalProvider = ({ children }) => {
     }
 */
 
-    async function getAdmiredPosters() {
-        try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    "x-auth-token": localStorage.getItem("jwt")
-                },
-            };
-            const res = await axios.get("/admired-posters", config);
-            
-            dispatch({
-                type: "ADMIRED_POSTERS",
-                user_admiredP: res.data.posters
-            });
-
-        } catch (err) {
-            dispatch({
-                type: "ERROR",
-                payload: err.data,
-            });
-        }
-    }
-
     async function getAdmiredArtists() {
         try {
             const config = {
@@ -568,7 +571,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
         let res = await axios.patch(`/${poster._id}/admireP`, {x:0},config);
-
+        
           dispatch({
             type: "ADMIRE_P",
             newadmire:poster
@@ -665,6 +668,7 @@ console.log(res)
                 cart: res.data.cartObj[0]
             }); 
             console.log("Added")
+            localStorage.setItem('currentUser',JSON.stringify(state.user))
 
         } catch (err) {
             dispatch({

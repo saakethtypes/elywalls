@@ -7,7 +7,11 @@ import { PostersList } from "../components/PostersList";
 import cn from './styles/Admired.module.scss';
 
 export const Admired = () => {
-  let { user } = useContext(GlobalContext);
+  let { user,getAdmiredPosters } = useContext(GlobalContext);
+  useEffect(()=>{
+    getAdmiredPosters()
+
+  },[])
   return (
     <div className={`page-container`}>
       <div className={`page-header`}>

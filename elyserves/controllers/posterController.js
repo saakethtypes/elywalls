@@ -504,7 +504,8 @@ exports.getCarts = async (req, res, next) => {
 
 
 exports.getPostersAdmired = async (req, res, next) => {
-  try {po
+  try {
+    console.log("im here")
     let result = 0
     if(req.user.utype==="artist"){
       result = await Artist.findById({_id:req.user.id})
@@ -519,7 +520,7 @@ exports.getPostersAdmired = async (req, res, next) => {
       posters:result
     });
   } catch (error) {
-    return res.status(519).json({
+    return res.status(519).json({ 
       success: false,
       err: error
     });
@@ -555,17 +556,17 @@ exports.pay = async (req, res, next) => {
     let result = 0
 
     if(req.user.utype==="artist"){
-      let artist = await Artist.findById(req.user.id)
-      let cart_items = artist.cart
+      // let artist = await Artist.findById(req.user.id)
+      // let cart_items = artist.cart
      
         //  TODO for each cart.item update its purchases by cart.quantity
         //  this proved the top selling functionanlity
         //create order and push to orderhistory 
         //email order
-      result = await Artist.findByIdAndUpdate({_id:req.user.id}
-        ,{$push:{bought_posters:cart_items}})
-        await Artist.findByIdAndUpdate({_id:req.user.id}
-          ,{cart:[]})
+      // result = await Artist.findByIdAndUpdate({_id:req.user.id}
+      //   ,{$push:{bought_posters:cart_items}})
+      //   await Artist.findByIdAndUpdate({_id:req.user.id}
+      //     ,{cart:[]})
         console.log(req.body.token)
         console.log(req.body.totalPrice)
       const price = req.body.totalPrice

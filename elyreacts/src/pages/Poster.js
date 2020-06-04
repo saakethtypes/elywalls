@@ -45,7 +45,7 @@ export const Poster = ({
 }catch{let x = 0}
     // The following booleans are only used for state updates in this component.
     // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
-    const [isAdmired, setIsAdmired] = useState(false);
+    const [isAdmired, setIsAdmired] = useState(true);
     const [admires, setAdmires] = useState(poster && poster.admires || 0);
     const [isAddedToCart, setIsAddedToCart] = useState(false);
     const [addToCartQuantity, setAddToCartQuantity] = useState(0);
