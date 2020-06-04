@@ -6,9 +6,7 @@
 
     // todo: fix max-width and height defs for variable poster sizes
     // match widths, not heights
-    max-width: 20rem;
-    // max-height: 8rem;
-    height: min-content;
+    width: 100%;
 
     &:hover .previewContainer {
         & > a > img {

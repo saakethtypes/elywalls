@@ -22,7 +22,8 @@ const ButtonAction = ({
 };
 
 export const Poster = ({
-  poster
+  poster,
+  className = ''
 }) => {
   const {
     user,
@@ -56,6 +57,7 @@ export const Poster = ({
     // This MUST be removed in production
     picUrl = 'https://source.unsplash.com/random';
   }
+  picUrl = 'https://source.unsplash.com/random';
 
   // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
@@ -133,7 +135,7 @@ export const Poster = ({
   };
 
   return (
-    <div className={`${cn.container}`}>
+    <div className={`${cn.container} ${className}`}>
       <div className={`${cn.previewContainer}`}>
         <a href={`/poster/${poster.id}`}>
           <img src={picUrl} alt={poster.title} />

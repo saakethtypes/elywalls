@@ -8,6 +8,44 @@ import LinkButton from '../components/LinkButton';
 // @ts-ignore
 import cn from './styles/Home.module.scss';
 
+/*
+todo:
+use different components to obtain different poster categories!
+*/
+
+const FeaturedPostersList = ({
+  title,
+  linkName
+}) => {
+  let {
+    posters: {
+      isLoading,
+      error,
+      posters
+    },
+    getPosters
+  } = useContext(GlobalContext);
+
+  useEffect(() => {
+    getPosters(linkName);
+  }, []);
+
+  return (
+    <div className={`collection-container`}>
+      <h2>{title}</h2>
+      <p>The latest from our {title} category</p>
+
+      {isLoading && <span>Loading...</span>}
+      {error && <span>An error occurred</span>}
+      {posters && <PostersList posters={posters.slice(0, 4)} />}
+
+      <LinkButton href={`/posters/${linkName}`}>
+        View All
+      </LinkButton>
+    </div>
+  );
+};
+
 export const Home = () => {
   let {
     posters: {
@@ -31,26 +69,6 @@ export const Home = () => {
 
   useEffect(() => {
     getPosters('featured');
-
-    const categories = [
-      "featured",
-      "textography",
-      "graphic-design",
-      "photoshop",
-      "photography"
-    ];
-
-    // categories.forEach(async (cat) => {
-    //   const _res = await fetchPosters(cat);
-
-    //   setPostersByCategory([
-    //     ...postersByCategory,
-    //     {
-    //       category,
-    //       posters: _res.data.posters
-    //     }
-    //   ]);
-    // });
 
     setHeroImage();
   }, []);
@@ -100,67 +118,47 @@ export const Home = () => {
         <div className={cn.sectionLinkContainer}>
           <ul className="style-none tiled-list">
             <li onMouseEnter={() => setHeroImage('featured')}>
-              <Link to="/posters">Featured</Link></li>
+              <Link to="/posters">Featured</Link>
+            </li>
             <li onMouseEnter={() => setHeroImage('textography')}>
-              <Link to="/posters/textography">Textography</Link></li>
+              <Link to="/posters/textography">Textography</Link>
+            </li>
             <li onMouseEnter={() => setHeroImage('graphic-design')}>
-              <Link to="/posters/graphic-design">Graphic Design</Link></li>
+              <Link to="/posters/graphic-design">Graphic Design</Link>
+            </li>
             <li onMouseEnter={() => setHeroImage('photoshop')}>
-              <Link to="/posters/photoshop">Photoshop</Link></li>
+              <Link to="/posters/photoshop">Photoshop</Link>
+            </li>
             <li onMouseEnter={() => setHeroImage('all')}>
-              <Link to="/posters/all">All Posters</Link></li>
+              <Link to="/posters/all">All Posters</Link>
+            </li>
           </ul>
         </div>
       </div>
 
       <div className={`lower-content-container`}>
-        <div className={`collection-container`}>
-          <h2>Featured</h2>
-          <p>A curated selection of our favourites</p>
-
-          {posters && <PostersList posters={posters.slice(0, 4)} />}
-
-          <LinkButton href="/posters/featured">
-            View All
-          </LinkButton>
-        </div>
-
-        <div className={`collection-container`}>
-          <h2>Textography</h2>
-          <p>The latest from our Textography category</p>
-
-          {posters && <PostersList posters={posters.slice(0, 4)} />}
-
-          <LinkButton href="/posters/textography">
-            View All
-          </LinkButton>
-        </div>
-
-        <div className={`collection-container`}>
-          <h2>Graphic Design</h2>
-          <p>The latest from our Graphic Design category</p>
-
-          {posters && <PostersList posters={posters.slice(0, 4)} />}
-
-          <LinkButton href="/posters/graphic-design">
-            View All
-          </LinkButton>
-        </div>
-
-        <div className={`collection-container`}>
-          <h2>Photoshop</h2>
-          <p>The latest from our Photoshop category</p>
-
-          {posters && <PostersList posters={posters.slice(0, 4)} />}
-
-          <LinkButton href="/posters/photoshop">
-            View All
-          </LinkButton>
-        </div>
+        <FeaturedPostersList
+          title="Photography"
+          linkName="photography" />
+        <FeaturedPostersList
+          title="Textography"
+          linkName="textography" />
+        <FeaturedPostersList
+          title="Graphic Design"
+          linkName="graphic-design" />
+        <FeaturedPostersList
+          title="Photoshop"
+          linkName="photoshop" />
 
         <div className={`hero-container`}>
           <h2>Elegant Posters</h2>
           <p>By independent artists</p>
+
+          <LinkButton
+            primary
+            to="/posters/all">
+            View All
+          </LinkButton>
         </div>
       </div>
     </div>

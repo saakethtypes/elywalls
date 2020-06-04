@@ -19,8 +19,6 @@
     height: 24rem;
     width: 100%;
 
-    // margin: 0 2rem;
-
     background-position: center;
     background-size: cover;
 }
@@ -31,10 +29,10 @@
 
 @media only screen and (min-width: $media_width_tablet) {
     .gridContainer {
-        grid-template-columns: repeat(2, minmax(max-content, 1fr));
+        grid-template-rows: repeat(2, minmax(min-content, auto));
+        grid-template-columns: minmax(min-content, 25%) minmax(max-content, auto);
         grid-template-areas:
             "heading    image"
-            "sections   image"
             "sections   image";
 
         width: 100%;
@@ -42,14 +40,14 @@
     }
 
     .heroImage {
-        height: auto;
-        min-height: 100%;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
     }
 
     .sectionLinkContainer {
-        width: max-content;
-
-        margin: 0 0 0 auto;
+        width: 100%;
+        margin: 0;
 
         & > ul {
             flex-direction: column;
@@ -60,6 +58,7 @@
 
             & > li {
                 margin: 0.25rem 0;
+
                 &:first-of-type {
                     margin-top: 0;
                 }

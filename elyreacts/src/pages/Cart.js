@@ -1,8 +1,33 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { Poster } from "../components/Poster";
+import { FormInput } from '../components/FormInput';
 
+//@ts-ignore
 import cn from './styles/Cart.module.scss';
+
+export const PosterCart = ({
+  poster
+}) => {
+  const [quantity, setQuantity] = useState();
+  const {
+    removeFromCart
+  } = useContext(GlobalContext);
+
+  return (
+    <>
+      <Poster poster={poster} />
+      <FormInput
+        type="number"
+        value={quantity}
+        onChange={e => setQuantity(e.target.value)}
+      />
+      <button className={cn.buttonRemove} onClick={() => removeFromCart(poster._id)}>
+        Remove
+      </button>
+    </>
+  );
+};
 
 export const PostersListCart = ({
   posters = []
@@ -15,10 +40,7 @@ export const PostersListCart = ({
     <ul className={`${cn.postersListContainer}`}>
       {posters.map((poster, index) =>
         <li key={index}>
-          <Poster poster={poster} />
-          <button className={cn.buttonRemove} onClick={() => removeFromCart(poster._id)}>
-            Remove
-          </button>
+
         </li>
       )}
     </ul>
