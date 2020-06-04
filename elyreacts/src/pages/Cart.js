@@ -1,62 +1,60 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
-import { Poster } from "../components/Poster";
-import { FormInput } from '../components/FormInput';
-
-//@ts-ignore
-import cn from './styles/Cart.module.scss';
-
-export const PosterCart = ({
-  poster
-}) => {
-  const [quantity, setQuantity] = useState();
-  const {
-    removeFromCart
-  } = useContext(GlobalContext);
-
-  return (
-    <>
-      <Poster poster={poster} />
-      <FormInput
-        type="number"
-        value={quantity}
-        onChange={e => setQuantity(e.target.value)}
-      />
-      <button className={cn.buttonRemove} onClick={() => removeFromCart(poster._id)}>
-        Remove
-      </button>
-    </>
-  );
-};
-
-export const PostersListCart = ({
-  posters = []
-}) => {
-  const {
-    removeFromCart
-  } = useContext(GlobalContext);
-
-  return (
-    <ul className={`${cn.postersListContainer}`}>
-      {posters.map((poster, index) =>
-        <li key={index}>
-
-        </li>
-      )}
-    </ul>
-  );
-};
+import { CartItem } from './CartItem';
+import StripeCheckout from 'react-stripe-checkout';
+const dotenv = require('dotenv');
+dotenv.config({ path: "../../.env" });
 
 export const Cart = () => {
-  const {
-    user
-  } = useContext(GlobalContext);
+  const { cart, getCart, pay } = useContext(GlobalContext);
+
+  const toa = () => {
+    let totall = 0;
+    cart.map((cart_item) => (
+      totall += cart_item.price_with_quantity
+    ));
+    console.log(totall);
+    return totall;
+  };
+
+  useEffect(() => {
+    getCart();
+
+  }, []);
+  const totalPrice = toa();
+
+  const makePayment = (token) => {
+    console.log(totalPrice);
+    const body = {
+      token, totalPrice
+    };
+    pay(body);
+  };
 
   return (
     <div className="page-container">
       <div className="page-header">
         <h1>Cart</h1>
-        <p>Posters you've added to your cart</p>
+      </div>
+
+      <div className="lower-content-container">
+        {cart.map((cart_item, index) => (
+          <div key={cart_item._id}>
+            <CartItem ci={cart_item} />
+            <h3>price - {cart_item.price_with_quantity}</h3>
+          </div>
+        ))}
+
+        <h2>Price total - {totalPrice}</h2>
+
+        <StripeCheckout stripeKey={process.env.REACT_APP_KEY}
+          token={makePayment}
+          name="Pay with card"
+          amount={totalPrice}
+          billingAddress
+        >
+          <button> Pay {totalPrice}</button>
+        </StripeCheckout>
       </div>
 
       <div className="lower-content-container">

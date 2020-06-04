@@ -26,6 +26,7 @@ export const Poster = ({
 }) => {
     const {
         user,
+        cart,
         log_status,
         getPoster,
         admirePoster,
@@ -51,7 +52,7 @@ export const Poster = ({
     }
     // The following booleans are only used for state updates in this component.
     // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
-    const [isAdmired, setIsAdmired] = useState(false);
+    const [isAdmired, setIsAdmired] = useState(true);
     const [admires, setAdmires] = useState(poster && poster.admires || 0);
     const [isAddedToCart, setIsAddedToCart] = useState(false);
     const [addToCartQuantity, setAddToCartQuantity] = useState(0);
@@ -67,9 +68,10 @@ export const Poster = ({
         title: poster && poster.title || 'Untitled',
         author: poster && poster.madeBy || 'Unknown',
         category: poster && poster.category || 'Unknown',
-        caption: poster && poster.caption ||
-            `A poster in the category ${poster && poster.category || 'Unknown'}, created by ${poster && poster.madeBy || 'Unknown'}.`,
-        // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
+        caption: poster && poster.caption,
+        //  ||
+        //     `A poster in the category ${poster && poster.category || 'Unknown'}, created by ${poster && poster.madeBy || 'Unknown'}.`,
+        // // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
         //therefore delting whole db with invalid poster paths
         // todo: //
         // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
@@ -98,7 +100,7 @@ export const Poster = ({
         let match = [];
 
         if (user)
-            match = user.cart.filter((ap) => ap.item._id === poster._id);
+            match = cart.filter((ap) => ap.item._id === poster._id);
         else
             console.warn("user is undefined");
 
@@ -116,17 +118,16 @@ export const Poster = ({
             setAdmires(admires - 1);
         }
     };
-
+    console.log(poster);
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
         setIsAddedToCart(true);
         setInCartQuantity(inCartQuantity + addToCartQuantity);
 
-        // for (let i = 0; i <= addToCartQuantity; i++)
-        //     addToCart(poster);
-
-        // todo: Add to cart
+        addToCart(poster._id);
+        //addToCart(poster,addToCartQuantity) in future have
+        // to use like this;
     };
 
     return (

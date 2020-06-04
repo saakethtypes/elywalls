@@ -7,7 +7,8 @@ const CartSchema = new mongoose.Schema({
    type:{type:Poster.Schema}
   },
   quantity: {
-    type: Number
+    type: Number,
+    default:1
   },
   price_with_quantity: {
     type: Number

@@ -27,6 +27,7 @@ export const Poster = ({
 }) => {
   const {
     user,
+    cart,
     log_status,
     admirePoster,
     unadmirePoster,
@@ -36,30 +37,23 @@ export const Poster = ({
 
   // DO NOT check admired/cart status with these values directly.
   // checkCart/checkAdmired will use the current user values eventually.
+
   const [isAdmired, setIsAdmired] = useState(
-    // If user.admires contains this poster, isAdmired will be true
     user && user.admires.filter((ap) => ap._id === poster._id).length !== 0 || false
-    // Will be false if user does not exist (is logged out)
   );
   const [isAddedToCart, setIsAddedToCart] = useState(
-    // If user.cart contains this poster, isAddedToCart will be true
-    user && user.cart.filter((ap) => ap.item._id === poster._id).length !== 0 || false
-    // Will be false if user does not exist (is logged out)
+    cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0 || false
   );
-  const [admires, setAdmires] = useState(poster.admires);
 
+  const [admires, setAdmires] = useState(poster.admires);
   let picUrl = null;
+  let purl = poster.pictureURL.split('Db')[1];
   try {
-    let purl = poster.pictureURL.split('Db')[1];
     picUrl = require("../assets/postersDb" + purl);
   } catch (err) {
-    // todo: TEMPORARILY WHILE I DON'T HAVE THE PICTURES LOCALLY
-    // This MUST be removed in production
     picUrl = 'https://source.unsplash.com/random';
   }
-  picUrl = 'https://source.unsplash.com/random';
 
-  // todo: Verify data server-side (or at least earlier in the flow, than this component)
   poster = {
     ...poster,
     id: poster._id,
@@ -101,7 +95,6 @@ export const Poster = ({
     //   console.warn("user is undefined");
 
     // return match.length > 0;
-
     return isAddedToCart;
   };
 
@@ -121,7 +114,8 @@ export const Poster = ({
 
   const handleClickAddToCart = (e) => {
     if (!checkCart()) {
-      addToCart(poster);
+      addToCart(poster._id);
+      console.log("co");
       setIsAddedToCart(true);
     } else {
       // todo: Notify user - Already added to cart

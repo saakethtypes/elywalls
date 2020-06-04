@@ -280,7 +280,7 @@ exports.editProfile = async (req, res, next) => {
       msg: "Editted",
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(521).json({
       success: false,
       err: error,
     });
@@ -289,7 +289,7 @@ exports.editProfile = async (req, res, next) => {
 
 
 exports.getProfileUser = async (req, res, next) => {
-  console.log("object")
+  console.log("user")
   try {
      let result = await User.findById(req.user.id)
     return res.status(200).json({
@@ -297,7 +297,7 @@ exports.getProfileUser = async (req, res, next) => {
       profile:result
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(530).json({
       success: false,
       err: error
     });
@@ -313,7 +313,7 @@ exports.getProfileArtist = async (req, res, next) => {
       profile:result
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(510).json({
       success: false,
       err: error
     });

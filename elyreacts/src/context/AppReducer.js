@@ -146,6 +146,18 @@ const appreducer = (state, action) => {
                     ]
                 },
             };
+
+        case "CART_GET":
+            return {
+                ...state,
+                cart:action.cartItems,
+                total:action.total
+                // user:{
+                //     ...state.user,
+                //     cart:action.cartItems
+                // }
+            } 
+            
         case "POSTER_SINGLE":
             return {
                 ...state,
@@ -167,35 +179,43 @@ const appreducer = (state, action) => {
         case "ADD_TO_CART":
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    cart: [
-                        ...state.user.cart, action.cart
+                cart: [
+                    ...state.cart, action.cart
                     ]
-                }
             };
+
+        case "CART_QUANTITY":
+            return {
+                ...state,
+                cart: state.cart.map(cartitem=>
+                         action.ci ===cartitem._id?
+                        { ...cartitem,
+                            quantity : action.quantity,
+                            price_with_quantity: action.poster_price     
+                             }:
+                        cartitem) 
+                    }
 
         case "DELETE_FROM_CART":
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    cart: [
-                        ...state.user.cart.filter(
+                cart: [
+                        ...state.cart.filter(
                             cartitem => action.item_removed !== cartitem._id
                         )
-                    ]
-                }
+                        ]
             };
 
-        // case "CREATE_POSTER":
-        //     console.log("s")
-        //     return {
-        //         ...state,
-        //         user:{...state.user,
-        //         postersmade: [...state.user.postersmade,action.poster_created]
-        //         }
-        //     };
+        case "PROFILE_A":
+            return {
+                ...state,
+                user:{
+                    ...state.user,
+                    postersmade: 
+                        action.posters_made
+                    
+                }
+            };
 
         default:
             return state;

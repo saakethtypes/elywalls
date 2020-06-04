@@ -7,11 +7,12 @@ import LinkButton from '../components/LinkButton';
 export const Account = ({
     location
 }) => {
-    let { user, getProfileUser } = useContext(GlobalContext);
+    let { user, getProfileArtist } = useContext(GlobalContext);
 
     useEffect(() => {
-        getProfileUser();
+        getProfileArtist();
     }, []);
+    console.log(user)
 
     useLayoutEffect(() => {
         const sp = new URLSearchParams(location.search);

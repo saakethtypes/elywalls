@@ -75,6 +75,8 @@ export default () => {
           {user && user.user_type === "buyer" && <Link onClick={closeMenu} to="/cart">Cart</Link>}
 
           {/* Artist account shouldn't have cart should it? Why would it need a cart? */}
+          {user && user.user_type === "artist" && <Link onClick={closeMenu} to="/admires">Admires</Link>}
+          {user && user.user_type === "artist" && <Link onClick={closeMenu} to="/cart">Cart</Link>}
           {user && user.user_type === "artist" && <Link onClick={closeMenu} to="/account?view=published">Published</Link>}
           {user && user.user_type === "artist" && <LinkButton onClick={closeMenu} to="/publish-poster">New Poster</LinkButton>}
         </nav>
