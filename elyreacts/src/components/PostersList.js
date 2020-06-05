@@ -1,6 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Poster, FakePoster } from "../components/Poster";
-import Masonry from 'masonry-layout';
 
 // @ts-ignore
 import cn from './styles/PostersList.module.scss';

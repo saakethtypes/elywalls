@@ -57,10 +57,6 @@ export const Cart = () => {
         </StripeCheckout>
       </div>
 
-      <div className="lower-content-container">
-        <PostersListCart posters={user.cart} />
-      </div>
-
       {/* todo: add checkout */}
     </div>
   );
