@@ -151,14 +151,18 @@ export const Home = () => {
           linkName="photoshop" />
 
         <div className={`hero-container`}>
-          <h2>Elegant Posters</h2>
-          <p>By independent artists</p>
+          <img src="https://source.unsplash.com/random" alt="Random image (temporary)" />
 
-          <LinkButton
-            primary
-            to="/posters/all">
-            View All
-          </LinkButton>
+          <div>
+            <h2>Elegant Posters</h2>
+            <p>By independent artists</p>
+
+            <LinkButton
+              primary
+              to="/posters/all">
+              View the Collection
+            </LinkButton>
+          </div>
         </div>
       </div>
     </div>

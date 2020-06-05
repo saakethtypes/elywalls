@@ -2,6 +2,10 @@ import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { CartItem } from './CartItem';
 import StripeCheckout from 'react-stripe-checkout';
+
+// @ts-ignore
+import cn from './styles/Cart.module.scss';
+
 const dotenv = require('dotenv');
 dotenv.config({ path: "../../.env" });
 
@@ -10,18 +14,20 @@ export const Cart = () => {
 
   const toa = () => {
     let totall = 0;
-    cart.map((cart_item) => (
-      totall += cart_item.price_with_quantity
-    ));
-    console.log(totall);
+    cart.map((cart_item) => {
+      // todo/fixme: price_with_quantity is undefined so this doesn't actually work
+      console.log(totall, cart_item.price_with_quantity);
+      totall += cart_item.price_with_quantity;
+    });
+    console.log("totall: ", totall);
     return totall;
   };
 
+  const [totalPrice, setTotalPrice] = useState(toa());
+
   useEffect(() => {
     getCart();
-
   }, []);
-  const totalPrice = toa();
 
   const makePayment = (token) => {
     console.log(totalPrice);
@@ -35,26 +41,32 @@ export const Cart = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>Cart</h1>
+        <p>View your cart and continue to checkout</p>
       </div>
 
       <div className="lower-content-container">
-        {cart.map((cart_item, index) => (
-          <div key={cart_item._id}>
-            <CartItem ci={cart_item} />
-            <h3>price - {cart_item.price_with_quantity}</h3>
-          </div>
-        ))}
+        <div className={cn.cartItemsContainer}>
+          {cart.map((cart_item, index) => (
+            <CartItem
+              ci={cart_item}
+              className={cn.cartItem} />
+          ))}
+        </div>
 
-        <h2>Price total - {totalPrice}</h2>
+        <div className={cn.checkoutContainer}>
+          <h2>Checkout</h2>
 
-        <StripeCheckout stripeKey={process.env.REACT_APP_KEY}
-          token={makePayment}
-          name="Pay with card"
-          amount={totalPrice}
-          billingAddress
-        >
-          <button> Pay {totalPrice}</button>
-        </StripeCheckout>
+          <p>Total: ${totalPrice}</p>
+
+          <StripeCheckout stripeKey={process.env.REACT_APP_KEY}
+            token={makePayment}
+            name="Pay with card"
+            amount={totalPrice}
+            billingAddress
+          >
+            <button className="button-primary">Pay Now</button>
+          </StripeCheckout>
+        </div>
       </div>
 
       {/* todo: add checkout */}
