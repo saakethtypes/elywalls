@@ -1,0 +1,20 @@
+@import "../../variables.scss";
+
+.postersListContainer {
+    margin: 0 auto;
+
+    & > div { // Masonry div
+        margin: 0 auto;
+        min-width: 0;
+        width: 100%;
+
+        & > * {
+            width: 20rem;
+            margin: 0.5rem;
+        }
+    }
+}
+
+.postersListContainer > div > .fakePoster {
+    margin: 0 auto;
+}

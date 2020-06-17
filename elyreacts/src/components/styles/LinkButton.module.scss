@@ -1,0 +1,28 @@
+@import "../../variables.scss";
+
+.linkButton {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+
+    background: $color_grey_dark;
+
+    color: $color_white;
+
+    transition: $transition_time_link;
+
+    &:hover {
+        background: $color_grey_dark_light;
+
+        color: $color_white;
+    }
+
+    &.primary {
+        background: $color_indywalls_primary;
+
+        &:hover {
+            background: $color_indywalls_primary_light;
+
+            color: $color_white;
+        }
+    }
+}

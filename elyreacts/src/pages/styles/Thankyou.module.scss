@@ -1,0 +1,27 @@
+.nextStepsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-top: 2.5rem;
+
+    & > p {
+        margin-top: 1.5rem;
+    }
+    
+    & > div {
+        margin-top: 1.5rem;
+    }
+}
+
+.linksContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    & > a {
+        margin: 0.5rem;
+    }
+}
