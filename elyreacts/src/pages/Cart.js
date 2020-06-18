@@ -1,6 +1,6 @@
 import {GlobalContext} from "../context/GlobalState";
 import React, {useEffect, useContext, useState} from "react";
-import {CartItem} from './CartItem';
+import {CartItem} from '../components/CartItem';
 import StripeCheckout from 'react-stripe-checkout';
 
 // @ts-ignore
@@ -13,10 +13,10 @@ export const Cart = () => {
   const {cart, getCart, pay} = useContext(GlobalContext);
   const toa = () => {
     let totall = 0;
-    console.log(totall)
+    console.log(totall);
     cart.map((cart_item) => {
-      console.log(cart_item)
-      console.log(totall)
+      console.log(cart_item);
+      console.log(totall);
       // todo/fixme: price_with_quantity is undefined so this doesn't actually work
       console.log(totall, cart_item.price_with_quantity);
       totall += cart_item.price_with_quantity;
