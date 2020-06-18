@@ -1,113 +1,94 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
-import { GlobalContext } from "../context/GlobalState";
+import React, {useEffect, useContext, useState, useLayoutEffect} from "react";
+import {useHistory, Link} from "react-router-dom";
+import {GlobalContext} from "../context/GlobalState";
 import auth from "../auth";
 
 import LinkButton from './LinkButton';
 
-// @ts-ignore
-import INDYWALLS_LOGO from '../assets/images/Logo.svg';
+// @ts-ignore // todo: Add type defs for SVG, SCSS files
+import LOGO from '../assets/images/Logo.svg';
 
 // @ts-ignore
 import cn from './styles/Header.module.scss';
 
-// todo: Try to tidy opening/closing of menu
-
 export default () => {
-  const [isHeaderOpen, setIsHeaderOpen] = useState(false);
+    const history = useHistory();
+    const [menuOpen, setMenuOpen] = useState(false);
 
-  const closeMenu = () => {
-    const menuEl = document.getElementById(cn.menuContainer);
-    if (!menuEl) return;
+    const {
+        logout: logoutFn,
+        user
+    } = useContext(GlobalContext);
 
-    setIsHeaderOpen(false);
+    const handleLogout = (e) => {
+        e.preventDefault();
 
-    menuEl.style.opacity = '0';
-    menuEl.style.width = '50vw';
-    menuEl.style.left = '-100%';
-  };
-  const openMenu = () => {
-    const menuEl = document.getElementById(cn.menuContainer);
-    if (!menuEl) return;
+        logoutFn();
+        auth.logout(() => {
+            history.push("/");
+        });
+    };
 
-    setIsHeaderOpen(true);
-
-    menuEl.style.opacity = '1';
-    menuEl.style.width = '100vw';
-    menuEl.style.left = '0';
-  };
-
-  const handleHamburgerClick = () => {
-    if (isHeaderOpen) closeMenu();
-    else openMenu();
-  };
-
-  const history = useHistory();
-
-  const {
-    log_status: userLoggedIn,
-    logout,
-    user,
-    persistLog
-  } = useContext(GlobalContext);
-
-  const handleLogout = (e) => {
-    closeMenu();
-
-    logout();
-    auth.logout(() => {
-      history.push("/");
+    useLayoutEffect(() => {
+        document.querySelectorAll('header .container .menu a').forEach((link) => {
+            link.addEventListener('click', (e) => setMenuOpen(false));
+        });
     });
-  };
 
-  return (
-    <header className={cn.container}>
-      <div className={cn.content}>
-        <Link onClick={closeMenu} to="/">
-          <img src={INDYWALLS_LOGO} alt="INDYWALLS" />
-        </Link>
-
-        <nav className={cn.mainNav}>
-          <Link onClick={closeMenu} to="/">Home</Link>
-          <Link onClick={closeMenu} to="/posters">Posters</Link>
-
-          {user && user.user_type === "buyer" && <Link onClick={closeMenu} to="/admires">Admires</Link>}
-          {user && user.user_type === "buyer" && <Link onClick={closeMenu} to="/cart">Cart</Link>}
-
-          {/* Artist account shouldn't have cart should it? Why would it need a cart? */}
-          {user && user.user_type === "artist" && <Link onClick={closeMenu} to="/admires">Admires</Link>}
-          {user && user.user_type === "artist" && <Link onClick={closeMenu} to="/cart">Cart</Link>}
-          {user && user.user_type === "artist" && <Link onClick={closeMenu} to={`/profile/${user.username}`}>Profile</Link>}
-        </nav>
-
-        <div className={cn.accountNav}>
-          {user && user.user_type === "artist" && <LinkButton primary onClick={closeMenu} to="/publish-poster">New Poster</LinkButton>}
-
-          {!user &&
-            <div className={cn.buttonRegister__container}>
-              <LinkButton className={cn.buttonRegister} primary onClick={closeMenu} to="/register">Register</LinkButton>
-
-              <div className={cn.buttonRegister__dropdown}>
-                <span>or</span>
-                <Link onClick={closeMenu} to="/register?type=artist">
-                  Register as Artist
+    return (
+        <header className={cn.wrapper}>
+            <div className={cn.container}>
+                <Link to="/" className={cn.logo}>
+                    <img
+                        src={LOGO}
+                        alt="Elywalls" />
                 </Link>
-              </div>
-            </div>}
-          {!user && <Link onClick={closeMenu} to="/login">Sign In</Link>}
 
-          {user && <LinkButton primary onClick={closeMenu} to="/account">Account</LinkButton>}
-          {user && <Link onClick={handleLogout} to="/">Sign Out</Link>}
-        </div>
-      </div>
-    </header>
-  );
+                <input
+                    type="checkbox"
+                    checked={menuOpen}
+                    onClick={e => setMenuOpen(!menuOpen)}
+                    className={cn.hamburgerButton}
+                    id="Header_IHamburgerButton" />
+                <label htmlFor="Header_IHamburgerButton">
+                    <div></div>
+                </label>
+
+                <div className={cn.menu}>
+                    <nav>
+                        <ul>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/posters">Posters</Link></li>
+
+                            {user && <>
+                                <li><Link to="/admires">Admires</Link></li>
+                                <li><Link to="/cart">Cart</Link></li>
+                            </>}
+
+                            {user && user.user_type === "artist" &&
+                                <li><Link to={`/profile/${user.username}`}>My Profile</Link></li>}
+                        </ul>
+                    </nav>
+
+                    <div className={cn.buttons}>
+                        {!user && <>
+                            <LinkButton primary to="/register">Register</LinkButton>
+                            <div className={cn.account}>
+                                <Link to="/login">Sign In</Link>
+                            </div>
+                        </>}
+
+                        {user && user.user_type === "artist" && <>
+                            <LinkButton primary to="/publish-poster">Publish</LinkButton>
+                        </>}
+
+                        {user && <div className={cn.account}>
+                            <Link to="/account">Account</Link>
+                            <Link to="/" onClick={handleLogout}>Sign Out</Link>
+                        </div>}
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
 };
-
-// {user && user.user_type === "buyer" && <Link to="/admires">Admires</Link>}
-//             {user && user.user_type === "buyer" && <Link to="/cart">Cart</Link>}
-
-//             {user && user.user_type === "artist" && <Link to="/admires">Admires</Link>}
-//             {user && user.user_type === "artist" && <Link to="/cart">Cart</Link>}
-//             {user && user.user_type === "artist" && <Link to="/account?view=published">Published</Link>}
-//             {user && user.user_type === "artist" && <LinkButton to="/publish-poster">New Poster</LinkButton>}
