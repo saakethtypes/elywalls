@@ -22,9 +22,13 @@ a {
     color: $color_link;
     text-decoration: none;
 
-    transition: $transition_time_link;
+    &,
+    & > * {
+        transition: $transition_time_link;
+    }
 
-    &:hover {
+    &:hover,
+    &:hover > * {
         color: $color_link_hover;
     }
 }
@@ -91,6 +95,15 @@ em {
     font-style: italic;
 
     color: $color_black;
+}
+
+img {
+    filter: brightness(1);
+    transition: $transition_time_anim_long;
+
+    &:hover {
+        filter: brightness(0.85);
+    }
 }
 
 // Has child <ul>
@@ -332,6 +345,68 @@ option {
     }
 }
 
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-top: 2.5rem;
+
+    width: 100%;
+
+    & > h2,
+    & > h3,
+    & > p {
+        text-align: center;
+    }
+
+    & > p,
+    & > ul {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        width: 100%;
+        margin-top: 1.5rem;
+    }
+
+    & > ul > li {
+        max-width: max-content;
+
+        & > a {
+            display: flex;
+            flex-direction: column;
+
+            margin: 1.5rem 0.5rem 0 0.5rem;
+
+            & > img {
+                width: 8rem;
+                height: 8rem;
+
+                object-fit: contain;
+
+                border-radius: 50%;
+                border: 0.125rem solid $color_indywalls_primary;
+
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            & > span {
+                margin: 1rem auto 0 auto;
+                text-align: center;
+            }
+
+            & > small {
+                margin: 0.5rem auto 0 auto;
+                text-align: center;
+            }
+        }
+    }
+}
+
 .collection-container {
     display: grid;
     grid-auto-rows: minmax(min-content, max-content);
@@ -425,20 +500,22 @@ option {
 
         margin: 0 auto;
 
-        & > *:nth-child(2n-1) { // Column left
+        & > *:nth-child(2n-1) {
+            // Column left
             padding: 0.5rem 1rem 0.5rem 0.5rem;
 
             color: $color_grey_dark;
             text-align: right;
         }
 
-        & > *:nth-child(2n) { // Column right
+        & > *:nth-child(2n) {
+            // Column right
             padding: 0.5rem 1.25rem 0.5rem 0.5rem;
 
             text-align: left;
         }
 
-        & > *:nth-child(4n+3),
+        & > *:nth-child(4n + 3),
         & > *:nth-child(4n-4) {
             background: #ededee;
         }
