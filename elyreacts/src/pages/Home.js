@@ -1,17 +1,14 @@
-import React, {useEffect, useContext, useState} from "react";
-import {Link} from "react-router-dom";
-import {GlobalContext} from "../context/GlobalState";
+import React, { useEffect, useContext, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalState";
 
-import {PostersList} from "../components/PostersList";
-import LinkButton from '../components/LinkButton';
+import { PostersList } from "../components/PostersList";
+import LinkButton from "../components/LinkButton";
 
 // @ts-ignore
-import cn from './styles/Home.module.scss';
+import cn from "./styles/Home.module.scss";
 
-const FeaturedPostersList = ({
-  title,
-  linkName
-}) => {
+const FeaturedPostersList = ({ title, linkName }) => {
   const [posters, setPosters] = useState(null);
   const [err, setErr] = useState(null);
 
@@ -20,7 +17,7 @@ const FeaturedPostersList = ({
       try {
         console.log(category);
         fetch(`/${category}`, {
-          method: 'GET'
+          method: "GET",
         })
           .then((r) => r.json())
           .then((data) => {
@@ -37,7 +34,6 @@ const FeaturedPostersList = ({
 
   useEffect(() => {
     getPosters(linkName);
-
   }, []);
 
   return (
@@ -48,71 +44,49 @@ const FeaturedPostersList = ({
       {err && <span>An error occurred</span>}
       {posters && <PostersList posters={posters.slice(0, 4)} />}
 
-      <LinkButton href={`${linkName}`}>
-        View {title}
-      </LinkButton>
+      <LinkButton href={`${linkName}`}>View {title}</LinkButton>
     </div>
   );
 };
 
 export const Home = () => {
-  let {
-    posters: {
-      isLoading,
-      error,
-      posters
-    },
+  const {
+    posters: { isLoading, error, posters },
     getPosters,
     getTopArtists,
-    artists
+    artists,
   } = useContext(GlobalContext);
-
-  const [postersByCategory, setPostersByCategory] = useState([]);
-
-  // const fetchPosters = async (category) => {
-  //   const headers = new Headers({
-  //     'Content-Type': 'application/json'
-  //   });
-
-  //   return fetch(`/${category}`, { headers })
-  //     .then((res) => res.json());
-  // };
+  const elHeroImage = useRef(null);
 
   useEffect(() => {
-    getPosters('latest');
-    getTopArtists()
+    getPosters("latest");
+    getTopArtists();
     setHeroImage();
   }, []);
-  console.log(artists)
-  const setHeroImage = (type = '') => {
-    const heroImageElement = document.getElementById(cn.heroImage);
 
-    const mk = (u) => `url("${u}")`;
-
-    let bgImage = '';
-
+  const setHeroImage = (type = "") => {
     // Todo: load posters from getPosters("popular"), and choose one poster per category
-
+    let bgImage = "";
     switch (type) {
-      case 'latest':
-        bgImage = 'https://source.unsplash.com/random/800x480';
+      case "latest":
+        bgImage = "https://source.unsplash.com/random/800x480";
         break;
-      case 'textography':
-        bgImage = 'https://source.unsplash.com/random/200x200';
+      case "textography":
+        bgImage = "https://source.unsplash.com/random/200x200";
         break;
-      case 'graphic-design':
-        bgImage = 'https://source.unsplash.com/random/800x600';
+      case "graphic-design":
+        bgImage = "https://source.unsplash.com/random/800x600";
         break;
-      case 'photoshop':
-        bgImage = 'https://source.unsplash.com/random/940x640';
+      case "photoshop":
+        bgImage = "https://source.unsplash.com/random/940x640";
         break;
       default:
-        bgImage = 'https://source.unsplash.com/random/1280x720';
+        bgImage = "https://source.unsplash.com/random/1280x720";
         break;
     }
 
-    if (heroImageElement) {
-      heroImageElement.style.backgroundImage = mk(bgImage);
+    if (elHeroImage) {
+      elHeroImage.current.style.backgroundImage = `url("${bgImage}")`;
     }
   };
 
@@ -120,27 +94,30 @@ export const Home = () => {
     <div className={`page-container`}>
       <div className={cn.gridContainer}>
         <div className={`${cn.pageHeader} page-header`}>
-          <h1 className={`page-title`}>Elywalls</h1> { /* todo: replace with logo (MAYBE) */}
-          <p className={`page-preface`}>Elegant posters by independent artists</p>
+          <h1 className={`page-title`}>Elywalls</h1>{" "}
+          {/* todo: replace with logo (MAYBE) */}
+          <p className={`page-preface`}>
+            Elegant posters by independent artists
+          </p>
         </div>
 
-        <div className={cn.heroImage} id={cn.heroImage}></div>
+        <div className={cn.heroImage} ref={elHeroImage} />
 
         <div className={cn.sectionLinkContainer}>
           <ul className="style-none tiled-list">
-            <li onMouseEnter={() => setHeroImage('latest')}>
+            <li onMouseEnter={() => setHeroImage("latest")}>
               <Link to="latest">Latest</Link>
             </li>
-            <li onMouseEnter={() => setHeroImage('textography')}>
+            <li onMouseEnter={() => setHeroImage("textography")}>
               <Link to="/posters/textography">Textography</Link>
             </li>
-            <li onMouseEnter={() => setHeroImage('graphic-design')}>
+            <li onMouseEnter={() => setHeroImage("graphic-design")}>
               <Link to="/posters/graphic-design">Graphic Design</Link>
             </li>
-            <li onMouseEnter={() => setHeroImage('photoshop')}>
+            <li onMouseEnter={() => setHeroImage("photoshop")}>
               <Link to="/posters/photoshop">Photoshop</Link>
             </li>
-            <li onMouseEnter={() => setHeroImage('all')}>
+            <li onMouseEnter={() => setHeroImage("all")}>
               <Link to="/posters/all">All Posters</Link>
             </li>
           </ul>
@@ -149,45 +126,36 @@ export const Home = () => {
 
       <div className={`lower-content-container`}>
         <div className={`hero-container`}>
-          <img src="https://source.unsplash.com/random" alt="Random image (temporary)" />
+          <img
+            src="https://source.unsplash.com/random"
+            alt="Random image (temporary)"
+          />
 
           <div>
             <h2>Elegant Posters</h2>
             <p>By independent artists</p>
 
-            <LinkButton
-              primary
-              to="/posters/all">
+            <LinkButton primary to="/posters/all">
               View the Collection
             </LinkButton>
           </div>
         </div>
-        <div>
-        {artists?
-          artists.map((artist)=>{
-            return ( <div className='featuredArtists'>.
-  <small><a href={`/profile/${artist.username}`}>
-    {artist.name} @{artist.username}</a></small>
 
-            </div>)
-          }):null
-        }
+        <div className={`featured-container`}>
+          {artists &&
+            artists.map((artist) => (
+              <a href={`/profile/${artist.username}`}>
+                <span>{artist.name}</span>
+                <small>@{artist.username}</small>
+              </a>
+            ))}
         </div>
-        <FeaturedPostersList
-          title="Latest"
-          linkName="latest" />
-        <FeaturedPostersList
-          title="Photography"
-          linkName="photography" />
-        <FeaturedPostersList
-          title="Textography"
-          linkName="textography" />
-        <FeaturedPostersList
-          title="Graphic Design"
-          linkName="graphic-design" />
-        <FeaturedPostersList
-          title="Photoshop"
-          linkName="photoshop" />
+
+        <FeaturedPostersList title="Latest" linkName="latest" />
+        <FeaturedPostersList title="Photography" linkName="photography" />
+        <FeaturedPostersList title="Textography" linkName="textography" />
+        <FeaturedPostersList title="Graphic Design" linkName="graphic-design" />
+        <FeaturedPostersList title="Photoshop" linkName="photoshop" />
       </div>
     </div>
   );
