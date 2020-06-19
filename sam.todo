@@ -4,8 +4,9 @@ Still to do...
 ✔ Style recommended posters @done(20-06-19 16:04)
 ✔ Admired icon should match admires icon in components/Poster and pages/Poster @done(20-06-19 16:20)
 ✔ Fix header buttons not closing Header @done(20-06-19 16:29)
+✔ Fix small image on pages/Poster mobile view @done(20-06-19 18:07)
+☐ New button style on Homepage (grow underline behind text)
 ☐ PosterEdit page style
-☐ Fix small image on pages/Poster mobile view
 ☐ Profile pictures displayed under posters
 ☐ Fix footer to end of page (make page-content min-height 100%)
 ☐ Fade featured images when loading on Homepage
