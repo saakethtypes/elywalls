@@ -106,21 +106,37 @@ export const Home = () => {
                 <div className={cn.sectionLinkContainer}>
                     <ul className='style-none tiled-list'>
                         <li onMouseEnter={() => setHeroImage("latest")}>
-                            <Link to='latest'>Latest</Link>
+                            <Link className='button grow-underline' to='latest'>
+                                <span>Latest</span>
+                            </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("textography")}>
-                            <Link to='/posters/textography'>Textography</Link>
+                            <Link
+                                className='button grow-underline'
+                                to='/posters/textography'>
+                                <span>Textography</span>
+                            </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("graphic-design")}>
-                            <Link to='/posters/graphic-design'>
-                                Graphic Design
+                            <Link
+                                className='button grow-underline'
+                                to='/posters/graphic-design'>
+                                <span>Graphic Design</span>
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("photoshop")}>
-                            <Link to='/posters/photoshop'>Photoshop</Link>
+                            <Link
+                                className='button grow-underline'
+                                to='/posters/photoshop'>
+                                <span>Photoshop</span>
+                            </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("all")}>
-                            <Link to='/posters/all'>All Posters</Link>
+                            <Link
+                                className='button grow-underline'
+                                to='/posters/all'>
+                                <span>All Posters</span>
+                            </Link>
                         </li>
                     </ul>
                 </div>

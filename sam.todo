@@ -5,10 +5,10 @@ Still to do...
 ✔ Admired icon should match admires icon in components/Poster and pages/Poster @done(20-06-19 16:20)
 ✔ Fix header buttons not closing Header @done(20-06-19 16:29)
 ✔ Fix small image on pages/Poster mobile view @done(20-06-19 18:07)
-☐ New button style on Homepage (grow underline behind text)
+✔ New button style on Homepage (grow underline behind text) @done(20-06-19 19:08)
+✔ Fix footer to end of page (make page-content min-height 100%) @done(20-06-19 19:17)
 ☐ PosterEdit page style
 ☐ Profile pictures displayed under posters
-☐ Fix footer to end of page (make page-content min-height 100%)
 ☐ Fade featured images when loading on Homepage
 ☐ Fix masonry re-render
 ✔ Email HTML @done(20-06-19 17:54)

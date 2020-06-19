@@ -8,10 +8,23 @@ html {
 }
 body {
     background-color: $color_white;
+
+    min-height: 100vh;
 }
 
 * {
     box-sizing: border-box;
+}
+
+.page-container {
+    // todo: Consider changing 100vh to 100%, enabling footer to fill space
+    min-height: 100vh;
+
+    width: 100%;
+    max-width: $max-width_content;
+
+    margin: 0 auto;
+    padding: 0 2em;
 }
 
 p > a,
@@ -70,16 +83,18 @@ h4 {
 
 p {
     max-width: 72ch;
-
     margin: 0.5rem auto 0 auto;
 
     line-height: 1.5em;
+
+    color: $color_black;
 }
 
 small {
     font-size: 0.75rem;
     line-height: 1.25em;
     text-transform: uppercase;
+
     color: $color_grey_dark;
 }
 
@@ -167,26 +182,56 @@ ul.tiled-list {
     li {
         display: inline-block;
 
-        margin: 0.5rem;
-
         & > * {
             display: inline-block;
 
-            margin: 0;
-            padding: 1em 1.5em;
-            border: 0.15rem solid $color_indywalls_primary;
+            padding: 0.75em 0;
             border-radius: 0;
 
             text-transform: uppercase;
             font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
 
             transition: $transition_time_link;
+
+            & > span {
+                position: relative;
+
+                padding: 0.25em;
+
+                font-family: "Playfair Display", serif;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    z-index: -1;
+                    bottom: 0;
+                    left: 0;
+
+                    height: 2px;
+                    width: 100%;
+
+                    background: $color_indywalls_primary;
+
+                    transition: $transition_time_link;
+                }
+            }
         }
 
         & > *:hover,
         &.active > * {
-            color: $color_white;
-            background: $color_indywalls_primary;
+            & > span {
+                padding: 0.25em;
+
+                color: $color_white;
+
+                &::after {
+                    height: 1.75em;
+
+                    background: $color_indywalls_primary_light;
+                }
+            }
         }
     }
 }
@@ -277,15 +322,6 @@ option {
     font-family: inherit;
     font-size: 1rem;
     padding: 0.25rem 0.5rem;
-}
-
-.page-container {
-    width: 100%;
-    max-width: $max-width_content;
-
-    padding: 0 2em;
-
-    margin: 0 auto;
 }
 
 .page-header {
