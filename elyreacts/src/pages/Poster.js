@@ -139,6 +139,11 @@ export const Poster = ({ posterID, props }) => {
         }
     };
 
+    const getAdmireIcon = (fill) => {
+        if (!fill) return <span>❤</span>;
+        return <span className={cn.iconLikes}></span>;
+    };
+
     return (
         <div className='page-container'>
             <div className='page-header'>
@@ -158,7 +163,7 @@ export const Poster = ({ posterID, props }) => {
                             <ButtonAction
                                 onClickHandler={handleClickAdmire}
                                 activated={isAdmired}>
-                                ❤
+                                {getAdmireIcon(isAdmired)}
                             </ButtonAction>
                         </div>
                     )}
