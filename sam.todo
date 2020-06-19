@@ -1,0 +1,14 @@
+Still to do...
+
+✔ Style featured artists @done(20-06-19 16:04)
+✔ Style recommended posters @done(20-06-19 16:04)
+✔ Admired icon should match admires icon in components/Poster and pages/Poster @done(20-06-19 16:20)
+✔ Fix header buttons not closing Header @done(20-06-19 16:29)
+☐ PosterEdit page style
+☐ Fix small image on pages/Poster mobile view
+☐ Profile pictures displayed under posters
+☐ Fix footer to end of page (make page-content min-height 100%)
+☐ Fade featured images when loading on Homepage
+☐ Fix masonry re-render
+✔ Email HTML @done(20-06-19 17:54)
+☐ Orders page
