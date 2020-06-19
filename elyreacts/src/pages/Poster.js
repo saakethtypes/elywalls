@@ -40,14 +40,16 @@ export const Poster = ({ posterID, props }) => {
     }, []);
 
     let picUrl = null;
-    try {
-        let purl = poster.pictureURL.split("Db\\")[1];
-        console.log(purl);
-        picUrl = require("../assets/postersDb/" + purl);
-        console.log(picUrl);
-        // todo: what is this x=0 for??
-    } catch {
-        let x = 0;
+    if (poster) {
+        let purl = poster.pictureURL.split("Db")[1];
+
+        try {
+            picUrl = require("../assets/postersDb/" + purl.substring(1));
+        } catch (err) {
+            console.error(err);
+            // todo: This should NOT be included in production
+            picUrl = "https://source.unsplash.com/random";
+        }
     }
     // The following booleans are only used for state updates in this component.
     // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
@@ -68,15 +70,6 @@ export const Poster = ({ posterID, props }) => {
         caption:
             (poster && poster.caption) ||
             "This poster didn't come with a caption.",
-        //  ||
-        //     `A poster in the category ${poster && poster.category || 'Unknown'}, created by ${poster && poster.madeBy || 'Unknown'}.`,
-        // // which ever picture is not showing that is latest . to view that we need to use href = require(pictureURL)
-        //therefore delting whole db with invalid poster paths
-        // todo: //
-        // Store the images somewhere else, then you should use the fully-qualified URL when fetching the images. eg:
-        // images stored on Amazon S3 (or similar CDN)
-        // -- pictureURL should point to the image's location on the CDN
-        // -- alternatively, pictureURL could be a file blob, which is sent to the server as a request, and then the server sends the image data back
         price: (poster && poster.price) || 0.0,
         views: (poster && poster.views) || 0,
         admires: (poster && poster.admires) || 0,
@@ -153,11 +146,7 @@ export const Poster = ({ posterID, props }) => {
 
             <div className={`${cn.contentContainer} lower-content-container`}>
                 <div className={cn.imageContainer}>
-                    {picUrl !== null ? (
-                        <img src={picUrl} alt={poster.title} />
-                    ) : (
-                        <img src={picUrl} alt={poster.title} />
-                    )}
+                    <img src={picUrl} alt={poster.title} />
                     {log_status && (
                         <div className={`${cn.buttons}`}>
                             <ButtonAction
