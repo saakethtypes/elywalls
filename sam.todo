@@ -7,10 +7,10 @@ Still to do...
 ✔ Fix small image on pages/Poster mobile view @done(20-06-19 18:07)
 ✔ New button style on Homepage (grow underline behind text) @done(20-06-19 19:08)
 ✔ Fix footer to end of page (make page-content min-height 100%) @done(20-06-19 19:17)
-☐ Do not use Masonry on Home - instead, use a grid, with full-height (cropped) images.
+✔ Do not use Masonry on Home - instead, use a grid, with full-height (cropped) images. @done(20-06-20 15:04)
+✔ Profile pictures displayed under posters @done(20-06-20 15:04)
+✔ Email HTML @done(20-06-19 17:54)
 ☐ PosterEdit page style
-☐ Profile pictures displayed under posters
 ☐ Fade featured images when loading on Homepage
 ☐ Fix masonry re-render
-✔ Email HTML @done(20-06-19 17:54)
 ☐ Orders page

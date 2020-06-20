@@ -114,14 +114,11 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
 
             <div className={cn.caption}>
                 <Link to={`/profile/${poster.author}`} className={cn.authorImageContainer}>
-                    <img
-                        src='https://source.unsplash.com/random/128x128'
-                        alt={`${poster.author}`}
-                    />
+                    <img src='https://source.unsplash.com/random/128x128' alt={poster.author} />
                 </Link>
                 <h3>{poster.title}</h3>
                 <small>
-                    <a href={`/profile/${poster.author}`}>{`By ${poster.author}`}</a>
+                    By <a href={`/profile/${poster.author}`}>{poster.author}</a>
                 </small>
                 <div className={cn.admiresContainer}>
                     <span className={cn.iconLikes}></span>

@@ -7,6 +7,7 @@ import LinkButton from "../components/LinkButton";
 
 // @ts-ignore
 import cn from "./styles/Home.module.scss";
+import { Poster } from "../components/Poster";
 
 const FeaturedPostersList = ({ title, linkName }) => {
     const [posters, setPosters] = useState(null);
@@ -42,7 +43,13 @@ const FeaturedPostersList = ({ title, linkName }) => {
             <p>The latest from our {title} category</p>
 
             {err && <span>An error occurred</span>}
-            {posters && <PostersList posters={posters.slice(0, 4)} />}
+            {posters && (
+                <div className={cn.postersContainer}>
+                    {posters.slice(0, 3).map((poster, index) => (
+                        <Poster key={index} poster={poster} />
+                    ))}
+                </div>
+            )}
 
             <LinkButton href={`/posters/${linkName}`}>View {title}</LinkButton>
         </div>
@@ -94,9 +101,8 @@ export const Home = () => {
         <div className={`page-container`}>
             <div className={cn.gridContainer}>
                 <div className={`${cn.pageHeader} page-header`}>
-                    <h1 className={`page-title`}>Elywalls</h1>{" "}
-                    {/* todo: replace with logo (MAYBE) */}
-                    <p className={`page-preface`}>Elegant posters by independent artists</p>
+                    <h1>Elywalls</h1>
+                    <p>Elegant posters by independent artists</p>
                 </div>
 
                 <div className={cn.heroImage} ref={elHeroImage} />
@@ -132,8 +138,8 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className={`lower-content-container`}>
-                <div className={`hero-container`}>
+            <div className='lower-content-container'>
+                <div className='hero-container'>
                     <img src='https://source.unsplash.com/random' alt='Random image (temporary)' />
 
                     <div>

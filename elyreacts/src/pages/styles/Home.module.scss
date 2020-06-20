@@ -27,6 +27,21 @@
     grid-area: sections;
 }
 
+.postersContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    & > div {
+        flex: 1;
+
+        margin: 0 0.5rem;
+    }
+}
+
 @media only screen and (min-width: $media_width_tablet) {
     .gridContainer {
         grid-template-rows: repeat(2, minmax(min-content, auto));

@@ -1,4 +1,4 @@
-@import "../../variables.scss";// Variables
+@import "../../variables.scss"; // Variables
 
 $breakpoint_tablet: $media_width_tablet;
 $breakpoint_desktop: $max-width_content;
@@ -12,8 +12,8 @@ $color_text: $color_black;
 $color_text_alt: $color_indywalls_primary;
 $color_border: darken($color_white, 1);
 
-$transition_link: $transition_time_link ease-in-out;
-$transition_anim: $transition_time_anim ease-in-out;
+$transition_link: $transition_time_link;
+$transition_anim: $transition_time_anim;
 
 header.wrapper {
     position: sticky;
@@ -25,7 +25,7 @@ header.wrapper {
 
     background: $color_background;
 
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
 
     & * {
         box-sizing: content-box;
@@ -250,7 +250,7 @@ header.wrapper .container .menu {
 
         div.buttons {
             grid-area: 1/2/2/3;
-            
+
             box-sizing: border-box;
             display: flex;
             flex-direction: row;

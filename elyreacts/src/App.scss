@@ -9,7 +9,7 @@ html {
 body {
     background-color: $color_white;
 
-    min-height: 100vh;
+    // min-height: 100vh;
 }
 
 * {
@@ -130,13 +130,13 @@ img {
 
     & > span {
         padding: 0.5rem 1.5rem;
-        border: 0.15rem solid $color_grey_dark;
-        border-radius: 0.5rem;
+        border: 0.15rem solid $color_indywalls_primary;
+        // border-radius: 0.5rem;
 
         // Match <small /> text style
         font-size: 0.75rem;
         text-transform: uppercase;
-        color: $color_grey_dark;
+        color: $color_indywalls_primary;
 
         transition: $transition_time_link;
     }
@@ -155,7 +155,8 @@ img {
             // padding: 0.25rem 1.5rem; // todo: fix page jump
 
             color: $color_white;
-            background: $color_grey_dark;
+            border-color: $color_indywalls_primary_light;
+            background: $color_indywalls_primary_light;
         }
 
         & > ul {
@@ -182,7 +183,9 @@ ul.tiled-list {
     li {
         display: inline-block;
 
-        & > * {
+        margin: 0.25rem 0.5rem;
+
+        & > a {
             display: inline-block;
 
             padding: 0.75em 0;
