@@ -1,16 +1,13 @@
-import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
+import { GlobalContext } from "../context/GlobalState";
+
 import LinkButton from "../components/LinkButton";
-import { PostersList } from "../components/PostersList";
+import { Recommends } from "../components/Recommends";
 
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
-import { Recommends } from "../components/Recommends";
 
 const ButtonAction = ({ onClickHandler, activated = false, children }) => {
-    // todo: checkActiveFn is a function which checks the Active state of the button
-    // eg: checkActiveFn could return true if Poster is Admired
-    // this would then add the active class to the button
     return (
         <button className={`button-icon ${activated ? "active" : ""}`} onClick={onClickHandler}>
             {children}
@@ -18,47 +15,39 @@ const ButtonAction = ({ onClickHandler, activated = false, children }) => {
     );
 };
 
-export const Poster = ({ posterID, props }) => {
+const getPictureUrl = (pictureUrl) => {
+    try {
+        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+    } catch (err) {
+        // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+        return "https://source.unsplash.com/random";
+    }
+};
+
+export const Poster = ({ posterID }) => {
     let {
         user,
         cart,
-        log_status,
+        log_status: isLoggedIn,
         getPoster,
         admirePoster,
         unadmirePoster,
         addToCart,
         poster,
     } = useContext(GlobalContext);
-    const [signin, setsignin] = useState(false);
 
     useEffect(() => {
         getPoster(posterID);
-        console.log(user ? true : false);
-        user ? setsignin(true) : setsignin(false);
     }, []);
 
-    let picUrl = null;
-    if (poster) {
-        let purl = poster.pictureURL.split("Db")[1];
-
-        try {
-            picUrl = require("../assets/postersDb/" + purl.substring(1));
-        } catch (err) {
-            console.error(err);
-            // todo: This should NOT be included in production
-            picUrl = "https://source.unsplash.com/random";
-        }
-    }
-    // The following booleans are only used for state updates in this component.
-    // DO NOT use them to check the Admired/Cart status, use checkAdmires() and checkCart() instead.
-    const [isAdmired, setIsAdmired] = useState(true);
     const [admires, setAdmires] = useState((poster && poster.admires) || 0);
-    const [isAddedToCart, setIsAddedToCart] = useState(false);
-    const [inCart, setinCart] = useState(false); // todo: Set to num of posters already in user's cart
-    //let ss = require('../assets/postersDb/Hello Worldmr robot elliot tvseries1590922099565.jpeg')
+    const [isAdmired, setIsAdmired] = useState(
+        (poster && user && user.admires.filter((ap) => ap._id === poster._id).length !== 0) || false
+    );
+    const [isAddedToCart, setIsAddedToCart] = useState(
+        (poster && cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
+    );
 
-    // Sanitise poster data
-    // todo: Verify data server-side (or at least earlier in the flow, than this component)
     poster = {
         ...poster,
         id: (poster && poster._id) || posterID,
@@ -72,39 +61,18 @@ export const Poster = ({ posterID, props }) => {
     };
 
     const checkAdmires = () => {
-        // Check the users' Admired posters
         let match = [];
-
-        if (user) {
-            match = user.admires.filter((ap) => ap._id === poster._id);
-        } else console.warn("user is undefined");
+        if (user) match = user.admires.filter((ap) => ap._id === poster._id);
         return match.length > 0;
     };
 
     const checkCart = () => {
-        console.log("checking");
-        // Check the users' cart
-        // todo/fixme: This doesn't work because user is never updated.
-        // todo/fixme: Using this component's state to check cart for the time being
         let match = [];
-
-        if (user) {
-            setsignin(true);
-            match = cart.filter((ap) => ap.item._id === poster._id);
-        } else {
-            console.warn("user is undefined");
-        }
-        // if (user)
-        //   match = user.cart.filter((ap) => ap.item._id === poster._id);
-        // else
-        //   console.warn("user is undefined");
-
+        if (user) match = cart.filter((ap) => ap.item._id === poster._id);
         return match.length > 0;
-        //return isAddedToCart;
     };
 
     const handleClickAdmire = (e) => {
-        e.preventDefault();
         if (!checkAdmires()) {
             admirePoster(poster);
             setIsAdmired(true);
@@ -115,15 +83,13 @@ export const Poster = ({ posterID, props }) => {
             setAdmires(admires - 1);
         }
     };
+
     const handleClickCart = (e) => {
-        if (user) setsignin(true);
-        else setsignin(false);
         if (!checkCart()) {
             addToCart(poster._id);
             setIsAddedToCart(true);
         } else {
-            // todo: Notify user - Already added to cart
-            setinCart(true);
+            setIsAddedToCart(true);
             console.log("Already added to cart");
         }
     };
@@ -142,8 +108,8 @@ export const Poster = ({ posterID, props }) => {
 
             <div className={`${cn.contentContainer} lower-content-container`}>
                 <div className={cn.imageContainer}>
-                    <img src={picUrl} alt={poster.title} />
-                    {log_status && (
+                    <img src={getPictureUrl(poster.pictureUrl)} alt={poster.title} />
+                    {isLoggedIn && (
                         <div className={`${cn.buttons}`}>
                             <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
                                 {getAdmireIcon(isAdmired)}
@@ -173,17 +139,17 @@ export const Poster = ({ posterID, props }) => {
                     <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
 
                     <div className={`${cn.formContainer} form-container`}>
-                        {signin ? (
+                        {isLoggedIn ? (
                             <button onClick={handleClickCart} className='primary'>
                                 Add to Cart
                             </button>
                         ) : (
                             <LinkButton to='/login'>Sign in to Buy</LinkButton>
                         )}
-                        {!inCart ? (
+                        {!isAddedToCart ? (
                             <small>Add to your cart to purchase</small>
                         ) : (
-                            <small>{poster.title} is added to your cart</small>
+                            <small>{poster.title} is already in your cart</small>
                         )}
                     </div>
                 </div>

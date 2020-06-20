@@ -1,9 +1,11 @@
-import { GlobalContext } from "../context/GlobalState";
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalState";
+
+import LinkButton from "./LinkButton";
+
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
-import LinkButton from "./LinkButton";
-import { Link } from "react-router-dom";
 
 const ButtonAction = ({ onClickHandler, activated = false, children }) => {
     return (
@@ -55,20 +57,17 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
     const checkAdmires = () => {
         let match = [];
         if (user) match = user && user.admires.filter((ap) => ap._id === poster._id);
-        else console.warn("user is undefined");
-
-        console.log(match.length);
         return match.length > 0;
     };
 
-    const inCart = () => {
+    const checkCart = () => {
         let match = [];
         if (user) match = cart && cart.filter((ap) => ap.item._id === poster._id);
         return match.length > 0;
     };
 
     const handleClickAdmire = (e) => {
-        if (checkAdmires() != true) {
+        if (!checkAdmires()) {
             admirePoster(poster);
             setIsAdmired(true);
             setAdmires(admires + 1);
@@ -80,7 +79,7 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
     };
 
     const handleClickCart = (e) => {
-        if (!inCart()) {
+        if (!checkCart()) {
             addToCart(poster._id);
             setIsAddedToCart(true);
         }
