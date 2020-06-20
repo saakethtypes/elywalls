@@ -63,7 +63,10 @@ export const Home = () => {
         getTopArtists,
         artists,
     } = useContext(GlobalContext);
-    const elHeroImage = useRef(null);
+
+    // todo: Set full poster with info, instead of an image URL.
+    // This way, info can be placed into the text on the image.
+    const [heroImageUrl, setHeroImageUrl] = useState("https://source.unsplash.com/random/400x600");
 
     useEffect(() => {
         // getPosters("latest");
@@ -73,27 +76,22 @@ export const Home = () => {
 
     const setHeroImage = (type = "") => {
         // Todo: load posters from getPosters("popular"), and choose one poster per category
-        let bgImage = "";
         switch (type) {
             case "latest":
-                bgImage = "https://source.unsplash.com/random/1280x720";
+                setHeroImageUrl("https://source.unsplash.com/random/401x600");
                 break;
             case "textography":
-                bgImage = "https://source.unsplash.com/random/1440x900";
+                setHeroImageUrl("https://source.unsplash.com/random/402x600");
                 break;
             case "graphic-design":
-                bgImage = "https://source.unsplash.com/random/1399x900";
+                setHeroImageUrl("https://source.unsplash.com/random/403x600");
                 break;
             case "photoshop":
-                bgImage = "https://source.unsplash.com/random/1440x1200";
+                setHeroImageUrl("https://source.unsplash.com/random/404x600");
                 break;
             default:
-                bgImage = "https://source.unsplash.com/random/1280x768";
+                setHeroImageUrl("https://source.unsplash.com/random/405x600");
                 break;
-        }
-
-        if (elHeroImage) {
-            elHeroImage.current.style.backgroundImage = `url("${bgImage}")`;
         }
     };
 
@@ -105,7 +103,16 @@ export const Home = () => {
                     <p>Elegant posters by independent artists</p>
                 </div>
 
-                <div className={cn.heroImage} ref={elHeroImage} />
+                <div className={cn.heroImageContainer}>
+                    <Link to='/posters/all' className={cn.heroImage}>
+                        <img src={heroImageUrl} />
+                    </Link>
+
+                    <small className={cn.heroImageAuthor}>
+                        <Link to='/posters/all'>Welcome Poster</Link> by{" "}
+                        <Link to='/profile/test.artist'>Author Name</Link>
+                    </small>
+                </div>
 
                 <div className={cn.sectionLinkContainer}>
                     <ul className='style-none tiled-list'>

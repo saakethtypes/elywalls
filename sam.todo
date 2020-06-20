@@ -11,6 +11,7 @@ Still to do...
 ✔ Profile pictures displayed under posters @done(20-06-20 15:04)
 ✔ Email HTML @done(20-06-19 17:54)
 ✔ PosterEdit page style @done(20-06-20 15:22)
-☐ Fade featured images when loading on Homepage
+✘ Fade featured images when loading on Homepage @cancelled(20-06-20 15:47) // Until I can figure out how to do it. It's not that important anyway
+✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
 ☐ Fix masonry re-render
 ☐ Orders page
