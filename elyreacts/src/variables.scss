@@ -14,9 +14,9 @@ $color_text_grey: $color_grey_dark;
 $color_link: $color_indywalls_primary;
 $color_link_hover: $color_grey_dark;
 
-$transition_time_link: 0.12s;
-$transition_time_anim: 0.2s;
-$transition_time_anim_long: 0.86s;
+$transition_time_link: 0.14s ease-in-out;
+$transition_time_anim: 0.22s ease-in-out;
+$transition_time_anim_long: 0.86s ease-in-out;
 
 // BREAKPOINTS
 $media_width_tablet: 820px;
