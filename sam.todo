@@ -10,7 +10,7 @@ Still to do...
 ✔ Do not use Masonry on Home - instead, use a grid, with full-height (cropped) images. @done(20-06-20 15:04)
 ✔ Profile pictures displayed under posters @done(20-06-20 15:04)
 ✔ Email HTML @done(20-06-19 17:54)
-☐ PosterEdit page style
+✔ PosterEdit page style @done(20-06-20 15:22)
 ☐ Fade featured images when loading on Homepage
 ☐ Fix masonry re-render
 ☐ Orders page
