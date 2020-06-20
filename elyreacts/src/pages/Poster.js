@@ -12,9 +12,7 @@ const ButtonAction = ({ onClickHandler, activated = false, children }) => {
     // eg: checkActiveFn could return true if Poster is Admired
     // this would then add the active class to the button
     return (
-        <button
-            className={`button-icon ${activated ? "active" : ""}`}
-            onClick={onClickHandler}>
+        <button className={`button-icon ${activated ? "active" : ""}`} onClick={onClickHandler}>
             {children}
         </button>
     );
@@ -67,9 +65,7 @@ export const Poster = ({ posterID, props }) => {
         title: (poster && poster.title) || "Untitled",
         author: (poster && poster.madeBy) || "Unknown",
         category: (poster && poster.category) || "Unknown",
-        caption:
-            (poster && poster.caption) ||
-            "This poster didn't come with a caption.",
+        caption: (poster && poster.caption) || "This poster didn't come with a caption.",
         price: (poster && poster.price) || 0.0,
         views: (poster && poster.views) || 0,
         admires: (poster && poster.admires) || 0,
@@ -149,9 +145,7 @@ export const Poster = ({ posterID, props }) => {
                     <img src={picUrl} alt={poster.title} />
                     {log_status && (
                         <div className={`${cn.buttons}`}>
-                            <ButtonAction
-                                onClickHandler={handleClickAdmire}
-                                activated={isAdmired}>
+                            <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
                                 {getAdmireIcon(isAdmired)}
                             </ButtonAction>
                         </div>
@@ -161,10 +155,7 @@ export const Poster = ({ posterID, props }) => {
                 <div className={`${cn.informationContainer}`}>
                     <h3>{poster.title}</h3>
                     <small>
-                        By{" "}
-                        <a href={`/profile/${poster.author}`}>
-                            {poster.author}
-                        </a>
+                        By <a href={`/profile/${poster.author}`}>{poster.author}</a>
                     </small>
 
                     <div className={cn.admiresContainer}>
@@ -179,15 +170,11 @@ export const Poster = ({ posterID, props }) => {
 
                     <p>{poster.caption}</p>
 
-                    <strong className={cn.price}>
-                        {poster.price.toFixed(2)}
-                    </strong>
+                    <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
 
                     <div className={`${cn.formContainer} form-container`}>
                         {signin ? (
-                            <button
-                                onClick={handleClickCart}
-                                className='primary'>
+                            <button onClick={handleClickCart} className='primary'>
                                 Add to Cart
                             </button>
                         ) : (
@@ -206,11 +193,9 @@ export const Poster = ({ posterID, props }) => {
                 <div className='lower-content-container'>
                     <section>
                         <h2>Recommended</h2>
-                        <Recommends
-                            cat={poster.category}
-                            aid={poster.author}
-                            pid={poster._id}
-                        />
+                        <p>If you like {poster.title}, you'll probably like these too.</p>
+
+                        <Recommends cat={poster.category} aid={poster.author} pid={poster._id} />
                     </section>
                 </div>
             )}
@@ -224,10 +209,7 @@ export const FakePoster = () => {
             <div className={`${cn.previewContainer}`}>
                 <a href={`/posters/all`}>
                     {/* // todo: make this a placeholder image, like a sad face or something */}
-                    <img
-                        src={"https://source.unsplash.com/random/640x480"}
-                        alt={"Blank image"}
-                    />
+                    <img src={"https://source.unsplash.com/random/640x480"} alt={"Blank image"} />
                 </a>
             </div>
 

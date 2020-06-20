@@ -1,55 +1,45 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
 import LinkButton from "./LinkButton";
+import { Link } from "react-router-dom";
 
 const ButtonAction = ({ onClickHandler, activated = false, children }) => {
-    // todo: checkActiveFn is a function which checks the Active state of the button
-    // eg: checkActiveFn could return true if Poster is Admired
-    // this would then add the active class to the button
     return (
-        <button
-            className={`button-icon ${activated ? "active" : ""}`}
-            onClick={onClickHandler}>
+        <button className={`button-icon ${activated ? "active" : ""}`} onClick={onClickHandler}>
             {children}
         </button>
     );
+};
+
+const getPictureUrl = (pictureUrl) => {
+    try {
+        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+    } catch (err) {
+        // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+        return "https://source.unsplash.com/random";
+    }
 };
 
 export const Poster = ({ poster, cat = "", className = "" }) => {
     const {
         user,
         cart,
-        log_status,
+        log_status: isLoggedIn,
         admirePoster,
         unadmirePoster,
         addToCart,
-        getCart,
         removeFromCart,
     } = useContext(GlobalContext);
 
+    const [admires, setAdmires] = useState(poster.admires);
     const [isAdmired, setIsAdmired] = useState(
-        (user &&
-            user.admires.filter((ap) => ap._id === poster._id).length !== 0) ||
-            false
+        (user && user.admires.filter((ap) => ap._id === poster._id).length !== 0) || false
     );
     const [isAddedToCart, setIsAddedToCart] = useState(
-        (cart &&
-            cart.filter((ap) => ap.item._id === poster._id).length !== 0) ||
-            false
+        (cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
     );
-
-    const [admires, setAdmires] = useState(poster.admires);
-    let picUrl = null;
-    let purl = poster.pictureURL.split("Db")[1];
-    try {
-        // Cross-platform solution
-        picUrl = require("../assets/postersDb/" + purl.substring(1));
-    } catch (err) {
-        // todo/fixme: Remove this as it shouldn't be necessary outside of testing
-        picUrl = "https://source.unsplash.com/random";
-    }
 
     poster = {
         ...poster,
@@ -64,8 +54,7 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
 
     const checkAdmires = () => {
         let match = [];
-        if (user)
-            match = user && user.admires.filter((ap) => ap._id === poster._id);
+        if (user) match = user && user.admires.filter((ap) => ap._id === poster._id);
         else console.warn("user is undefined");
 
         console.log(match.length);
@@ -73,23 +62,17 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
     };
 
     const inCart = () => {
-        console.log("2) checking in cart or not", cart);
         let match = [];
-        if (user)
-            match = cart && cart.filter((ap) => ap.item._id === poster._id);
-        else console.warn("user is undefined");
-        console.log(match);
+        if (user) match = cart && cart.filter((ap) => ap.item._id === poster._id);
         return match.length > 0;
     };
 
     const handleClickAdmire = (e) => {
         if (checkAdmires() != true) {
-            console.log(`Like poster ${poster._id}`);
             admirePoster(poster);
             setIsAdmired(true);
             setAdmires(admires + 1);
         } else {
-            console.log(`Unlike poster ${poster._id}`);
             unadmirePoster(poster);
             setIsAdmired(false);
             setAdmires(admires - 1);
@@ -97,12 +80,9 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
     };
 
     const handleClickCart = (e) => {
-        console.log("1) clicked add to cart");
-        if (inCart() != true) {
+        if (!inCart()) {
             addToCart(poster._id);
             setIsAddedToCart(true);
-        } else {
-            console.log("Already added to cart");
         }
     };
 
@@ -111,39 +91,38 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
         return <span className={cn.iconLikes}></span>;
     };
 
-    const editPLink = `/edit-poster/${poster._id}`;
-
     return (
         <div className={`${className} ${cn.container}`}>
-            <div className={`${cn.previewContainer}`}>
+            <div className={cn.previewContainer}>
                 <a href={`/poster/${poster.id}`}>
-                    <img src={picUrl} alt={poster.tags} />
+                    <img src={getPictureUrl(poster.pictureURL)} alt={poster.caption} />
                 </a>
 
-                {log_status && (
-                    <div className={`${cn.buttons}`}>
-                        <ButtonAction
-                            onClickHandler={handleClickAdmire}
-                            activated={isAdmired}>
+                {isLoggedIn && (
+                    <div className={cn.buttons}>
+                        <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
                             {getAdmireIcon(isAdmired)}
                         </ButtonAction>
-                        <ButtonAction
-                            onClickHandler={handleClickCart}
-                            activated={isAddedToCart}>
+                        <ButtonAction onClickHandler={handleClickCart} activated={isAddedToCart}>
                             +
                         </ButtonAction>
-                        {cat == "postersMade" ? (
-                            <LinkButton to={editPLink}>Edit</LinkButton>
-                        ) : null}
+                        {cat === "postersMade" && (
+                            <LinkButton to={`/edit-poster/${poster._id}`}>✎</LinkButton>
+                        )}
                     </div>
                 )}
             </div>
 
-            <div className={`${cn.caption}`}>
+            <div className={cn.caption}>
+                <Link to={`/profile/${poster.author}`} className={cn.authorImageContainer}>
+                    <img
+                        src='https://source.unsplash.com/random/128x128'
+                        alt={`${poster.author}`}
+                    />
+                </Link>
                 <h3>{poster.title}</h3>
                 <small>
-                    <a
-                        href={`/profile/${poster.author}`}>{`By ${poster.author}`}</a>
+                    <a href={`/profile/${poster.author}`}>{`By ${poster.author}`}</a>
                 </small>
                 <div className={cn.admiresContainer}>
                     <span className={cn.iconLikes}></span>
@@ -158,17 +137,14 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
 export const FakePoster = ({ className = "" }) => {
     return (
         <div className={`${className} ${cn.container}`}>
-            <div className={`${cn.previewContainer}`}>
+            <div className={cn.previewContainer}>
                 <a href={`/all`}>
                     {/* // todo: make this a placeholder image, like a sad face or something */}
-                    <img
-                        src={"https://source.unsplash.com/random/640x480"}
-                        alt={"Blank image"}
-                    />
+                    <img src={"https://source.unsplash.com/random/640x480"} alt={"Blank image"} />
                 </a>
             </div>
 
-            <div className={`${cn.caption}`}>
+            <div className={cn.caption}>
                 <h3>Sorry!</h3>
                 <small>No results found</small>
             </div>

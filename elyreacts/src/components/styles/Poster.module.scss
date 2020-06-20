@@ -8,11 +8,11 @@
     // match widths, not heights
     width: 100%;
 
-    &:hover .previewContainer {
-        & > a > img {
-            filter: brightness(75%);
-        }
-    }
+    // &:hover .previewContainer {
+    //     & > a > img {
+    //         filter: brightness(75%);
+    //     }
+    // }
 }
 
 .previewContainer {
@@ -56,12 +56,12 @@
 
 .caption {
     display: grid;
-    grid-template-columns: minmax(0, max-content) auto minmax(0, max-content);
+    grid-template-columns: minmax(0, max-content) minmax(0, max-content) auto minmax(0, max-content);
     grid-template-rows: repeat(2, max-content);
 
     grid-template-areas:
-        "admires    title   price"
-        "admires    author  price";
+        "admires    authorImage    title   price"
+        "admires    authorImage    author  price";
 
     width: 100%;
     box-sizing: border-box;
@@ -76,6 +76,22 @@
         grid-area: author;
 
         margin-top: 0.5em;
+    }
+    & > .authorImageContainer {
+        grid-area: authorImage;
+        display: flex;
+        align-items: center;
+
+        margin-right: 0.5em;
+
+        & > img {
+            border-radius: 50%;
+
+            height: 2rem;
+            width: 2rem;
+
+            object-fit: cover;
+        }
     }
     & > .admiresContainer {
         grid-area: admires;

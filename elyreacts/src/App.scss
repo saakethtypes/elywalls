@@ -409,7 +409,13 @@ section {
                 border-radius: 50%;
                 border: 0.125rem solid $color_indywalls_primary;
 
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+
+                transition: $transition_time_anim_long;
+
+                &:hover {
+                    box-shadow: 0 0 8px transparentize($color_indywalls_primary, 0.35);
+                }
             }
 
             & > span {

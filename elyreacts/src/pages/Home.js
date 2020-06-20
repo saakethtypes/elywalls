@@ -96,9 +96,7 @@ export const Home = () => {
                 <div className={`${cn.pageHeader} page-header`}>
                     <h1 className={`page-title`}>Elywalls</h1>{" "}
                     {/* todo: replace with logo (MAYBE) */}
-                    <p className={`page-preface`}>
-                        Elegant posters by independent artists
-                    </p>
+                    <p className={`page-preface`}>Elegant posters by independent artists</p>
                 </div>
 
                 <div className={cn.heroImage} ref={elHeroImage} />
@@ -111,30 +109,22 @@ export const Home = () => {
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("textography")}>
-                            <Link
-                                className='button grow-underline'
-                                to='/posters/textography'>
+                            <Link className='button grow-underline' to='/posters/textography'>
                                 <span>Textography</span>
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("graphic-design")}>
-                            <Link
-                                className='button grow-underline'
-                                to='/posters/graphic-design'>
+                            <Link className='button grow-underline' to='/posters/graphic-design'>
                                 <span>Graphic Design</span>
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("photoshop")}>
-                            <Link
-                                className='button grow-underline'
-                                to='/posters/photoshop'>
+                            <Link className='button grow-underline' to='/posters/photoshop'>
                                 <span>Photoshop</span>
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("all")}>
-                            <Link
-                                className='button grow-underline'
-                                to='/posters/all'>
+                            <Link className='button grow-underline' to='/posters/all'>
                                 <span>All Posters</span>
                             </Link>
                         </li>
@@ -144,10 +134,7 @@ export const Home = () => {
 
             <div className={`lower-content-container`}>
                 <div className={`hero-container`}>
-                    <img
-                        src='https://source.unsplash.com/random'
-                        alt='Random image (temporary)'
-                    />
+                    <img src='https://source.unsplash.com/random' alt='Random image (temporary)' />
 
                     <div>
                         <h2>Elegant Posters</h2>
@@ -161,19 +148,16 @@ export const Home = () => {
 
                 <section>
                     <h2>Featured Artists</h2>
+                    <p>Featured Elywalls artists with top-selling content</p>
 
                     <ul>
                         {artists &&
                             artists.map((artist) => (
-                                <li
-                                    key={artist.username}
-                                    className='featuredArtist'>
+                                <li key={artist.username} className='featuredArtist'>
                                     <a href={`/profile/${artist.username}`}>
                                         {/* todo: Add profile pictures */}
                                         <img
-                                            src={
-                                                "https://source.unsplash.com/random/600x600"
-                                            }
+                                            src={"https://source.unsplash.com/random/600x600"}
                                             alt={artist.name}
                                         />
                                         <span>{artist.name}</span>
@@ -185,18 +169,9 @@ export const Home = () => {
                 </section>
 
                 <FeaturedPostersList title='Latest' linkName='latest' />
-                <FeaturedPostersList
-                    title='Photography'
-                    linkName='photography'
-                />
-                <FeaturedPostersList
-                    title='Textography'
-                    linkName='textography'
-                />
-                <FeaturedPostersList
-                    title='Graphic Design'
-                    linkName='graphic-design'
-                />
+                <FeaturedPostersList title='Photography' linkName='photography' />
+                <FeaturedPostersList title='Textography' linkName='textography' />
+                <FeaturedPostersList title='Graphic Design' linkName='graphic-design' />
                 <FeaturedPostersList title='Photoshop' linkName='photoshop' />
             </div>
         </div>
