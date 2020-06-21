@@ -13,15 +13,11 @@ export const Cart = () => {
   const {cart, getCart, pay} = useContext(GlobalContext);
   const toa = () => {
     let totall = 0;
-    console.log(totall);
     cart.map((cart_item) => {
-      console.log(cart_item);
-      console.log(totall);
       // todo/fixme: price_with_quantity is undefined so this doesn't actually work
       console.log(totall, cart_item.price_with_quantity);
       totall += cart_item.price_with_quantity;
     });
-    console.log("totall: ", totall);
     return totall;
   };
   const totall = toa();

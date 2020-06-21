@@ -5,6 +5,7 @@ import auth from "../auth";
 import {Redirect} from "react-router-dom";
 import {v4} from 'uuid';
 
+
 let logUser = JSON.parse(localStorage.getItem('currentUser') || null);
 let ls = false;
 let usercart = null;
@@ -17,7 +18,6 @@ if (logUser) {
         usercart = logUser.cart;
         useradmired = logUser.admires;
     }
-
     usercart = logUser.cart;
     useradmired = logUser.admires;
     ls = true;
@@ -293,11 +293,11 @@ export const GlobalProvider = ({children}) => {
             };
 
             let ress = await axios.get("/admired-posters", config);
-            console.log("admires", ress.data.posters);
+            console.log("admires", ress.data);
 
             dispatch({
                 type: "GET_ADMIRED_POSTERS",
-                admires: ress.data.posters,
+                 admires: ress.data.posters,
             });
 
             localStorage.setItem('currentUser', JSON.stringify(state.user));

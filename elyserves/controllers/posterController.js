@@ -219,19 +219,6 @@ exports.getArtistPopular = async (req, res, next) => {
   }
 };
 
-function getUnique(arr, comp) {
-
-  // store the comparison  values in array
-const unique =  arr.map(e => e[comp])
-
-// store the indexes of the unique objects
-.map((e, i, final) => final.indexOf(e) === i && i)
-
-// eliminate the false indexes & return unique objects
-.filter((e) => arr[e]).map(e => arr[e]);
-
-return unique;
-}
 
 exports.getRecommends = async (req, res, next) => {
   try {
@@ -264,10 +251,10 @@ exports.getRecommends = async (req, res, next) => {
      
      pool = pool.sort(() => 0.5 - Math.random());
      console.log(pool.length)
-  let finalpool = getUnique(pool,'_id')
-    console.log(finalpool.length)
+  // let finalpool = getUnique(pool,'_id')
+    console.log(pool.length)
    
-    let selected = pool.slice(0, 12);
+    let selected = pool.slice(0, 20);
     return res.status(200).json({
       success: true,
       recommends: selected
@@ -585,7 +572,7 @@ exports.removeFromCart = async (req, res, next) => {
     }
     if (req.user.utype === "buyer") {
       result = await User.findByIdAndUpdate({_id: req.user.id},
-        {$pull: {cart: cartt}});
+        {$pull: {cart: {_id: req.params.cid}}});
       result = await User.findById({_id: req.user.id});
     }
     await Cart.findByIdAndDelete({_id: cartt[0]._id});
@@ -636,8 +623,8 @@ exports.getPostersAdmired = async (req, res, next) => {
       result = await Artist.findById({_id: req.user.id});
       result = result.admires;
     }
-    if (req.body.utype === "buyer") {
-      result = await User.findById(req.user.id);
+    if (req.user.utype === "buyer") {
+      result = await User.findById({_id: req.user.id});
       result = result.admires;
     }
     console.log(result.length);
@@ -660,7 +647,7 @@ exports.getArtistsAdmired = async (req, res, next) => {
       result = await Artist.findById({_id: req.user.id});
       result = result.admired_artists;
     }
-    if (req.body.utype === "buyer") {
+    if (req.user.utype === "buyer") {
       result = await User.findById(req.user.id);
       result = result.admires;
     }
@@ -715,7 +702,7 @@ exports.pay = async (req, res, next) => {
         response => res.json(response)
       ).catch(err => res.json({err: err}));
     }
-    if (req.body.utype === "buyer") {
+    if (req.user.utype === "buyer") {
       result = await User.findById(req.user.id);
       result = result.admires;
     }
@@ -738,8 +725,8 @@ exports.createPosterIg = async (req, res, next) => {
       result = await Artist.findById({_id: req.user.id});
       result = result.admires;
     }
-    if (req.body.utype === "buyer") {
-      result = await User.findById(req.user.id);
+    if (req.user.utype === "buyer") {
+      result = await User.findById({_id: req.user.id});
       result = result.admires;
     }//TODO add madeby to poster
     return res.status(200).json({

@@ -2,12 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
 
-import {
-    FormInput,
-    FormCheckboxInput,
-    FormDropdownInput,
-} from "../components/FormInput";
-
+import { FormInput, FormCheckboxInput, FormDropdownInput } from '../components/FormInput';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //@ts-ignore
 import cn from "./styles/PosterUpload.module.scss";
 
@@ -25,9 +22,10 @@ export const PosterUpload = () => {
     const [category, setCategory] = useState("");
     const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
 
-    const handleImageUpload = (picture) => {
-        setPictures(picture);
-    };
+
+  const handleImageUpload = picture => {
+    setPictures(picture);
+  };
 
     const handleFormSubmit = (e) => {
         e.preventDefault();

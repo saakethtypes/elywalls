@@ -209,7 +209,6 @@ exports.resetPass = async (req, res, next) => {
     console.log(thisReq);
     if (thisReq) {
       let resa = await Artist.findOne({email: thisReq.email});
-      let resu = await User.findOne({_id: thisReq.uid});
       let ua = resa ? "artist" : "user";
       const pass = req.body.password;
       const salt = bcrypt.genSaltSync(10);
@@ -339,36 +338,6 @@ exports.verify = async (req, res, next) => {
       res.send({veri: true});
     }
   });
-};
-
-
-exports.editProfile = async (req, res, next) => {
-  try {
-    if (req.user.utype === "artist") {
-      const editted_artist = {
-        quote: req.body.quote,
-        igLink: req.body.igLink,
-        name: req.body.name,
-        email: req.body.email,
-      };
-      await Artist.findByIdAndUpdate({_id: req.user.id}, {editted_artist});
-    } else {
-      const editted_user = {
-        name: req.body.name,
-        email: req.body.email,
-      };
-      await User.findByIdAndUpdate({_id: req.user.id}, {editted_user});
-    }
-    return res.status(200).json({
-      success: true,
-      msg: "Editted",
-    });
-  } catch (error) {
-    return res.status(521).json({
-      success: false,
-      err: error,
-    });
-  }
 };
 
 

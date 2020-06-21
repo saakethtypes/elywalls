@@ -2,130 +2,196 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 
-import LinkButton from "./LinkButton";
-
 // @ts-ignore
-import cn from "./styles/Poster.module.scss";
+import cn from './styles/Poster.module.scss';
+import LinkButton from './LinkButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const ButtonAction = ({ onClickHandler, activated = false, children }) => {
-    return (
-        <button className={`button-icon ${activated ? "active" : ""}`} onClick={onClickHandler}>
-            {children}
-        </button>
-    );
+const ButtonAction = ({
+  onClickHandler,
+  activated = false,
+  children
+}) => {
+  // todo: checkActiveFn is a function which checks the Active state of the button
+  // eg: checkActiveFn could return true if Poster is Admired
+  // this would then add the active class to the button
+  return (
+    <button
+      className={`button-icon ${activated ? 'active' : ''}`}
+      onClick={onClickHandler}>
+      {children}
+    </button>
+  );
 };
 
-const getPictureUrl = (pictureUrl) => {
-    try {
-        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
-    } catch (err) {
-        // todo/fixme: Remove this as it shouldn't be necessary outside of testing
-        return "https://source.unsplash.com/random";
+export const Poster = ({
+  poster,
+  cat = '',
+  className = ''
+}) => {
+  const {
+    user,
+    cart,
+    log_status,
+    admirePoster,
+    unadmirePoster,
+    addToCart,
+    getCart,
+    removeFromCart
+  } = useContext(GlobalContext);
+
+  const [isAdmired, setIsAdmired] = useState(
+    user && user.admires.filter((ap) => ap._id === poster._id).length !== 0 || false
+  );
+  const [isAddedToCart, setIsAddedToCart] = useState(
+    cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0 || false
+  );
+
+  const [admires, setAdmires] = useState(poster.admires);
+  let picUrl = null;
+  let purl = poster.pictureURL.split('Db')[1];
+  try {
+    // Cross-platform solution
+    picUrl = require("../assets/postersDb/" + purl.substring(1));
+  } catch (err) {
+    // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+    picUrl = 'https://source.unsplash.com/random';
+  }
+
+  poster = {
+    ...poster,
+    id: poster._id,
+    title: poster.title || 'Untitled',
+    author: poster.madeBy || 'Unknown',
+    caption: poster.caption || 'Caption',
+    price: poster.price || 0.0,
+    views: poster.views || 0,
+    admires: poster.admires || 0
+  };
+
+
+  const checkAdmires = () => {
+    let match = [];
+    if (user)
+      match = user && user.admires.filter((ap) => ap._id === poster._id);
+    else
+      console.warn("user is undefined");
+
+    console.log(match.length);
+    return match.length > 0;
+  };
+
+  const inCart = () => {
+    console.log("2) checking in cart or not", cart);
+    let match = [];
+    if (user)
+      match = cart && cart.filter((ap) => ap.item._id === poster._id);
+    else
+      console.warn("user is undefined");
+    console.log(match);
+    return match.length > 0;
+  };
+
+  const handleClickAdmire = (e) => {
+    e.preventDefault()
+    if (checkAdmires() != true) {
+      console.log(`Like poster ${poster._id}`);
+      admirePoster(poster);
+      setIsAdmired(true);
+      setAdmires(admires + 1);
+      toast('🦄 Added to Admires', {
+        position: "bottom-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    } else {
+      console.log(`Unlike poster ${poster._id}`);
+      unadmirePoster(poster);
+      setIsAdmired(false);
+      setAdmires(admires - 1);
     }
-};
+  };
 
-export const Poster = ({ poster, cat = "", className = "" }) => {
-    const {
-        user,
-        cart,
-        log_status: isLoggedIn,
-        admirePoster,
-        unadmirePoster,
-        addToCart,
-        removeFromCart,
-    } = useContext(GlobalContext);
+  const handleClickCart = (e) => {
 
-    const [admires, setAdmires] = useState(poster.admires);
-    const [isAdmired, setIsAdmired] = useState(
-        (user && user.admires.filter((ap) => ap._id === poster._id).length !== 0) || false
-    );
-    const [isAddedToCart, setIsAddedToCart] = useState(
-        (cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
-    );
+    console.log("1) clicked add to cart");
+    if (inCart() != true) {
+      toast('🦄 Added to cart ', {
+        position: "bottom-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      addToCart(poster._id);
+      setIsAddedToCart(true);
+    } else {
+      toast('🦄 In cart', {
+        position: "bottom-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      console.log("Already added to cart");
+    }
+  };
 
-    poster = {
-        ...poster,
-        id: poster._id,
-        title: poster.title || "Untitled",
-        author: poster.madeBy || "Unknown",
-        caption: poster.caption || "Caption",
-        price: poster.price || 0.0,
-        views: poster.views || 0,
-        admires: poster.admires || 0,
-    };
+  const editPLink = `/edit-poster/${poster._id}`;
 
-    const checkAdmires = () => {
-        let match = [];
-        if (user) match = user && user.admires.filter((ap) => ap._id === poster._id);
-        return match.length > 0;
-    };
+  return (
+    <div className={`${className} ${cn.container}`}>
+      <ToastContainer
+position="bottom-right"
+autoClose={1500}
+hideProgressBar
+newestOnTop
+closeOnClick
+rtl
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
+      <div className={`${cn.previewContainer}`}>
+        <a href={`/poster/${poster.id}`}>
+          <img src={picUrl} alt={poster.tags} />
+        </a>
 
-    const checkCart = () => {
-        let match = [];
-        if (user) match = cart && cart.filter((ap) => ap.item._id === poster._id);
-        return match.length > 0;
-    };
+        {log_status &&
+          <div className={`${cn.buttons}`}>
+            <ButtonAction
+              onClickHandler={handleClickAdmire}
+              activated={isAdmired}>
+              ❤
+          </ButtonAction>
+            <ButtonAction
+              onClickHandler={handleClickCart}
+              activated={isAddedToCart}>
+              +
+          </ButtonAction>
+            {cat == "postersMade" ?
+              <LinkButton to={editPLink} >Edit</LinkButton>
+              : null}
+          </div>}
+      </div>
 
-    const handleClickAdmire = (e) => {
-        if (!checkAdmires()) {
-            admirePoster(poster);
-            setIsAdmired(true);
-            setAdmires(admires + 1);
-        } else {
-            unadmirePoster(poster);
-            setIsAdmired(false);
-            setAdmires(admires - 1);
-        }
-    };
-
-    const handleClickCart = (e) => {
-        if (!checkCart()) {
-            addToCart(poster._id);
-            setIsAddedToCart(true);
-        }
-    };
-
-    const getAdmireIcon = (fill) => {
-        if (!fill) return <span>❤</span>;
-        return <span className={cn.iconLikes}></span>;
-    };
-
-    return (
-        <div className={`${className} ${cn.container}`}>
-            <div className={cn.previewContainer}>
-                <a href={`/poster/${poster.id}`}>
-                    <img src={getPictureUrl(poster.pictureURL)} alt={poster.caption} />
-                </a>
-
-                {isLoggedIn && (
-                    <div className={cn.buttons}>
-                        <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
-                            {getAdmireIcon(isAdmired)}
-                        </ButtonAction>
-                        <ButtonAction onClickHandler={handleClickCart} activated={isAddedToCart}>
-                            +
-                        </ButtonAction>
-                        {cat === "postersMade" && (
-                            <LinkButton to={`/edit-poster/${poster._id}`}>✎</LinkButton>
-                        )}
-                    </div>
-                )}
-            </div>
-
-            <div className={cn.caption}>
-                <Link to={`/profile/${poster.author}`} className={cn.authorImageContainer}>
-                    <img src='https://source.unsplash.com/random/128x128' alt={poster.author} />
-                </Link>
-                <h3>{poster.title}</h3>
-                <small>
-                    By <a href={`/profile/${poster.author}`}>{poster.author}</a>
-                </small>
-                <div className={cn.admiresContainer}>
-                    <span className={cn.iconLikes}></span>
-                    <strong>{admires}</strong>
-                </div>
-                <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
-            </div>
+      <div className={`${cn.caption}`}>
+        <h3>{poster.title}</h3>
+        <small><a href={`/profile/${poster.author}`}>{`By ${poster.author}`}</a></small>
+        <div className={cn.admiresContainer}>
+          <span className={cn.iconLikes}></span>
+          <strong>{admires}</strong>
+        </div>
+        </div>
         </div>
     );
 };

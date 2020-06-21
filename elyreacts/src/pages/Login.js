@@ -4,7 +4,8 @@ import {GlobalContext} from "../context/GlobalState";
 import {FormInput} from "../components/FormInput";
 import {Link} from "react-router-dom";
 import {v4} from 'uuid';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // @ts-ignore
 import cn from './styles/Login.module.scss';
 
@@ -19,6 +20,15 @@ export const Login = (props) => {
     login(username, password, props);
     setUsername("");
     setPassword("");
+    toast.success('🦄 Wow so easy!', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   };
 
   const [fp, setfp] = useState(false);
@@ -42,7 +52,17 @@ export const Login = (props) => {
         <h1 className="page-title">Sign In</h1>
         <p className="page-preface">Sign in to Admire and purchase products, or <Link to="/register">click here to register</Link>.</p>
       </div>
-
+      <ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
       {!fp &&
         <div className={`form-container`}>
           <form onSubmit={handleFormSubmit}>

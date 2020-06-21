@@ -21,8 +21,6 @@ export const CartItem = ({
     };
     let picUrl = null
     try{  let purl = ci.item.pictureURL.split('Db\\')[1] 
-    console.log("../assets/postersDb/"+purl)
-    console.log(ci.item._id,ci.item.title)
     picUrl = require("../assets/postersDb/"+purl)
 }catch{let x = 0}
 
