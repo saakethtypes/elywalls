@@ -11,9 +11,5 @@ Full stack E-commerce platform to buy and sell posters &amp; art made by indepen
 * Website - Search, Recommendation of posters, Popular posters, Top-selling Posters .etc 
 
 # Screens
-![Home](https://imgur.com/0wAFIJU)
-![Wall]()
-![Artist]()
-![Cart]()
-![Stripe]()
+![Imgur](https://imgur.com/a/blNDpEv)
 
