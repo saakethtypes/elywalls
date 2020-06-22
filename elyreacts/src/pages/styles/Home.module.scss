@@ -27,13 +27,13 @@
         bottom: 1rem;
         right: 1rem;
 
-        color: $color_white;
+        color: $color_text;
 
         & > a {
-            color: $color_white;
+            color: $color_text;
 
             &:hover {
-                color: $color_indywalls_primary_light;
+                color: $color_brand_primary_light;
             }
         }
     }

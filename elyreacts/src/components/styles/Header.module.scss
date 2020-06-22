@@ -6,12 +6,6 @@ $max_header_width: $media_width_retina;
 
 $header_height: 3.5rem;
 
-$color_background: $color_white;
-$color_background_alt: darken($color_white, 1);
-$color_text: $color_black;
-$color_text_alt: $color_indywalls_primary;
-$color_border: darken($color_white, 1);
-
 $transition_link: $transition_time_link;
 $transition_anim: $transition_time_anim;
 
@@ -23,7 +17,7 @@ header.wrapper {
     height: $header_height;
     width: 100%;
 
-    background: $color_background;
+    background: $color_background_alt;
 
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
 
@@ -48,7 +42,7 @@ header.wrapper .container {
     padding: 0 1.5rem;
 
     margin: 0 auto;
-    border-bottom: 1px solid $color_border;
+    border-bottom: 1px solid $color_background;
 
     & > .logo {
         & > img {
@@ -133,7 +127,7 @@ header.wrapper .container .menu {
 
     width: 100%;
 
-    background: $color_background;
+    background: $color_background_alt;
 
     transition: $transition_anim;
 
@@ -145,7 +139,7 @@ header.wrapper .container .menu {
         height: 100vh;
         width: 100vw;
 
-        background: $color_background;
+        background: $color_background_alt;
 
         transition: $transition_anim;
     }
@@ -173,8 +167,7 @@ header.wrapper .container .menu {
             transition: $transition_link;
 
             &:hover {
-                color: $color_text_alt;
-                background: $color_background_alt;
+                background: $color_background;
             }
         }
     }
@@ -186,9 +179,9 @@ header.wrapper .container .menu {
         grid-template-rows: 1fr;
 
         padding: 1rem 1.5rem;
-        border-top: 1px solid $color_border;
+        border-top: 1px solid $color_background;
 
-        background: $color_background;
+        background: $color_background_alt;
 
         & > * {
             margin-right: 1rem;
@@ -214,7 +207,7 @@ header.wrapper .container .menu {
 @media only screen and (min-width: $breakpoint_tablet) {
     header.wrapper {
         height: 6.5rem;
-        border-bottom: 1px solid $color_border;
+        border-bottom: 1px solid $color_background;
     }
 
     header.wrapper .container {
