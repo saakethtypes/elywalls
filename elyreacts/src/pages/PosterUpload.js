@@ -2,11 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
 
-import {
-    FormInput,
-    FormCheckboxInput,
-    FormDropdownInput,
-} from "../components/FormInput";
+import { FormInput, FormCheckboxInput, FormDropdownInput } from "../components/FormInput";
 
 //@ts-ignore
 import cn from "./styles/PosterUpload.module.scss";
@@ -139,8 +135,8 @@ export const PosterUpload = () => {
                 </form>
 
                 <small>
-                    By publishing your work, you declare that the work and all
-                    contained elements are entirely your work.
+                    By publishing your work, you declare that the work and all contained elements
+                    are entirely your work.
                 </small>
             </div>
         </div>

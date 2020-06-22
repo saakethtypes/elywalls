@@ -59,8 +59,8 @@ export const PosterEdit = ({ posterID }) => {
     return (
         <div className='page-container'>
             <div className='page-header'>
-                <h1>{title}</h1>
-        <p>{caption}</p>
+                <h1>Edit Poster</h1>
+                <p>Editing poster: {title}</p>
             </div>
 
             <div className={`${cn.contentContainer} lower-content-container`}>

@@ -7,7 +7,7 @@ html {
     overflow-x: hidden;
 }
 body {
-    background-color: $color_white;
+    background-color: $color_background;
 
     // min-height: 100vh;
 }
@@ -54,7 +54,7 @@ h5,
 h6 {
     font-family: "Montserrat";
 
-    color: $color_black;
+    color: $color_text;
 }
 
 h1 {
@@ -71,7 +71,7 @@ h3,
 h4 {
     font-weight: 500;
 
-    color: $color_grey_dark;
+    color: $color_grey;
 }
 
 h3 {
@@ -87,7 +87,7 @@ p {
 
     line-height: 1.5em;
 
-    color: $color_black;
+    color: $color_text;
 }
 
 small {
@@ -95,21 +95,17 @@ small {
     line-height: 1.25em;
     text-transform: uppercase;
 
-    color: $color_grey_dark;
+    color: $color_grey;
 }
 
 b,
 strong {
     font-weight: 700;
-
-    color: $color_black;
 }
 
 i,
 em {
     font-style: italic;
-
-    color: $color_black;
 }
 
 img {
@@ -130,13 +126,13 @@ img {
 
     & > span {
         padding: 0.5rem 1.5rem;
-        border: 0.15rem solid $color_indywalls_primary;
+        border: 0.15rem solid $color_brand_primary;
         // border-radius: 0.5rem;
 
         // Match <small /> text style
         font-size: 0.75rem;
         text-transform: uppercase;
-        color: $color_indywalls_primary;
+        color: $color_brand_primary;
 
         transition: $transition_time_link;
     }
@@ -154,9 +150,9 @@ img {
         & > span {
             // padding: 0.25rem 1.5rem; // todo: fix page jump
 
-            color: $color_white;
-            border-color: $color_indywalls_primary_light;
-            background: $color_indywalls_primary_light;
+            color: $color_background;
+            border-color: $color_brand_primary_light;
+            background: $color_brand_primary_light;
         }
 
         & > ul {
@@ -215,7 +211,7 @@ ul.tiled-list {
                     height: 2px;
                     width: 100%;
 
-                    background: $color_indywalls_primary;
+                    background: $color_brand_primary;
 
                     transition: $transition_time_link;
                 }
@@ -227,12 +223,12 @@ ul.tiled-list {
             & > span {
                 padding: 0.25em;
 
-                color: $color_white;
+                color: $color_background;
 
                 &::after {
                     height: 1.75em;
 
-                    background: $color_indywalls_primary_light;
+                    background: $color_brand_primary_light;
                 }
             }
         }
@@ -243,28 +239,29 @@ button {
     padding: 1rem 1.5rem;
     border: none;
 
-    background: $color_grey_dark;
+    background: $color_grey;
 
     font-family: inherit;
     font-weight: 700;
     text-transform: uppercase;
-    color: $color_white;
+    color: $color_text;
 
     transition: $transition_time_link;
 
     &:hover {
-        background: $color_grey_dark_light;
+        background: $color_grey_light;
     }
 
     &.button-primary {
-        background: $color_indywalls_primary;
+        background: $color_brand_primary;
 
         &:hover {
-            background: $color_indywalls_primary_light;
+            background: $color_brand_primary_light;
         }
     }
 
     &.button-icon {
+        // todo: Is this even used?
         height: 1em;
         width: 1em;
         box-sizing: content-box;
@@ -272,18 +269,18 @@ button {
         padding: 0.75rem;
         border-radius: 50%;
 
-        background: $color_white;
+        background: $color_background;
         color: $color_grey_dark;
 
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
         &:hover {
-            color: $color_indywalls_primary;
+            color: $color_brand_primary;
         }
 
         &.active {
-            background: $color_indywalls_primary;
-            color: $color_white;
+            background: $color_brand_primary;
+            color: $color_text;
         }
     }
 }
@@ -343,7 +340,7 @@ option {
         width: 25%;
         height: 0.15rem;
 
-        background: $color_indywalls_primary;
+        background: $color_brand_primary;
     }
 
     & > h1 {
@@ -410,14 +407,14 @@ section {
                 object-fit: contain;
 
                 border-radius: 50%;
-                border: 0.125rem solid $color_indywalls_primary;
+                border: 0.125rem solid $color_brand_primary;
 
                 box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 
                 transition: $transition_time_anim_long;
 
                 &:hover {
-                    box-shadow: 0 0 8px transparentize($color_indywalls_primary, 0.35);
+                    box-shadow: 0 0 8px transparentize($color_brand_primary, 0.35);
                 }
             }
 
@@ -466,7 +463,7 @@ section {
     margin-top: 2.5rem;
     padding: 0rem 2rem;
 
-    border: 0.2rem solid $color_indywalls_primary;
+    border: 0.2rem solid $color_brand_primary;
     border-top: none;
     border-bottom: none;
 
@@ -492,7 +489,7 @@ section {
         height: 100%;
 
         & > h2 {
-            color: $color_indywalls_primary;
+            color: $color_brand_primary;
         }
 
         & > p {
@@ -544,7 +541,7 @@ section {
 
         & > *:nth-child(4n + 3),
         & > *:nth-child(4n-4) {
-            background: #ededee;
+            background: $color_background_alt;
         }
     }
 

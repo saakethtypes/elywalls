@@ -5,7 +5,7 @@ footer.container {
 
     margin-top: 2.5rem;
 
-    background: $color_black;
+    background: $color_background_alt;
 }
 
 .content {
@@ -15,9 +15,9 @@ footer.container {
     margin: 0 auto;
     padding: 1rem 2rem;
 
-    color: $color_white;
+    color: $color_text;
 
     & > span {
-        color: $color_indywalls_primary;
+        color: $color_brand_primary;
     }
 }
