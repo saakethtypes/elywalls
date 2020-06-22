@@ -13,5 +13,7 @@ Still to do...
 ✔ PosterEdit page style @done(20-06-20 15:22)
 ✘ Fade featured images when loading on Homepage @cancelled(20-06-20 15:47) // Until I can figure out how to do it. It's not that important anyway
 ✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
-☐ Fix masonry re-render
-☐ Orders page
+✔ Dark theme @done(20-06-22 19:56)
+☐ pages/Artist profile
+☐ pages/Orders
+☐ Force Masonry re-render when resizing viewport
