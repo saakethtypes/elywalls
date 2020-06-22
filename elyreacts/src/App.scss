@@ -1,0 +1,601 @@
+@import "./variables.scss";
+
+html {
+    font-family: "Jost", "Montserrat", "Roboto", sans-serif;
+    font-size: 16px;
+
+    overflow-x: hidden;
+}
+body {
+    background-color: $color_white;
+
+    // min-height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.page-container {
+    // todo: Consider changing 100vh to 100%, enabling footer to fill space
+    min-height: 100vh;
+
+    width: 100%;
+    max-width: $max-width_content;
+
+    margin: 0 auto;
+    padding: 0 2em;
+}
+
+p > a,
+span > a,
+a {
+    display: inline-block;
+
+    color: $color_link;
+    text-decoration: none;
+
+    &,
+    & > * {
+        transition: $transition_time_link;
+    }
+
+    &:hover,
+    &:hover > * {
+        color: $color_link_hover;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat";
+
+    color: $color_black;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 3rem;
+}
+h2 {
+    font-weight: 300;
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+h3,
+h4 {
+    font-weight: 500;
+
+    color: $color_grey_dark;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+h4 {
+    font-size: 0.75rem;
+}
+
+p {
+    max-width: 72ch;
+    margin: 0.5rem auto 0 auto;
+
+    line-height: 1.5em;
+
+    color: $color_black;
+}
+
+small {
+    font-size: 0.75rem;
+    line-height: 1.25em;
+    text-transform: uppercase;
+
+    color: $color_grey_dark;
+}
+
+b,
+strong {
+    font-weight: 700;
+
+    color: $color_black;
+}
+
+i,
+em {
+    font-style: italic;
+
+    color: $color_black;
+}
+
+img {
+    filter: brightness(1);
+    transition: $transition_time_anim_long;
+
+    &:hover {
+        filter: brightness(0.85);
+    }
+}
+
+// Has child <ul>
+.tiled-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    & > span {
+        padding: 0.5rem 1.5rem;
+        border: 0.15rem solid $color_indywalls_primary;
+        // border-radius: 0.5rem;
+
+        // Match <small /> text style
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: $color_indywalls_primary;
+
+        transition: $transition_time_link;
+    }
+
+    & > ul {
+        overflow: hidden;
+
+        max-height: 0;
+        margin-top: 0.5rem;
+
+        transition: $transition_time_anim;
+    }
+
+    &:hover {
+        & > span {
+            // padding: 0.25rem 1.5rem; // todo: fix page jump
+
+            color: $color_white;
+            border-color: $color_indywalls_primary_light;
+            background: $color_indywalls_primary_light;
+        }
+
+        & > ul {
+            max-height: 32em;
+        }
+    }
+}
+
+ul.style-none {
+    list-style-type: none;
+
+    li {
+        display: inline-block;
+    }
+}
+
+ul.tiled-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    li {
+        display: inline-block;
+
+        margin: 0.25rem 0.5rem;
+
+        & > a {
+            display: inline-block;
+
+            padding: 0.75em 0;
+            border-radius: 0;
+
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+
+            transition: $transition_time_link;
+
+            & > span {
+                position: relative;
+
+                padding: 0.25em;
+
+                font-family: "Playfair Display", serif;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    z-index: -1;
+                    bottom: 0;
+                    left: 0;
+
+                    height: 2px;
+                    width: 100%;
+
+                    background: $color_indywalls_primary;
+
+                    transition: $transition_time_link;
+                }
+            }
+        }
+
+        & > *:hover,
+        &.active > * {
+            & > span {
+                padding: 0.25em;
+
+                color: $color_white;
+
+                &::after {
+                    height: 1.75em;
+
+                    background: $color_indywalls_primary_light;
+                }
+            }
+        }
+    }
+}
+
+button {
+    padding: 1rem 1.5rem;
+    border: none;
+
+    background: $color_grey_dark;
+
+    font-family: inherit;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color_white;
+
+    transition: $transition_time_link;
+
+    &:hover {
+        background: $color_grey_dark_light;
+    }
+
+    &.button-primary {
+        background: $color_indywalls_primary;
+
+        &:hover {
+            background: $color_indywalls_primary_light;
+        }
+    }
+
+    &.button-icon {
+        height: 1em;
+        width: 1em;
+        box-sizing: content-box;
+
+        padding: 0.75rem;
+        border-radius: 50%;
+
+        background: $color_white;
+        color: $color_grey_dark;
+
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+        &:hover {
+            color: $color_indywalls_primary;
+        }
+
+        &.active {
+            background: $color_indywalls_primary;
+            color: $color_white;
+        }
+    }
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 2.5rem 0;
+
+    & > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    & > small {
+        max-width: 16rem;
+        margin-top: 0.5rem;
+
+        text-align: center;
+    }
+
+    & > button,
+    & > form > button {
+        margin: 1.5rem 0 0 0;
+        width: 16rem;
+    }
+}
+
+input,
+select,
+option {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.page-header {
+    position: relative;
+
+    max-width: max-content;
+
+    margin: 2.5rem auto 1rem auto; // 1rem to replace bottom padding
+    padding: 1rem;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 37.5%; // 25% + (25% / 2)
+        width: 25%;
+        height: 0.15rem;
+
+        background: $color_indywalls_primary;
+    }
+
+    & > h1 {
+        text-align: center;
+    }
+
+    & > p {
+        margin-top: 1.5rem;
+
+        text-align: center;
+        text-transform: uppercase;
+    }
+}
+
+.lower-content-container {
+    margin-top: 2.5rem;
+
+    & > p {
+        text-align: center;
+    }
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-top: 2.5rem;
+
+    width: 100%;
+
+    & > h2,
+    & > h3,
+    & > p {
+        text-align: center;
+    }
+
+    & > p,
+    & > ul {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        width: 100%;
+        margin-top: 1.5rem;
+    }
+
+    & > ul > li {
+        max-width: max-content;
+
+        & > a {
+            display: flex;
+            flex-direction: column;
+
+            margin: 1.5rem 0.5rem 0 0.5rem;
+
+            & > img {
+                width: 8rem;
+                height: 8rem;
+
+                object-fit: contain;
+
+                border-radius: 50%;
+                border: 0.125rem solid $color_indywalls_primary;
+
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+
+                transition: $transition_time_anim_long;
+
+                &:hover {
+                    box-shadow: 0 0 8px transparentize($color_indywalls_primary, 0.35);
+                }
+            }
+
+            & > span {
+                margin: 1rem auto 0 auto;
+                text-align: center;
+            }
+
+            & > small {
+                margin: 0.5rem auto 0 auto;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.collection-container {
+    display: grid;
+    grid-auto-rows: minmax(min-content, max-content);
+    grid-gap: 1rem;
+    justify-items: center;
+
+    margin-top: 2.5rem;
+
+    width: 100%;
+
+    & > div,
+    & > div > div {
+        width: 100%;
+    }
+
+    & > a {
+        padding: 1rem 2.5rem;
+    }
+}
+
+.hero-container {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(min-content, max-content));
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+
+    width: 100%;
+    max-width: $max-width_content;
+
+    margin-top: 2.5rem;
+    padding: 0rem 2rem;
+
+    border: 0.2rem solid $color_indywalls_primary;
+    border-top: none;
+    border-bottom: none;
+
+    // Grid areas
+    & > img {
+        grid-row: 1 / 1 / 2 / 2;
+
+        display: inline-block;
+
+        max-height: 16rem;
+        width: 100%;
+
+        object-fit: cover;
+    }
+    & > div {
+        grid-area: 2 / 1 / 3 / 2;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        height: 100%;
+
+        & > h2 {
+            color: $color_indywalls_primary;
+        }
+
+        & > p {
+            margin: 0.5rem 0 0 0;
+        }
+
+        & > a {
+            margin: 2.5rem 0 0 0;
+        }
+    }
+}
+
+.information-container {
+    width: 100%;
+
+    & > h2,
+    & > h3,
+    & > p {
+        text-align: center;
+    }
+
+    & > p {
+        margin-top: 1.5rem;
+    }
+
+    & > .information-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 1fr;
+
+        width: max-content;
+
+        margin: 0 auto;
+
+        & > *:nth-child(2n-1) {
+            // Column left
+            padding: 0.5rem 1rem 0.5rem 0.5rem;
+
+            color: $color_grey_dark;
+            text-align: right;
+        }
+
+        & > *:nth-child(2n) {
+            // Column right
+            padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+
+            text-align: left;
+        }
+
+        & > *:nth-child(4n + 3),
+        & > *:nth-child(4n-4) {
+            background: #ededee;
+        }
+    }
+
+    & > a,
+    & > button {
+        margin: 1.5rem auto 0 auto;
+    }
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-top: 1.5rem;
+
+    & > a,
+    & > button {
+        margin: 0.25rem;
+    }
+}
+
+@media only screen and (min-width: $media_width_tablet) {
+    .hero-container {
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr 1fr;
+
+        // Grid areas
+        & > img {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+        & > div {
+            grid-area: 1 / 2 / 2 / 3;
+
+            align-items: flex-start;
+
+            & > p {
+                text-align: left;
+            }
+        }
+    }
+
+    .buttons-container {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+
+        & > a,
+        & > button {
+            margin: 0.25rem 0.5rem;
+        }
+    }
+}

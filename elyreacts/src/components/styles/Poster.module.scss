@@ -1,0 +1,134 @@
+@import "../../variables.scss";
+
+.container {
+    display: grid;
+    grid-template-rows: auto max-content;
+
+    width: 100%;
+    min-width: 16rem;
+}
+
+.previewContainer {
+    position: relative;
+
+    overflow: hidden;
+
+    & > a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    & > a > img {
+        width: 100%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        // This makes no difference when using Masonry
+        // but it tidies up the display when using fixed heights
+        // (on the homepage for example)
+        object-fit: cover;
+
+        background: $color_grey_dark;
+
+        transition: $transition_time_anim_long;
+    }
+
+    .buttons {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        grid-gap: 0.5rem;
+
+        transition: $transition_time_anim;
+    }
+}
+
+.caption {
+    display: grid;
+    grid-template-columns: max-content max-content auto max-content;
+    grid-template-rows: repeat(2, max-content);
+
+    grid-template-areas:
+        "admires    authorImage    title   price"
+        "admires    authorImage    author  price";
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 1em 0;
+
+    & > h3 {
+        grid-area: title;
+        text-transform: uppercase;
+
+        max-width: max-content;
+
+        margin-right: 0.25rem;
+    }
+    & > small {
+        grid-area: author;
+
+        margin-top: 0.25rem;
+    }
+    & > .authorImageContainer {
+        grid-area: authorImage;
+        display: flex;
+        align-items: center;
+
+        margin-right: 0.5rem;
+
+        & > img {
+            border-radius: 50%;
+
+            height: 2rem;
+            width: 2rem;
+
+            object-fit: cover;
+        }
+    }
+    & > .admiresContainer {
+        grid-area: admires;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin-right: 0.5rem;
+
+        & > strong {
+            margin-top: 0.25rem;
+        }
+    }
+    & > strong.price {
+        grid-area: price;
+        align-self: center;
+
+        text-align: right;
+    }
+}
+
+.iconLikes {
+    display: inline-block;
+
+    width: 1rem;
+    height: 1rem;
+
+    // Correct icon offset
+    margin: -0.1rem 0.075rem 0.1rem -0.075rem;
+
+    background-image: url("../../assets/images/heart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
