@@ -24,14 +24,14 @@ export const PosterEdit = ({ posterID }) => {
     poster = {
         ...poster,
         id: (poster && poster._id) || posterID,
-        title: (poster && poster.title) || "Untitled",
+        title: (poster && poster.title) || "Edit Title",
         author: (poster && poster.madeBy) || "Unknown",
         category: (poster && poster.category) || "Unknown",
-        caption: (poster && poster.caption) || "Caption",
+        caption: (poster && poster.caption) || "Edit Caption",
         price: (poster && poster.price) || 0.0,
         views: (poster && poster.views) || 0,
         admires: (poster && poster.admires) || 0,
-        tags: (poster && poster.tags) || "Unknown",
+        tags: (poster && poster.tags) || "Edit Tags",
     };
 
     const [title, setTitle] = useState(poster.title);

@@ -108,7 +108,7 @@ export const Poster = ({ posterID }) => {
 
             <div className={`${cn.contentContainer} lower-content-container`}>
                 <div className={cn.imageContainer}>
-                    <img src={getPictureUrl(poster.pictureUrl)} alt={poster.title} />
+                    <img src={getPictureUrl(poster.pictureURL)} alt={poster.title} />
                     {isLoggedIn && (
                         <div className={`${cn.buttons}`}>
                             <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>

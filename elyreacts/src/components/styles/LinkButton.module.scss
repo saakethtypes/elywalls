@@ -14,23 +14,23 @@
     font-weight: 700;
     letter-spacing: 0.15em;
 
-    color: $color_white;
+    color: $color_text;
 
     transition: $transition_time_link;
 
     &:hover {
-        background: $color_grey_dark_light;
+        background: $color_grey;
 
-        color: $color_white;
+        color: $color_text;
     }
 
     &.primary {
-        background: $color_indywalls_primary;
+        background: $color_brand_primary;
 
         &:hover {
-            background: $color_indywalls_primary_light;
+            background: $color_brand_primary_light;
 
-            color: $color_white;
+            color: $color_text;
         }
     }
 }

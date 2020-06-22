@@ -41,7 +41,7 @@
         }
         &:focus,
         &[value=""]:not(:invalid) {
-            border-color: $color_grey_dark;
+            border-color: $color_grey;
         }
     }
 
@@ -73,7 +73,7 @@
         font-size: 1rem;
         text-transform: uppercase;
 
-        color: $color_grey_dark;
+        color: $color_grey;
     }
 
     & > .radioOptionsContainer {
@@ -91,7 +91,7 @@
                 display: inline-block;
                 text-transform: uppercase;
 
-                color: $color_grey_light;
+                color: $color_text;
 
                 padding: 0.5em 1em;
 
@@ -105,9 +105,9 @@
 
                 &:checked + label {
                     font-weight: bolder;
-                    color: $color_white;
+                    color: $color_text;
 
-                    background: $color_indywalls_primary;
+                    background: $color_brand_primary;
                 }
             }
         }
@@ -128,7 +128,7 @@
         font-size: 1rem;
         text-transform: uppercase;
 
-        color: $color_grey_dark;
+        color: $color_grey;
 
         &::before {
             content: "";
@@ -141,7 +141,7 @@
             height: 1.25rem;
             width: 1.25rem;
 
-            background: $color_grey_dark;
+            background: $color_grey;
 
             transition: $transition_time_link;
         }
@@ -155,7 +155,7 @@
 
         &:checked + label {
             &::before {
-                background: $color_indywalls_primary;
+                background: $color_brand_primary;
             }
         }
     }
@@ -178,7 +178,7 @@
         font-size: 1rem;
         text-transform: uppercase;
 
-        color: $color_grey_dark;
+        color: $color_grey;
 
         transition: $transition_time_link;
     }
@@ -192,13 +192,13 @@
         width: 16rem; // todo: make all widths 100% to fill containing element
 
         border: none;
-        border-left: 0.15rem solid $color_grey_dark;
+        border-left: 0.15rem solid $color_grey;
         box-sizing: border-box;
 
         margin: 1.5rem 0 0 0;
 
-        background: $color_white;
-        border: 0.15rem solid $color_grey_dark;
+        background: $color_background;
+        border: 0.15rem solid $color_grey;
         // line-height: 1.5em; // todo: line-height on EVERYTHING
 
         transition: $transition_time_anim;
@@ -211,7 +211,7 @@
         }
         &:focus,
         &[value=""]:not(:invalid) {
-            border-color: $color_grey_dark;
+            border-color: $color_grey;
         }
     }
 }

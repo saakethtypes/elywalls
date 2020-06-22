@@ -2,11 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
 
-import {
-    FormInput,
-    FormCheckboxInput,
-    FormDropdownInput,
-} from "../components/FormInput";
+import { FormInput, FormCheckboxInput, FormDropdownInput } from "../components/FormInput";
 
 //@ts-ignore
 import cn from "./styles/PosterUpload.module.scss";
@@ -73,6 +69,10 @@ export const PosterUpload = () => {
                     onChange={handleImageUpload}
                     imgExtension={[".jpeg", ".jpg", ".gif", ".png", ".gif"]}
                     maxFileSize={MAX_IMAGE_SIZE}
+                    singleImage={true}
+                    label='Accepted .jpeg | .jpg | .png'
+                    buttonText='Choose Poster'
+                    withPreview={true}
                 />
 
                 <form onSubmit={handleFormSubmit}>
@@ -135,8 +135,8 @@ export const PosterUpload = () => {
                 </form>
 
                 <small>
-                    By publishing your work, you declare that the work and all
-                    contained elements are entirely your work.
+                    By publishing your work, you declare that the work and all contained elements
+                    are entirely your work.
                 </small>
             </div>
         </div>
