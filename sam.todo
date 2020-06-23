@@ -14,7 +14,8 @@ Still to do...
 ✘ Fade featured images when loading on Homepage @cancelled(20-06-20 15:47) // Until I can figure out how to do it. It's not that important anyway
 ✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
 ✔ Dark theme @done(20-06-22 19:56)
-☐ pages/Artist profile
+✔ pages/Artist profile @done(20-06-24 00:20)
 ☐ Correct shadow colours on Home
 ☐ pages/Orders
+☐ Loading pages/icons
 ☐ Force Masonry re-render when resizing viewport
