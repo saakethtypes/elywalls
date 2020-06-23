@@ -5,7 +5,10 @@ import { StripeCustomers } from "../components/StripeCustomers";
 import { PostersList } from "../components/PostersList";
 import LinkButton from "../components/LinkButton";
 import { Link } from "react-router-dom";
- 
+
+// @ts-ignore
+import cn from "./styles/Profile.module.scss";
+
 export const Profile = ({ artistId }) => {
     const getPictureUrl = (pictureUrl) => {
         try {
@@ -15,7 +18,7 @@ export const Profile = ({ artistId }) => {
             return "https://source.unsplash.com/random";
         }
     };
-    
+
     let { artist, user, getArtist } = useContext(GlobalContext);
     useEffect(() => {
         getArtist(artistId);
@@ -28,21 +31,28 @@ export const Profile = ({ artistId }) => {
     return (
         <div className='page-container'>
             <div className='page-header'>
-            <img src={getPictureUrl(ap.dpURL)} alt={ap.name} />
+                <img src={getPictureUrl(ap.dpURL)} alt={ap.name} />
                 <h1>{ap.name}</h1>
                 <p>@{ap.username}</p>
                 <p>
                     Posts {ap.postersmade.length} | {ap.profileViews} Views
                 </p>
-            </div>
-         
+
                 <div className='special-link-container'>
                     <Link to='/account/edit'>Report this user</Link>
                 </div>
 
-            <div className='collection-container'>
+                <div className={cn.imageContainer}>
+                    <img
+                        src={"https://source.unsplash.com/random/480x480"}
+                        alt={`${artist.name} on Elywalls`}
+                    />
+                </div>
+            </div>
+
+            <div className={`${cn.contentContainer} collection-container`}>
                 <h2>Published</h2>
-                <PostersList posters={ap.postersmade} />
+                <PostersList posters={artist.postersmade} />
             </div>
         </div>
     );
