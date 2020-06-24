@@ -15,7 +15,7 @@ Still to do...
 ✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
 ✔ Dark theme @done(20-06-22 19:56)
 ✔ pages/Artist profile @done(20-06-24 00:20)
-☐ Correct shadow colours on Home
+✔ Correct shadow colours on Home @done(20-06-24 10:08)
 ☐ pages/Orders
 ☐ Loading pages/icons
 ☐ Force Masonry re-render when resizing viewport
