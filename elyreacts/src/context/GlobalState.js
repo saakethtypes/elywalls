@@ -10,6 +10,7 @@ let ls = false;
 let usercart = null;
 let logArtist = null;
 let useradmired = null;
+let userorders = null;
 
 if (logUser) {
     console.log(logUser);
@@ -17,9 +18,11 @@ if (logUser) {
         logArtist = logUser;
         usercart = logUser.cart;
         useradmired = logUser.admires || [];
+        userorders = logUser.bought_posters || []
     } else {
         usercart = logUser.cart;
         useradmired = logUser.admires || [];
+        userorders = logUser.bought_posters || []
     }
 
     ls = true;
@@ -28,6 +31,7 @@ if (logUser) {
     ls = false;
     usercart = null;
     useradmired = null;
+    userorders = null
 }
 const initialState = {
     posters: {
@@ -47,7 +51,8 @@ const initialState = {
     recommends: null,
     total: 0,
     admires: useradmired,
-    order_placed:0
+    order:0,
+    orders:userorders
 };
 
 export const GlobalContext = createContext(initialState);
@@ -300,6 +305,35 @@ export const GlobalProvider = ({ children }) => {
 
             localStorage.setItem("currentUser", JSON.stringify(state.user));
             console.log("saved after getting carts");
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+
+    async function getOrders() {
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt"),
+                },
+            };
+            console.log("reached order gs", config);
+
+            let ress = await axios.get("/orders", config).catch((err) => {
+                console.log(err.response);
+            });
+            console.log(ress.data);
+            dispatch({
+                type: "ORDER_GET",
+                orders: ress.data.orders
+            });
+
+            localStorage.setItem("currentUser", JSON.stringify(state.user));
+            console.log("saved after getting order");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -770,6 +804,31 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+
+    async function getOrder(oid) {
+        try {
+            console.log(oid)
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt"),
+                },
+            };
+            const res = await axios.get(`/order/${oid}`, config);
+            console.log(res.data);
+            dispatch({
+                type: "ORDER_SINGLE_GET",
+                order: res.data.order,
+            });
+        } catch (err) {
+            console.log(err)
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+
     async function pay(body,props) {
         try {
             const config = {
@@ -795,6 +854,8 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+
+
     return (
         <GlobalContext.Provider
             value={{
@@ -810,7 +871,8 @@ export const GlobalProvider = ({ children }) => {
                 total: state.total,
                 admires: state.admires,
                 recommends: state.recommends,
-                order_placed: state.order_placed,
+                order: state.order,
+                orders: state.orders,
                 login,
                 logout,
                 persistLog,
@@ -823,6 +885,8 @@ export const GlobalProvider = ({ children }) => {
                 getProfileUser,
                 getPosters,
                 getCart,
+                getOrders,
+                getOrder,
                 pay,
                 getArtist,
                 getPoster,

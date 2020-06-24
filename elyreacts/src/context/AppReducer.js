@@ -215,9 +215,21 @@ const appreducer = (state, action) => {
         case "PAY":
                 return {
                     ...state,
-                    order_placed: action.order_placed
+                    order: action.order_placed
                 };
     
+        case "ORDER_GET":
+            console.log(action.orders)
+            return {
+                ...state,
+                orders:action.orders
+            };
+        case "ORDER_SINGLE_GET":
+            console.log(action.order)
+            return {
+                ...state,
+                order:action.order
+            };
         default:
             return state;
 

@@ -12,7 +12,7 @@ import cn from "./styles/Profile.module.scss";
 
 const getPictureUrl = (pictureUrl) => {
     try {
-        console.log("...", pictureUrl);
+        console.log("...",pictureUrl)
         return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
     } catch (err) {
         // todo/fixme: Remove this as it shouldn't be necessary outside of testing

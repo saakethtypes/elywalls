@@ -64,12 +64,13 @@ export default () => {
                             <li>
                                 <Link to='/posters'>Posters</Link>
                             </li>
-
+                            
                             {user && (
                                 <>
                                     <li>
                                         <Link to='/admires'>Admires</Link>
                                     </li>
+                                    
                                     <li>
                                         <Link to='/cart'>Cart</Link>
                                     </li>
@@ -97,7 +98,7 @@ export default () => {
                                 </div>
                             </>
                         )}
-
+                    
                         {user && user.user_type === "artist" && (
                             <>
                                 <LinkButton primary to='/publish-poster'>
@@ -108,12 +109,14 @@ export default () => {
 
                         {user && (
                             <div className={cn.account}>
+                                <Link to='/orders'>Orders</Link>
                                 <Link to='/account'>Account</Link>
                                 <Link to='/' onClick={handleLogout}>
                                     Sign Out
                                 </Link>
                             </div>
                         )}
+                        
                     </div>
                 </div>
             </div>

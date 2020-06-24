@@ -20,6 +20,8 @@ import './App.scss';
 import {Poster} from './pages/Poster';
 import history from './components/history';
 import {Thankyou} from './pages/Thankyou';
+import { OrdersList } from './components/OrdersList';
+import { Order } from './components/Order';
 
 function App() {
 
@@ -43,6 +45,10 @@ function App() {
               render={props => <Profile artistId={props.match.params.artistId || ''} {...props} />}
             />
 
+            <Route exact 
+            path="/order/:oid" 
+            render={props => <Order oid={props.match.params.oid} {...props} />} />
+            <ProtectedRoute exact path="/orders" component={OrdersList} />
             <ProtectedRoute exact path="/cart" component={Cart} />
             <ProtectedRoute exact path="/admires" component={Admired} />
             <ProtectedRoute exact path="/publish-poster" component={PosterUpload} />

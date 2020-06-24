@@ -762,6 +762,44 @@ exports.getArtistsAdmired = async (req, res, next) => {
     }
 };
 
+exports.getOrders = async (req, res, next) => {
+    try {
+        let result = 0;
+        if (req.user.utype === "artist") {
+            result = await Artist.findById({ _id: req.user.id });
+            result = result.order_history;
+        }
+        if (req.user.utype === "buyer") {
+            result = await User.findById(req.user.id);
+            result = result.order_history;
+        }
+        return res.status(200).json({
+            success: true,
+            orders: result,
+        });
+    } catch (error) {
+        return res.status(520).json({
+            success: false,
+            err: error,
+        });
+    }
+};
+
+exports.getOrder = async (req, res, next) => {
+    try {
+        let result = await Order.findById({ _id: req.params.oid });
+        return res.status(200).json({
+            success: true,
+            order: result,
+        });
+    } catch (error) {
+        return res.status(520).json({
+            success: false,
+            err: error,
+        });
+    }
+};
+
 exports.pay = async (req, res, next) => {
     try {
         let result = 0;
