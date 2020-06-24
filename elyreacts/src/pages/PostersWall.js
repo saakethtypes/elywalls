@@ -18,7 +18,7 @@ export const PostersWall = ({ category = "latest" }) => {
         getPosters(category);
     }, [category]);
 
-    if (error) <span>An error occurred: {error.message}</span>;
+    if (error) return <span>An error occurred: {error.message}</span>;
     if (!posters) return <LoadingIcon />;
 
     return (
