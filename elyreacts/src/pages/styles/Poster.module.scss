@@ -277,6 +277,8 @@
 
         & > strong {
             margin-top: 0.25rem;
+
+            color: $color_text_alt;
         }
     }
     & > strong.price {
