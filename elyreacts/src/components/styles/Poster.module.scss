@@ -106,6 +106,10 @@
 
         margin-right: 0.5rem;
 
+        & > span {
+            margin: 0 auto;
+        }
+
         & > strong {
             margin-top: 0.25rem;
 
