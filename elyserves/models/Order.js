@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
 const Cart = require("./Cart");
-const User = require("./User");
+const Artist = require("./Artist");
 
 const OrderSchema = new mongoose.Schema({
-    purchased: {
+  purchased_items: {
     type: [Cart.schema]
   },
     purchasedBy:{
-        type:[User.schema]
+        type:[String],
     },
     payment_status:{
         type:Boolean
+    },
+    billing_adress:{
+      type:String,
+    },
+    transaction_id:{
+      type:String
     },
     total_price:{
       type:Number

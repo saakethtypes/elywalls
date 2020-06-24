@@ -23,7 +23,7 @@ const getPictureUrl = (pictureUrl) => {
         return "https://source.unsplash.com/random";
     }
 };
-
+let liked = true 
 export const Poster = ({ posterID }) => {
     let {
         user,
@@ -33,6 +33,7 @@ export const Poster = ({ posterID }) => {
         admirePoster,
         unadmirePoster,
         addToCart,
+        admires,
         poster,
     } = useContext(GlobalContext);
 
@@ -40,13 +41,7 @@ export const Poster = ({ posterID }) => {
         getPoster(posterID);
     }, []);
 
-    const [admires, setAdmires] = useState((poster && poster.admires) || 0);
-    const [isAdmired, setIsAdmired] = useState(
-        (poster && user && user.admires.filter((ap) => ap._id === poster._id).length !== 0) || false
-    );
-    const [isAddedToCart, setIsAddedToCart] = useState(
-        (poster && cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
-    );
+    
 
     poster = {
         ...poster,
@@ -60,9 +55,18 @@ export const Poster = ({ posterID }) => {
         admires: (poster && poster.admires) || 0,
     };
 
+    const [admiresp, setAdmiresp] = useState( poster && poster.admires );
+    const [isAdmired, setIsAdmired] = useState(
+        (poster && user && admires.filter((ap) => ap._id === poster._id).length !== 0) || false
+    );
+    const [isAddedToCart, setIsAddedToCart] = useState(
+        (poster && cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
+    );
+
     const checkAdmires = () => {
         let match = [];
-        if (user) match = user.admires.filter((ap) => ap._id === poster._id);
+        if (user) match = admires.filter((ap) => ap._id === poster._id);
+        console.log(match)
         return match.length > 0;
     };
 
@@ -73,14 +77,16 @@ export const Poster = ({ posterID }) => {
     };
 
     const handleClickAdmire = (e) => {
-        if (!checkAdmires()) {
+        if (!checkAdmires() ) {
+            liked = true
             admirePoster(poster);
             setIsAdmired(true);
-            setAdmires(admires + 1);
+            setAdmiresp(admiresp + 1);
         } else {
+            liked = false
             unadmirePoster(poster);
             setIsAdmired(false);
-            setAdmires(admires - 1);
+            setAdmiresp(admiresp - 1);
         }
     };
 
@@ -126,7 +132,7 @@ export const Poster = ({ posterID }) => {
 
                     <div className={cn.admiresContainer}>
                         <span className={cn.iconLikes}></span>
-                        <strong>{admires}</strong>
+                        <strong>{admiresp}</strong>
                     </div>
 
                     <div className={cn.viewsContainer}>

@@ -43,9 +43,11 @@ const initialState = {
     artists: null,
     log_status: ls,
     utype: null,
+    artist:null,
     recommends: null,
     total: 0,
     admires: useradmired,
+    order_placed:0
 };
 
 export const GlobalContext = createContext(initialState);
@@ -70,15 +72,31 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function registerArtist(artist) {
+    async function registerArtist(artist,dp) {
         try {
+            console.log("object",dp)
+            const formData = new FormData();
+            formData.append(
+                "artistDp",
+                dp,
+                String(artist.name) + String(artist.igLink)
+            );
+            formData.append("name", artist.name);
+            formData.append("linkedIg", artist.igLink);
+            formData.append("email", artist.email);
+            formData.append("password", artist.password);
+            formData.append("phone", artist.phone);
+            formData.append("username", artist.username);
             const config = {
                 headers: {
-                    "Content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            await axios.post("/register-artist", artist, config);
+            console.log("gs regists")
+            const res = await axios.post("/register-artist", formData, config);
         } catch (err) {
+
+            console.log(err)
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -468,7 +486,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function deletePoster(pid) {
+    async function deletePoster(pid,props) {
         try {
             const config = {
                 headers: {
@@ -478,6 +496,7 @@ export const GlobalProvider = ({ children }) => {
             };
             const res = await axios.delete(`/poster/${pid}`, config);
             console.log(res.data.msg);
+            return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -486,7 +505,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function editPoster(pid, editted_poster) {
+    async function editPoster(pid, editted_poster,props) {
         console.log("object");
         try {
             const config = {
@@ -502,6 +521,8 @@ export const GlobalProvider = ({ children }) => {
                 type: "EDIT_POSTER",
                 editted_poster: editted_poster,
             });
+            return props.history.push(`/poster/${pid}`);
+
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -669,7 +690,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function createPoster(new_poster, picture) {
+    async function createPoster(new_poster, picture,props) {
         try {
             const formData = new FormData();
             formData.append(
@@ -695,6 +716,8 @@ export const GlobalProvider = ({ children }) => {
                 type: "CREATE_POSTER",
                 poster_created: res.data.poster_created,
             });
+            console.log(`/profile/${state.user.username}`)
+            return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -747,7 +770,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function pay(body) {
+    async function pay(body,props) {
         try {
             const config = {
                 headers: {
@@ -755,11 +778,15 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            await axios.post(`/pay`, body, config);
+            const res = await axios.post(`/pay`, body, config);
+           console.log(res.data)
             dispatch({
                 type: "PAY",
+                order_placed:res.data
             });
             console.log("Paid");
+            return props.history.push('/thank-you');
+
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -783,6 +810,7 @@ export const GlobalProvider = ({ children }) => {
                 total: state.total,
                 admires: state.admires,
                 recommends: state.recommends,
+                order_placed: state.order_placed,
                 login,
                 logout,
                 persistLog,

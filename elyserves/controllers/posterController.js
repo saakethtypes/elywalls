@@ -221,6 +221,7 @@ exports.getPoster = async (req, res, next) => {
 exports.getArtist = async (req, res, next) => {
     try {
         const result = await Artist.find({ username: req.params.auname });
+        console.log(result)
         await Artist.findByIdAndUpdate({ _id: result[0]._id }, { $inc: { profileViews: 1 } });
         return res.status(200).json({
             success: true,
@@ -319,8 +320,9 @@ exports.getRecommends = async (req, res, next) => {
 };
 
 exports.getPostersPopular = async (req, res, next) => {
-    try {
-        const result = await Poster.find({ bestSeller: true });
+    try {  
+        console.log("popularr")      
+        const result = await Poster.find({}).limit(10).sort({ views: -1 });
         return res.status(200).json({
             success: true,
             posters: result,
@@ -468,10 +470,20 @@ exports.unadmirePoster = async (req, res, next) => {
     try {
         let result = 0;
         let user = 0;
-        await Poster.findByIdAndUpdate({ _id: req.params.posterId }, { $inc: { admires: -1 } });
-        result = await Poster.findById(req.params.posterId);
-        console.log(result.admires);
-        if (req.user.utype === "buyer") {
+        let checku = await User.findById({ _id: req.user.id });
+        let checka = await Artist.findById({ _id: req.user.id });
+        check = checku || checka;
+        let chk = false;
+        check.admires.map((pos) => {
+            if (pos._id == req.params.posterId) {
+                chk = true;
+            }
+        });
+       
+        if (chk) {
+            await Poster.findByIdAndUpdate({ _id: req.params.posterId }, { $inc: { admires: 1 } });
+            result = await Poster.findById(req.params.posterId);
+            if (req.user.utype === "buyer") {
             user = await User.findByIdAndUpdate(
                 { _id: req.user.id },
                 { $pull: { admires: { _id: result._id } } }
@@ -482,6 +494,12 @@ exports.unadmirePoster = async (req, res, next) => {
                 { _id: req.user.id },
                 { $pull: { admires: { _id: result._id } } }
             );
+        }}else{
+            console.log("not liked itself");
+            return res.status(200).json({
+                success: false,
+                msg: "Not admired to unadmire",
+            });
         }
         console.log("poster unadmired", user.admires.length);
         return res.status(200).json({
@@ -747,24 +765,34 @@ exports.getArtistsAdmired = async (req, res, next) => {
 exports.pay = async (req, res, next) => {
     try {
         let result = 0;
-
+        let purchased_items = 0;
+        let final_price = req.body.totalPrice
+        let billing_adress = `${req.body.token.card.address_line1},${
+            req.body.token.card.address_city
+        },${req.body.token.card.address_zip}`
+        let order_cr = null
+        let order = {
+            purchasedBy:null,
+            purchased_items,
+            billing_adress,
+            total_price:final_price
+        }
         if (req.user.utype === "artist") {
-            // let artist = await Artist.findById(req.user.id)
-            // let cart_items = artist.cart
+            
+            result = await Artist.findById(req.user.id);
+            order.purchasedBy = [result.name,result.username,result.email,result.phone],
+            order.purchased_items = result.cart;
 
-            //  TODO for each cart.item update its purchases by cart.quantity
-            //  this proved the top selling functionanlity
-            //create order and push to orderhistory
+            order_cr = await Order.create(order)
+
             //email order
-            // result = await Artist.findByIdAndUpdate({_id:req.user.id}
-            //   ,{$push:{bought_posters:cart_items}})
-            //   await Artist.findByIdAndUpdate({_id:req.user.id}
-            //     ,{cart:[]})
-            console.log(req.body.token);
-            console.log(req.body.totalPrice);
+            result = await Artist.findByIdAndUpdate({_id:req.user.id}
+              ,{$push:{order_history:order_cr}})
+            await Artist.findByIdAndUpdate({_id:req.user.id}
+                ,{cart:[]})
             const price = req.body.totalPrice;
             const token = req.body.token;
-            console.log(price, token);
+            console.log(token)
             const idempotencyKey = v4();
 
             return stripe.customers
@@ -783,18 +811,48 @@ exports.pay = async (req, res, next) => {
                         { idempotencyKey }
                     );
                 })
-                .then((response) => res.json(response))
+                .then((response) => res.json(order_cr))
                 .catch((err) => res.json({ err: err }));
         }
         if (req.user.utype === "buyer") {
             result = await User.findById(req.user.id);
-            result = result.admires;
+            order.purchasedBy = [result.name,result.username,result.email,result.phone],
+            order.purchased_items = result.cart;
+            order_cr = await Order.create(order)
+            //email order
+            result = await User.findByIdAndUpdate({_id:req.user.id}
+              ,{$push:{order_history:order_cr}})
+            await User.findByIdAndUpdate({_id:req.user.id}
+                ,{cart:[]})
+            const price = req.body.totalPrice;
+            const token = req.body.token;
+            const idempotencyKey = v4();
+
+            return stripe.customers
+                .create({
+                    email: token.email,
+                    source: token.id,
+                })
+                .then((customer) => {
+                    stripe.charges.create(
+                        {
+                            amount: price * 100,
+                            currency: "inr",
+                            customer: customer.id,
+                            description: "Posters purchase bill",
+                        },
+                        { idempotencyKey }
+                    );
+                })
+                .then((response) => res.json(order_cr))
+                .catch((err) => res.json({ err: err }));
         }
         return res.status(200).json({
             success: true,
-            posters: result,
+            order: order_cr,
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             err: error,

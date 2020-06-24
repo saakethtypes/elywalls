@@ -62,8 +62,9 @@ export const Home = () => {
         getPosters,
         getTopArtists,
         artists,
+        user
     } = useContext(GlobalContext);
-
+    
     // todo: Set full poster with info, instead of an image URL.
     // This way, info can be placed into the text on the image.
     const [heroImageUrl, setHeroImageUrl] = useState("https://source.unsplash.com/random/400x600");
@@ -102,7 +103,7 @@ export const Home = () => {
                     <h1>Elywalls</h1>
                     <p>Elegant posters by independent artists</p>
                 </div>
-
+                    
                 <div className={cn.heroImageContainer}>
                     <Link to='/posters/all' className={cn.heroImage}>
                         <img src={heroImageUrl} />
@@ -116,9 +117,9 @@ export const Home = () => {
 
                 <div className={cn.sectionLinkContainer}>
                     <ul className='style-none tiled-list'>
-                        <li onMouseEnter={() => setHeroImage("latest")}>
-                            <Link className='button grow-underline' to='latest'>
-                                <span>Latest</span>
+                        <li onMouseEnter={() => setHeroImage("photography")}>
+                            <Link className='button grow-underline' to='/posters/photography'>
+                                <span>Photography</span>
                             </Link>
                         </li>
                         <li onMouseEnter={() => setHeroImage("textography")}>
@@ -181,11 +182,13 @@ export const Home = () => {
                     </ul>
                 </section>
 
-                <FeaturedPostersList title='Latest' linkName='latest' />
-                <FeaturedPostersList title='Photography' linkName='photography' />
-                <FeaturedPostersList title='Textography' linkName='textography' />
+                <FeaturedPostersList title='Popular' linkName='popular' />
                 <FeaturedPostersList title='Graphic Design' linkName='graphic-design' />
                 <FeaturedPostersList title='Photoshop' linkName='photoshop' />
+                <FeaturedPostersList title='Textography' linkName='textography' />
+                <FeaturedPostersList title='Photography' linkName='photography' />
+                <FeaturedPostersList title='Recent Posts' linkName='latest' />
+
             </div>
         </div>
     );

@@ -21,7 +21,8 @@ const appreducer = (state, action) => {
                 ...state,
                 user: action.logged_profile,
                 cart: action.logged_profile.cart,
-                log_status: true
+                log_status: true,
+                admires:[]
             };
 
         case "LOGOUT":
@@ -210,7 +211,13 @@ const appreducer = (state, action) => {
                     
                 }
             };
-
+        
+        case "PAY":
+                return {
+                    ...state,
+                    order_placed: action.order_placed
+                };
+    
         default:
             return state;
 

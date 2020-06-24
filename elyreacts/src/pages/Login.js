@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import {GlobalContext} from "../context/GlobalState";
-
+import { ToastContainer, toast } from 'react-toastify';
 import {FormInput} from "../components/FormInput";
 import {Link} from "react-router-dom";
 import {v4} from 'uuid';
@@ -19,6 +19,7 @@ export const Login = (props) => {
     login(username, password, props);
     setUsername("");
     setPassword("");
+   
   };
 
   const [fp, setfp] = useState(false);

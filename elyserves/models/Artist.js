@@ -54,7 +54,9 @@ const ArtistSchema = new mongoose.Schema({
       type:[String],
       default:["","",""]
   },
-  
+  dpURL: {
+    type: String,
+  },
   linkedIG:{
       type:String,
       required:false
@@ -63,10 +65,6 @@ const ArtistSchema = new mongoose.Schema({
       type:String,
       required:false,
       maxlength:350
-  },
-  IgFollowers:{
-      type:Number,
-      defualt:0
   },
 
   postersmade:{

@@ -9,7 +9,7 @@ import cn from './styles/Cart.module.scss';
 const dotenv = require('dotenv');
 dotenv.config({path: "../../.env"});
 
-export const Cart = () => {
+export const Cart = (props) => {
   const {cart, getCart, pay} = useContext(GlobalContext);
   const toa = () => {
     let totall = 0;
@@ -33,9 +33,9 @@ export const Cart = () => {
   const makePayment = (token) => {
     console.log(totall);
     const body = {
-      token, totall
+      token, totalPrice:totall
     };
-    pay(body);
+    pay(body,props);
   };
 
   return (

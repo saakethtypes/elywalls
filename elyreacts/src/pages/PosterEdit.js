@@ -14,7 +14,7 @@ const getPictureUrl = (pictureUrl) => {
     }
 };
 
-export const PosterEdit = ({ posterID }) => {
+export const PosterEdit = ({ posterID ,props}) => {
     let { getPoster, poster, editPoster, deletePoster } = useContext(GlobalContext);
 
     useEffect(() => {
@@ -48,19 +48,20 @@ export const PosterEdit = ({ posterID }) => {
             formTitle,
             formCaption,
             formTags,
-        });
+        },
+        props);
     };
 
     const handleDeletePoster = (e) => {
         e.preventDefault();
-        deletePoster(posterID);
+        deletePoster(posterID,props);
     };
 
     return (
         <div className='page-container'>
             <div className='page-header'>
-                <h1>Edit Poster</h1>
-                <p>Editing poster: {title}</p>
+                <h1>{title}</h1>
+                <p>{caption}</p>
             </div>
 
             <div className={`${cn.contentContainer} lower-content-container`}>

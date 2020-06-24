@@ -2,10 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
-
+import ImageUploader from "react-images-upload";
 // @ts-ignore
 import cn from './styles/Register.module.scss';
 import { FormInput, FormRadioInput } from '../components/FormInput';
+const MAX_IMAGE_SIZE = 15242880;
+const INITIAL_PRICE = 160;
 
 export const Register = ({
     location
@@ -16,16 +18,23 @@ export const Register = ({
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [igLink, setigLink] = useState("")
     const [accountType, setAccountType] = useState();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { registerUser } = useContext(GlobalContext);
     const { registerArtist } = useContext(GlobalContext);
-
+    const [pictures, setPictures] = useState();
+    
+    const handleImageUpload = (picture) => {
+        setPictures(picture)
+    };
     const handleFormSubmit = e => {
         e.preventDefault();
 
         console.log("Creating user");
-
+    
+   
+    
         if (
             fullname.length > 3 &&
             password.length > 3 &&
@@ -50,7 +59,8 @@ export const Register = ({
                     username,
                     password,
                     email,
-                    phone
+                    phone,
+                    
                 });
             } else if (accountType === "sell") {
                 console.log("Creating artist account");
@@ -59,7 +69,8 @@ export const Register = ({
                     username,
                     password,
                     email,
-                    phone
+                    phone,
+                    linkedIg:igLink,
                 });
 
                 registerArtist({
@@ -67,8 +78,9 @@ export const Register = ({
                     username,
                     password,
                     email,
-                    phone
-                });
+                    phone,
+                    igLink
+                },pictures[0]);
             } else {
                 console.log("Invalid accountType");
             }
@@ -106,7 +118,32 @@ export const Register = ({
             </div>
 
             <div className={`form-container ${cn.registrationFormContainer}`}>
+            {accountType=='sell'?<ImageUploader
+                    withIcon={true}
+                    onChange={handleImageUpload}
+                    imgExtension={[".jpeg", ".jpg", ".png", ".gif"]}
+                    maxFileSize={MAX_IMAGE_SIZE}
+                    singleImage={true}
+                    label='Accepted .jpeg | .jpg | .png'
+                    buttonText='Choose A Display Picture'
+                    withPreview={true}
+                />:null}
                 <form onSubmit={handleFormSubmit} className={cn.registrationForm}>
+                <FormRadioInput
+                        name="accountType"
+                        displayName="Register to..."
+                        options={[
+                            {
+                                value: "buy",
+                                isDefault: false
+                            },
+                            {
+                                value: "sell",
+                                isDefault: false
+                            }
+                        ]}
+                        onChange={e => setAccountType(e.target.value)} />
+
                     <FormInput
                         type="text"
                         name="name"
@@ -161,20 +198,13 @@ export const Register = ({
                             required: true,
                             onChange: e => setPasswordConfirmation(e.target.value)
                         }} />
-                    <FormRadioInput
-                        name="accountType"
-                        displayName="Register to..."
-                        options={[
-                            {
-                                value: "buy",
-                                isDefault: false
-                            },
-                            {
-                                value: "sell",
-                                isDefault: false
-                            }
-                        ]}
-                        onChange={e => setAccountType(e.target.value)} />
+                    {accountType=='sell'?<FormInput
+                        name='Instagram Handle'
+                        type='text'
+                        value={igLink}
+                        onChange={(e) => setigLink(e.target.value)}
+                        autoComplete='off'
+                    />:null}
                     <button className="button-primary" type="submit">
                         Register
                     </button>

@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
+import {Redirect} from 'react-router-dom';
+ 
 
 import { FormInput, FormCheckboxInput, FormDropdownInput } from "../components/FormInput";
 
@@ -10,7 +12,7 @@ import cn from "./styles/PosterUpload.module.scss";
 const MAX_IMAGE_SIZE = 15242880;
 const INITIAL_PRICE = 160;
 
-export const PosterUpload = () => {
+export const PosterUpload = (props) => {
     const { user, createPoster } = useContext(GlobalContext);
 
     const [pictures, setPictures] = useState();
@@ -40,8 +42,10 @@ export const PosterUpload = () => {
                         category,
                         tags,
                     },
-                    pictures[0]
+                    pictures[0],
+                    props
                 );
+            //return  <Redirect  to="/profile" />
             }
         } else {
             // todo: Notify user
@@ -76,6 +80,7 @@ export const PosterUpload = () => {
                 />
 
                 <form onSubmit={handleFormSubmit}>
+                    
                     <FormInput
                         name='title'
                         type='text'
