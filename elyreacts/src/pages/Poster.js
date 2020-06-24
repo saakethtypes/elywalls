@@ -3,6 +3,7 @@ import { GlobalContext } from "../context/GlobalState";
 
 import LinkButton from "../components/LinkButton";
 import { Recommends } from "../components/Recommends";
+import LoadingIcon from "../components/LoadingIcon";
 
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
@@ -104,6 +105,8 @@ export const Poster = ({ posterID }) => {
         if (!fill) return <span>❤</span>;
         return <span className={cn.iconLikes}></span>;
     };
+
+    if (!poster) return <LoadingIcon />;
 
     return (
         <div className='page-container'>

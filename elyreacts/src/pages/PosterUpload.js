@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
-import {Redirect} from 'react-router-dom';
- 
+import { Redirect } from "react-router-dom";
+
+import LoadingIcon from "../components/LoadingIcon";
 
 import { FormInput, FormCheckboxInput, FormDropdownInput } from "../components/FormInput";
 
@@ -22,6 +23,7 @@ export const PosterUpload = (props) => {
     const [tags, setTags] = useState("");
     const [category, setCategory] = useState("");
     const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleImageUpload = (picture) => {
         setPictures(picture);
@@ -29,6 +31,7 @@ export const PosterUpload = (props) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if (pictures && title && caption && price && category && tags) {
             if (pictures[0].size > 200 && title.length > 0) {
@@ -45,7 +48,7 @@ export const PosterUpload = (props) => {
                     pictures[0],
                     props
                 );
-            //return  <Redirect  to="/profile" />
+                //return  <Redirect  to="/profile" />
             }
         } else {
             // todo: Notify user
@@ -60,6 +63,9 @@ export const PosterUpload = (props) => {
             });
         }
     };
+
+    if (isLoading) return <LoadingIcon />;
+
     return (
         <div className='page-container'>
             <div className='page-header'>
@@ -80,7 +86,6 @@ export const PosterUpload = (props) => {
                 />
 
                 <form onSubmit={handleFormSubmit}>
-                    
                     <FormInput
                         name='title'
                         type='text'

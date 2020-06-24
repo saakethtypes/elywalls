@@ -1,40 +1,42 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
 import ImageUploader from "react-images-upload";
+import { FormInput, FormRadioInput } from "../components/FormInput";
+import LoadingIcon from "../components/LoadingIcon";
+
 // @ts-ignore
-import cn from './styles/Register.module.scss';
-import { FormInput, FormRadioInput } from '../components/FormInput';
+import cn from "./styles/Register.module.scss";
+
 const MAX_IMAGE_SIZE = 15242880;
 const INITIAL_PRICE = 160;
 
-export const Register = ({
-    location
-}) => {
+export const Register = ({ location }) => {
     const [fullname, setFullname] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [igLink, setigLink] = useState("")
+    const [igLink, setigLink] = useState("");
     const [accountType, setAccountType] = useState();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { registerUser } = useContext(GlobalContext);
     const { registerArtist } = useContext(GlobalContext);
     const [pictures, setPictures] = useState();
-    
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleImageUpload = (picture) => {
-        setPictures(picture)
+        setPictures(picture);
     };
-    const handleFormSubmit = e => {
+
+    const handleFormSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         console.log("Creating user");
-    
-   
-    
+
         if (
             fullname.length > 3 &&
             password.length > 3 &&
@@ -51,7 +53,7 @@ export const Register = ({
                     username,
                     password,
                     email,
-                    phone
+                    phone,
                 });
 
                 registerUser({
@@ -60,7 +62,6 @@ export const Register = ({
                     password,
                     email,
                     phone,
-                    
                 });
             } else if (accountType === "sell") {
                 console.log("Creating artist account");
@@ -70,17 +71,20 @@ export const Register = ({
                     password,
                     email,
                     phone,
-                    linkedIg:igLink,
+                    linkedIg: igLink,
                 });
 
-                registerArtist({
-                    name: fullname,
-                    username,
-                    password,
-                    email,
-                    phone,
-                    igLink
-                },pictures[0]);
+                registerArtist(
+                    {
+                        name: fullname,
+                        username,
+                        password,
+                        email,
+                        phone,
+                        igLink,
+                    },
+                    pictures[0]
+                );
             } else {
                 console.log("Invalid accountType");
             }
@@ -92,6 +96,8 @@ export const Register = ({
             setEmail("");
             setPhone("");
             setIsSubmitted(true);
+
+            // todo: redirect after login
         } else {
             console.log("Details verification failed");
             // Todo: Verify credentials better
@@ -104,114 +110,146 @@ export const Register = ({
                 animationIn: ["animated", "fadeIn"],
                 animationOut: ["animated", "fadeOut"],
                 dismiss: {
-                    duration: 1000
-                }
+                    duration: 1000,
+                },
             });
         }
     };
 
+    if (isLoading) return <LoadingIcon />;
+
     return (
-        <div className="page-container">
-            <div className="page-header">
-                <h1 className="page-title">Register</h1>
-                <p className="page-preface">Register with Elywalls to buy or sell prints.</p>
+        <div className='page-container'>
+            <div className='page-header'>
+                <h1 className='page-title'>Register</h1>
+                <p className='page-preface'>Register with Elywalls to buy or sell prints.</p>
             </div>
 
             <div className={`form-container ${cn.registrationFormContainer}`}>
-            {accountType=='sell'?<ImageUploader
-                    withIcon={true}
-                    onChange={handleImageUpload}
-                    imgExtension={[".jpeg", ".jpg", ".png", ".gif"]}
-                    maxFileSize={MAX_IMAGE_SIZE}
-                    singleImage={true}
-                    label='Accepted .jpeg | .jpg | .png'
-                    buttonText='Choose A Display Picture'
-                    withPreview={true}
-                />:null}
+                {accountType == "sell" ? (
+                    <ImageUploader
+                        withIcon={true}
+                        onChange={handleImageUpload}
+                        imgExtension={[".jpeg", ".jpg", ".png", ".gif"]}
+                        maxFileSize={MAX_IMAGE_SIZE}
+                        singleImage={true}
+                        label='Accepted .jpeg | .jpg | .png'
+                        buttonText='Choose A Display Picture'
+                        withPreview={true}
+                    />
+                ) : null}
                 <form onSubmit={handleFormSubmit} className={cn.registrationForm}>
-                <FormRadioInput
-                        name="accountType"
-                        displayName="Register to..."
+                    <FormRadioInput
+                        name='accountType'
+                        displayName='Register to...'
                         options={[
                             {
                                 value: "buy",
-                                isDefault: false
+                                isDefault: false,
                             },
                             {
                                 value: "sell",
-                                isDefault: false
-                            }
+                                isDefault: false,
+                            },
                         ]}
-                        onChange={e => setAccountType(e.target.value)} />
+                        onChange={(e) => setAccountType(e.target.value)}
+                    />
 
                     <FormInput
-                        type="text"
-                        name="name"
+                        type='text'
+                        name='name'
                         value={fullname}
-                        autoComplete="name"
+                        autoComplete='name'
                         inputProps={{
                             required: true,
-                            onChange: e => setFullname(e.target.value)
-                        }} />
+                            onChange: (e) => setFullname(e.target.value),
+                        }}
+                    />
                     <FormInput
-                        type="text"
-                        name="username"
+                        type='text'
+                        name='username'
                         value={username}
                         inputProps={{
                             required: true,
-                            onChange: e => setUsername(e.target.value)
-                        }} />
+                            onChange: (e) => setUsername(e.target.value),
+                        }}
+                    />
                     <FormInput
-                        type="text"
-                        name="email"
+                        type='text'
+                        name='email'
                         value={email}
-                        autoComplete="email"
+                        autoComplete='email'
                         inputProps={{
                             required: true,
-                            onChange: e => setEmail(e.target.value)
-                        }} />
+                            onChange: (e) => setEmail(e.target.value),
+                        }}
+                    />
                     <FormInput
-                        type="tel"
-                        name="phone"
+                        type='tel'
+                        name='phone'
                         value={phone}
-                        autoComplete="tel"
+                        autoComplete='tel'
                         inputProps={{
                             inputMode: "tel",
-                            onChange: e => setPhone(e.target.value)
-                        }} />
+                            onChange: (e) => setPhone(e.target.value),
+                        }}
+                    />
                     <FormInput
-                        type="password"
-                        name="password"
+                        type='password'
+                        name='password'
                         value={password}
-                        autoComplete="password"
+                        autoComplete='password'
                         inputProps={{
                             required: true,
-                            onChange: e => setPassword(e.target.value)
-                        }} />
+                            onChange: (e) => setPassword(e.target.value),
+                        }}
+                    />
                     <FormInput
-                        type="password"
-                        name="passwordConfirmation"
-                        displayName="Confirm Password"
+                        type='password'
+                        name='passwordConfirmation'
+                        displayName='Confirm Password'
                         value={passwordConfirmation}
-                        autoComplete="off"
+                        autoComplete='off'
                         inputProps={{
                             required: true,
-                            onChange: e => setPasswordConfirmation(e.target.value)
-                        }} />
-                    {accountType=='sell'?<FormInput
-                        name='Instagram Handle'
-                        type='text'
-                        value={igLink}
-                        onChange={(e) => setigLink(e.target.value)}
-                        autoComplete='off'
-                    />:null}
-                    <button className="button-primary" type="submit">
+                            onChange: (e) => setPasswordConfirmation(e.target.value),
+                        }}
+                    />
+                    {accountType == "sell" ? (
+                        <FormInput
+                            name='Instagram Handle'
+                            type='text'
+                            value={igLink}
+                            onChange={(e) => setigLink(e.target.value)}
+                            autoComplete='off'
+                        />
+                    ) : null}
+                    <FormRadioInput
+                        name='accountType'
+                        displayName='Register to...'
+                        options={[
+                            {
+                                value: "buy",
+                                isDefault: false,
+                            },
+                            {
+                                value: "sell",
+                                isDefault: false,
+                            },
+                        ]}
+                        onChange={(e) => setAccountType(e.target.value)}
+                    />
+                    <button className='button-primary' type='submit'>
                         Register
                     </button>
                 </form>
             </div>
-            {isSubmitted &&
-                <div>Please check your email to activate your account. <a href='https://gmail.com'>Open Email</a></div>}
+            {isSubmitted && (
+                <div>
+                    Please check your email to activate your account.{" "}
+                    <a href='https://gmail.com'>Open Email</a>
+                </div>
+            )}
         </div>
     );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { PostersList } from "../components/PostersList";
 import { GlobalContext } from "../context/GlobalState";
+import LoadingIcon from "../components/LoadingIcon";
 
 // @ts-ignore
 import cn from "./styles/PostersWall.module.scss";
@@ -17,7 +18,8 @@ export const PostersWall = ({ category = "latest" }) => {
         getPosters(category);
     }, [category]);
 
-    if (error) console.error(error);
+    if (error) <span>An error occurred: {error.message}</span>;
+    if (!posters) return <LoadingIcon />;
 
     return (
         <div className={`page-container`}>

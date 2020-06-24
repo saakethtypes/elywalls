@@ -1,6 +1,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
 import { StripeCustomers } from "../components/StripeCustomers";
+import LoadingIcon from "../components/LoadingIcon";
 
 import { PostersList } from "../components/PostersList";
 import LinkButton from "../components/LinkButton";
@@ -25,8 +26,7 @@ export const Profile = ({ artistId }) => {
     }, []);
     let ap = artist || null;
 
-    if (!ap) return <span>Loading...</span>; // todo: make this look nice
-    console.log(ap);
+    if (!ap) return <LoadingIcon />; // todo: make this look nice
 
     return (
         <div className='page-container'>

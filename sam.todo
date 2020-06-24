@@ -14,18 +14,18 @@ Still to do...
 ✘ Fade featured images when loading on Homepage @cancelled(20-06-20 15:47) // Until I can figure out how to do it. It's not that important anyway
 ✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
 ✔ Dark theme @done(20-06-22 19:56)
-☐ Loading icons for:
-    ☐ Account
-    ☐ Admired
-    ☐ Login (after Login clicked)
-    ☐ Poster
-    ☐ PosterEdit (during initial load, and after Submit clicked)
-    ☐ PostersWall
-    ☐ PosterUpload (after Submit clicked)
-    ☐ Profile
-    ☐ Register
+✔ Loading icons for: @done(20-06-24 11:13)
+    ✔ Account @done(20-06-24 11:12)
+    ✔ Admired @done(20-06-24 11:12)
+    ✔ Login (after Login clicked) @done(20-06-24 11:12)
+    ✔ Poster @done(20-06-24 11:12)
+    ✔ PosterEdit (during initial load, and after Submit clicked) @done(20-06-24 11:12)
+    ✔ PostersWall @done(20-06-24 11:12)
+    ✔ PosterUpload (after Submit clicked) @done(20-06-24 11:12)
+    ✔ Profile @done(20-06-24 11:12)
+    ✔ Register @done(20-06-24 11:12)
 ☐ Rename PostersWall to Posters
-☐ Get errors for:
+☐ Get errors for: [this isn't my work to do]
     ☐ Account
     ☐ Login
     ☐ PosterEdit (after Submit clicked)

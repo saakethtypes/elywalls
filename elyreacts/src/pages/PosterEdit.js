@@ -1,6 +1,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { FormInput } from "../components/FormInput";
+import LoadingIcon from "../components/LoadingIcon";
 
 // @ts-ignore
 import cn from "./styles/PosterEdit.module.scss";
@@ -56,6 +57,8 @@ export const PosterEdit = ({ posterID ,props}) => {
         e.preventDefault();
         deletePoster(posterID,props);
     };
+
+    if (!poster) return <LoadingIcon />;
 
     return (
         <div className='page-container'>
