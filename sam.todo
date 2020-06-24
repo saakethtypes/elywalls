@@ -14,8 +14,31 @@ Still to do...
 ✘ Fade featured images when loading on Homepage @cancelled(20-06-20 15:47) // Until I can figure out how to do it. It's not that important anyway
 ✔ Add poster link/author to Homepage feature @done(20-06-20 15:53)
 ✔ Dark theme @done(20-06-22 19:56)
-✔ pages/Artist profile @done(20-06-24 00:20)
-✔ Correct shadow colours on Home @done(20-06-24 10:08)
+☐ Loading icons for:
+    ☐ Account
+    ☐ Admired
+    ☐ Login (after Login clicked)
+    ☐ Poster
+    ☐ PosterEdit (during initial load, and after Submit clicked)
+    ☐ PostersWall
+    ☐ PosterUpload (after Submit clicked)
+    ☐ Profile
+    ☐ Register
+☐ Rename PostersWall to Posters
+☐ Get errors for:
+    ☐ Account
+    ☐ Login
+    ☐ PosterEdit (after Submit clicked)
+    ☐ PostersWall
+    ☐ PosterUpload (after Submit clicked)
+    ☐ Profile (error loading data)
+    ☐ Register (after Submit clicked)
+☐ pages/Artist profile
 ☐ pages/Orders
-☐ Loading pages/icons
+☐ pages/NavError
+    ☐ 401
+    ☐ 403
+    ☐ 404
+    ☐ 500
+    ☐ Other
 ☐ Force Masonry re-render when resizing viewport
