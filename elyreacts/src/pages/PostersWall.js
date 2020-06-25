@@ -32,7 +32,7 @@ export const PostersWall = ({ category = "latest" }) => {
                 <div className={`tiled-list-container ${cn.categoryWrapper}`}>
                     <span>Category</span>
 
-                    <ul className={`style-none tiled-list ${cn.categoryContainer}`}>
+                    <ul className={`style-li-inline tiled-list ${cn.categoryContainer}`}>
                         <li className={category === "latest" ? "active" : ""}>
                             <Link to='/posters/latest'>Recent</Link>
                         </li>

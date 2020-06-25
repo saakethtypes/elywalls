@@ -62,9 +62,9 @@ export const Home = () => {
         getPosters,
         getTopArtists,
         artists,
-        user
+        user,
     } = useContext(GlobalContext);
-    
+
     // todo: Set full poster with info, instead of an image URL.
     // This way, info can be placed into the text on the image.
     const [heroImageUrl, setHeroImageUrl] = useState("https://source.unsplash.com/random/400x600");
@@ -103,7 +103,7 @@ export const Home = () => {
                     <h1>Elywalls</h1>
                     <p>Elegant posters by independent artists</p>
                 </div>
-                    
+
                 <div className={cn.heroImageContainer}>
                     <Link to='/posters/all' className={cn.heroImage}>
                         <img src={heroImageUrl} />
@@ -116,7 +116,7 @@ export const Home = () => {
                 </div>
 
                 <div className={cn.sectionLinkContainer}>
-                    <ul className='style-none tiled-list'>
+                    <ul className='style-li-inline tiled-list'>
                         <li onMouseEnter={() => setHeroImage("photography")}>
                             <Link className='button grow-underline' to='/posters/photography'>
                                 <span>Photography</span>
@@ -188,7 +188,6 @@ export const Home = () => {
                 <FeaturedPostersList title='Textography' linkName='textography' />
                 <FeaturedPostersList title='Photography' linkName='photography' />
                 <FeaturedPostersList title='Recent Posts' linkName='latest' />
-
             </div>
         </div>
     );
