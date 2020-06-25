@@ -24,7 +24,7 @@ Still to do...
     ✔ PosterUpload (after Submit clicked) @done(20-06-24 11:12)
     ✔ Profile @done(20-06-24 11:12)
     ✔ Register @done(20-06-24 11:12)
-☐ feat: pages/Poster Make image as tall as informationContainer
+☐ feat: pages/Poster pages/Orders Make image as tall as informationContainer
 ☐ feat: pages/Poster Expand image over screen (new ImageView component?)
 ☐ refactor: Rename PostersWall to Posters
 ☐ feat: Get errors for: [this isn't my work to do]
@@ -35,8 +35,9 @@ Still to do...
     ☐ PosterUpload (after Submit clicked)
     ☐ Profile (error loading data)
     ☐ Register (after Submit clicked)
-☐ style: pages/Artist profile
-☐ style: pages/Orders
+✔ style: pages/Artist profile @done(20-06-25 20:00)
+✔ style: pages/Orders @done(20-06-25 20:00)
+    ✔ style: OrderItem non-mobile layout @done(20-06-25 20:00)
 ☐ style: pages/NavError
     ☐ 401
     ☐ 403
@@ -45,5 +46,5 @@ Still to do...
     ☐ Other
 
 // Bugs
-☐ feat: Animate loading icon
+☐ feat: Animate loading icon (this issue is due to SVG prop naming in React)
 ☐ fix: Re-render Masonry when resizing viewport
