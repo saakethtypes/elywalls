@@ -24,8 +24,10 @@ Still to do...
     ✔ PosterUpload (after Submit clicked) @done(20-06-24 11:12)
     ✔ Profile @done(20-06-24 11:12)
     ✔ Register @done(20-06-24 11:12)
-☐ Rename PostersWall to Posters
-☐ Get errors for: [this isn't my work to do]
+☐ feat: pages/Poster Make image as tall as informationContainer
+☐ feat: pages/Poster Expand image over screen (new ImageView component?)
+☐ refactor: Rename PostersWall to Posters
+☐ feat: Get errors for: [this isn't my work to do]
     ☐ Account
     ☐ Login
     ☐ PosterEdit (after Submit clicked)
@@ -33,9 +35,9 @@ Still to do...
     ☐ PosterUpload (after Submit clicked)
     ☐ Profile (error loading data)
     ☐ Register (after Submit clicked)
-☐ pages/Artist profile
-☐ pages/Orders
-☐ pages/NavError
+☐ style: pages/Artist profile
+☐ style: pages/Orders
+☐ style: pages/NavError
     ☐ 401
     ☐ 403
     ☐ 404
@@ -43,5 +45,5 @@ Still to do...
     ☐ Other
 
 // Bugs
-☐ Animate loading icon
-☐ Force Masonry re-render when resizing viewport
+☐ feat: Animate loading icon
+☐ fix: Re-render Masonry when resizing viewport
