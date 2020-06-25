@@ -7,6 +7,7 @@ import LoadingIcon from "../components/LoadingIcon";
 
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
+import { Link } from "react-router-dom";
 
 const ButtonAction = ({ onClickHandler, activated = false, children }) => {
     return (
@@ -24,7 +25,7 @@ const getPictureUrl = (pictureUrl) => {
         return "https://source.unsplash.com/random";
     }
 };
-let liked = true 
+let liked = true;
 export const Poster = ({ posterID }) => {
     let {
         user,
@@ -42,8 +43,6 @@ export const Poster = ({ posterID }) => {
         getPoster(posterID);
     }, []);
 
-    
-
     poster = {
         ...poster,
         id: (poster && poster._id) || posterID,
@@ -56,7 +55,7 @@ export const Poster = ({ posterID }) => {
         admires: (poster && poster.admires) || 0,
     };
 
-    const [admiresp, setAdmiresp] = useState( poster && poster.admires );
+    const [admiresp, setAdmiresp] = useState(poster && poster.admires);
     const [isAdmired, setIsAdmired] = useState(
         (poster && user && admires.filter((ap) => ap._id === poster._id).length !== 0) || false
     );
@@ -67,7 +66,7 @@ export const Poster = ({ posterID }) => {
     const checkAdmires = () => {
         let match = [];
         if (user) match = admires.filter((ap) => ap._id === poster._id);
-        console.log(match)
+        console.log(match);
         return match.length > 0;
     };
 
@@ -78,13 +77,13 @@ export const Poster = ({ posterID }) => {
     };
 
     const handleClickAdmire = (e) => {
-        if (!checkAdmires() ) {
-            liked = true
+        if (!checkAdmires()) {
+            liked = true;
             admirePoster(poster);
             setIsAdmired(true);
             setAdmiresp(admiresp + 1);
         } else {
-            liked = false
+            liked = false;
             unadmirePoster(poster);
             setIsAdmired(false);
             setAdmiresp(admiresp - 1);
@@ -112,60 +111,83 @@ export const Poster = ({ posterID }) => {
         <div className='page-container'>
             <div className='page-header'>
                 <h1>{poster.title}</h1>
-                <p>{poster.caption}</p>
+                <p>
+                    A poster by <Link to={`/profile/${poster.author}`}>{poster.author}</Link> on
+                    Elywalls
+                </p>
             </div>
 
-            <div className={`${cn.contentContainer} lower-content-container`}>
-                <div className={cn.imageContainer}>
-                    <img src={getPictureUrl(poster.pictureURL)} alt={poster.title} />
-                    {isLoggedIn && (
-                        <div className={`${cn.buttons}`}>
-                            <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
-                                {getAdmireIcon(isAdmired)}
-                            </ButtonAction>
+            <div className='lower-content-container'>
+                <div className={cn.container}>
+                    <div className={cn.imageContainer}>
+                        <img src={getPictureUrl(poster.pictureURL)} alt={poster.title} />
+                        {isLoggedIn && (
+                            <div className={`${cn.buttons}`}>
+                                <ButtonAction
+                                    onClickHandler={handleClickAdmire}
+                                    activated={isAdmired}>
+                                    {getAdmireIcon(isAdmired)}
+                                </ButtonAction>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={`${cn.informationContainer}`}>
+                        <h2>{poster.title}</h2>
+
+                        {/* todo: Consider changing to separate links instead of container */}
+                        <div className={cn.authorContainer}>
+                            <Link to={`/profile/${poster.author}`}>
+                                <img
+                                    src={"https://source.unsplash.com/random/128x128"}
+                                    alt={poster.author}
+                                />
+                            </Link>
+                            <small>
+                                By <a href={`/profile/${poster.author}`}>{poster.author}</a>
+                            </small>
                         </div>
-                    )}
-                </div>
 
-                <div className={`${cn.informationContainer}`}>
-                    <h3>{poster.title}</h3>
-                    <small>
-                        By <a href={`/profile/${poster.author}`}>{poster.author}</a>
-                    </small>
+                        <div className={cn.statsContainer}>
+                            <span className={cn.iconLikes}></span>
+                            <small className={cn.countLikes}>{admiresp}</small>
 
-                    <div className={cn.admiresContainer}>
-                        <span className={cn.iconLikes}></span>
-                        <strong>{admiresp}</strong>
-                    </div>
+                            <span className={cn.iconViews}></span>
+                            <small className={cn.countViews}>{poster.views}</small>
+                        </div>
 
-                    <div className={cn.viewsContainer}>
-                        <span className={cn.iconViews}></span>
-                        <strong>{poster.views}</strong>
-                    </div>
+                        <div className={cn.captionContainer}>
+                            <h3>Caption</h3>
+                            <p>{poster.caption}</p>
+                        </div>
 
-                    <p>{poster.caption}</p>
+                        <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
 
-                    <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
+                        <div className={cn.purchaseCTAContainer}>
+                            <h3>Purchase</h3>
 
-                    <div className={`${cn.formContainer} form-container`}>
-                        {isLoggedIn ? (
-                            <button onClick={handleClickCart} className='primary'>
-                                Add to Cart
-                            </button>
-                        ) : (
-                            <LinkButton to='/login'>Sign in to Buy</LinkButton>
-                        )}
-                        {!isAddedToCart ? (
-                            <small>Add to your cart to purchase</small>
-                        ) : (
-                            <small>{poster.title} is already in your cart</small>
-                        )}
+                            {!isAddedToCart ? (
+                                <p>Add {poster.title} to your cart to buy</p>
+                            ) : (
+                                <p>You already have {poster.title} in your cart</p>
+                            )}
+                            {isLoggedIn ? (
+                                <button
+                                    disabled={isAddedToCart}
+                                    onClick={handleClickCart}
+                                    className='button-primary'>
+                                    Add to Cart
+                                </button>
+                            ) : (
+                                <LinkButton to='/login'>Sign in to Buy</LinkButton>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
 
             {poster.category !== "Unknown" && (
-                <div className='lower-content-container'>
+                <div className={`lower-content-container ${cn.lowerContent}`}>
                     <section>
                         <h2>Recommended</h2>
                         <p>If you like {poster.title}, you'll probably like these too.</p>

@@ -1,324 +1,183 @@
 @import "../../variables.scss";
 
-.contentContainer {
+/*
+    This is mobile-first, unlike the majority of other pages
+*/
+
+.container {
     display: grid;
+    grid-template-rows: repeat(2, max-content);
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, minmax(max-content, auto));
+    grid-gap: 1.5rem;
 
-    width: 100%;
-}
+    max-width: $max-width_content;
 
-.imageContainer {
-    position: relative;
-    display: inline-block;
+    & > div.imageContainer {
+        position: relative;
 
-    height: 100%;
-    width: 100%;
+        & > img {
+            width: 100%;
+        }
 
-    overflow: hidden;
+        .buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
 
-    & > img {
-        max-height: 100%;
-        max-width: 100%;
+            display: grid;
+            grid-template-rows: repeat(2, 1fr);
+            grid-gap: 0.5rem;
 
-        margin: 0;
-        padding: 0;
-        border: 0;
+            transition: $transition_time_anim;
+        }
     }
 
-    .buttons {
-        position: absolute;
-        top: 0;
-        right: 0;
-
+    & > div.informationContainer {
         display: grid;
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(5, max-content);
+        grid-template-columns: auto minmax(min-content, max-content);
         grid-gap: 0.5rem;
+        align-items: baseline;
 
-        margin: 1rem;
+        h3 {
+            & + * {
+                margin-top: 0.5rem;
+            }
 
-        transition: $transition_time_anim;
-    }
-}
-
-.informationContainer {
-    display: grid;
-    grid-template-columns: auto minmax(auto, min-content);
-    grid-template-rows: repeat(4, minmax(auto, max-content));
-    grid-template-areas:
-        "title      admires"
-        "author     views"
-        "caption    caption"
-        "price      price"
-        "form       form";
-    //! grid-gap cannot be used as the title and author must remain together
-
-    width: 100%;
-
-    padding: 1.5rem;
-
-    & > * {
-        align-self: center;
-    }
-
-    & > h3 {
-        grid-area: title;
-    }
-    & > small {
-        grid-area: author;
-
-        margin-top: 0.5rem;
-    }
-    // todo: consider moving below 2 elements into a new .stats div
-    & > .admiresContainer {
-        grid-area: admires;
-        justify-self: end;
-
-        & > span {
-            display: inline-block;
-            width: 2rem;
-        }
-    }
-    & > .viewsContainer {
-        grid-area: views;
-        justify-self: end;
-
-        & > span {
-            display: inline-block;
-            width: 2rem;
-        }
-    }
-    & > p {
-        grid-area: caption;
-        justify-self: center;
-
-        margin-top: 2.5rem;
-    }
-    & > strong.price {
-        grid-area: price;
-        justify-self: center;
-
-        margin-top: 0.5rem;
-    }
-    & > div.formContainer {
-        grid-area: form;
-        justify-self: center;
-
-        margin-top: 0.5rem;
-    }
-}
-
-.editInformationContainer {
-    display: grid;
-    grid-template-columns: auto minmax(auto, min-content);
-    grid-template-rows: repeat(5, minmax(auto, max-content));
-    grid-template-areas:
-        "title      admires"
-        "author     views"
-        "caption    caption"
-        "form       form"
-        "deletebtn  deletebtn";
-    //! grid-gap cannot be used as the title and author must remain together
-
-    width: 100%;
-
-    padding: 1.5rem;
-
-    & > * {
-        align-self: center;
-    }
-
-    & > h3 {
-        grid-area: title;
-    }
-    & > small {
-        grid-area: author;
-
-        margin-top: 0.5rem;
-    }
-    // todo: consider moving below 2 elements into a new .stats div
-    & > .admiresContainer {
-        grid-area: admires;
-        justify-self: end;
-
-        & > span {
-            display: inline-block;
-            width: 2rem;
-        }
-    }
-    & > .viewsContainer {
-        grid-area: views;
-        justify-self: end;
-
-        & > span {
-            display: inline-block;
-            width: 2rem;
-        }
-    }
-    & > p {
-        grid-area: caption;
-        justify-self: center;
-
-        margin-top: 2.5rem;
-    }
-    & > strong.price {
-        grid-area: price;
-        justify-self: center;
-
-        margin-top: 0.5rem;
-    }
-    & > div.formContainer {
-        grid-area: form;
-        justify-self: center;
-    }
-    & > button.deleteButton {
-        grid-area: deletebtn;
-        justify-self: center;
-    }
-}
-
-@media only screen and (min-width: $media_width_tablet) {
-    .contentContainer {
-        grid-template-rows: 1fr;
-        grid-template-columns: repeat(2, minmax(min-content, 1fr));
-    }
-    .informationContainer {
-        grid-template-rows: repeat(7, minmax(min-content, max-content));
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "admires"
-            "views"
-            "title"
-            "author"
-            "caption"
-            "price"
-            "form";
-
-        & > * {
-            align-self: start;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: $color_text_alt;
         }
 
-        & > .admiresContainer {
-            justify-self: start;
-        }
-        & > .viewsContainer {
-            justify-self: start;
+        & > div.statsContainer {
+            grid-area: 1/1/2/3;
 
-            margin-top: 0.5rem;
-        }
-        & > h3 {
-            grid-area: title;
+            display: grid;
+            grid-gap: 0.5rem;
+            grid-template-columns: repeat(4, max-content);
+            grid-auto-flow: row;
+            align-items: center;
 
-            margin-top: 1.5rem;
-        }
-        & > small {
-            grid-area: author;
-        }
-        & > p {
-            justify-self: start;
-            text-align: left;
+            & > small {
+                font-size: 1rem;
 
-            // reset L+R margins to 0, to re-center in grid
-            margin: 1.5rem 0 0 0;
+                &:first-of-type {
+                    margin-right: 1.5rem;
+                }
+            }
         }
+
+        & > h2 {
+            grid-area: 2/1/3/2;
+
+            margin-top: 1rem;
+        }
+
         & > strong.price {
-            justify-self: start;
+            grid-area: 2/2/3/3;
 
-            margin-top: 2.5rem;
+            margin-top: 1rem;
         }
-        & > div.formContainer {
-            justify-self: start;
-            width: max-content;
 
-            margin: 1.5rem 0;
+        & > div.authorContainer {
+            grid-area: 3/1/4/3;
 
-            & > * {
-                margin-left: 0;
-                margin-right: auto;
+            display: flex;
+            align-items: center;
+
+            & > a > img {
+                height: 2rem;
+                width: 2rem;
+                border-radius: 50%;
+
+                margin-right: 0.5rem;
+            }
+        }
+
+        & > div.captionContainer {
+            grid-area: 4/1/5/3;
+
+            margin-top: 1rem;
+
+            & > p {
+                margin: 0.25rem 0 0 0;
+
+                text-align: left;
+            }
+        }
+
+        & > div.purchaseCTAContainer {
+            grid-area: 5/1/6/3;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            margin-top: 1rem;
+
+            & > p {
+                margin: 0.25rem 0 0 0;
+
+                text-align: left;
+            }
+
+            & > button,
+            & > a {
+                align-self: center;
+
+                margin-top: 1.5rem;
             }
         }
     }
 }
 
-/**/
+.lowerContent {
+    position: relative;
 
-.caption {
-    display: grid;
-    grid-template-columns: minmax(0, max-content) auto minmax(0, max-content);
-    grid-template-rows: repeat(2, max-content);
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 37.5%;
 
-    grid-template-areas:
-        "admires    title   price"
-        "admires    author  price";
+        height: 0.125rem;
+        width: 25%;
 
-    width: 100%;
-    box-sizing: border-box;
-
-    padding: 1em 0.5rem;
-
-    & > h3 {
-        grid-area: title;
-        text-transform: uppercase;
+        background-color: $color_grey_dark;
     }
-    & > small {
-        grid-area: author;
 
-        margin-top: 0.5em;
-    }
-    & > .admiresContainer {
-        grid-area: admires;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        margin-right: 0.5rem;
-
-        & > span {
-            margin: 0 auto;
-        }
-
-        & > strong {
-            margin-top: 0.25rem;
-
-            color: $color_text_alt;
-        }
-    }
-    & > strong.price {
-        grid-area: price;
-        align-self: center;
-
-        margin-left: 0.5rem;
+    & > *:first-child {
+        padding-top: 2.5rem;
     }
 }
 
-.iconViews {
-    width: 1rem;
+.iconLikes {
+    display: inline-block;
+
+    width: 1.5rem;
     height: 1rem;
 
-    // Correct icon offset
-    margin-top: 0.125rem;
-    margin-bottom: -0.125rem;
+    background-image: url("../../assets/images/heart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
-    margin-right: 0.5rem;
+.iconViews {
+    display: inline-block;
+
+    width: 1.5rem;
+    height: 1rem;
 
     background-image: url("../../assets/images/views.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
-.iconLikes {
-    display: inline-block;
 
-    width: 1rem;
-    height: 1rem;
-
-    // Correct icon offset
-    margin: -0.1rem 0.575rem 0.1rem -0.075rem;
-
-    background-image: url("../../assets/images/heart.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+@media only screen and (min-width: $media_width_tablet) {
+    .container {
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
