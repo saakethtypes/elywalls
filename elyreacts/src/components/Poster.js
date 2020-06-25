@@ -24,7 +24,7 @@ const getPictureUrl = (pictureUrl) => {
     }
 };
 
-export const Poster = ({ poster, cat = "", className = "" }) => {
+export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) => {
     const {
         user,
         cart,
@@ -97,7 +97,7 @@ export const Poster = ({ poster, cat = "", className = "" }) => {
                     <img src={getPictureUrl(poster.pictureURL)} alt={poster.caption} />
                 </a>
 
-                {isLoggedIn && (
+                {isLoggedIn && !noButtons && (
                     <div className={cn.buttons}>
                         <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
                             {getAdmireIcon(isAdmired)}
