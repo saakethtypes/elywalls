@@ -1,0 +1,91 @@
+@import "../../variables.scss";
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, max-content);
+    grid-gap: 0.5rem;
+
+    margin: 1.25rem 0;
+
+    p {
+        margin-left: 0;
+    }
+
+    & > div.dateContainer {
+        grid-area: auto;
+    }
+
+    & > a.imageContainer {
+        grid-area: auto;
+
+        // height: 100%;
+        width: 100%;
+
+        & > img {
+            height: 100%;
+            max-width: 100%;
+
+            object-fit: cover;
+        }
+    }
+
+    & > div.addressContainer {
+        grid-area: auto;
+
+        & > ul {
+            margin-top: 0.5rem;
+        }
+    }
+
+    & > div.totalContainer {
+        grid-area: auto;
+
+        & > strong {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+    }
+
+    & > a.buttonViewOrder {
+        grid-area: auto;
+        display: inline-block;
+
+        width: max-content;
+
+        margin: 0.5rem auto 0 auto;
+    }
+}
+
+@media only screen and (min-width: $media_width_tablet) {
+    .container {
+        grid-template-columns: minmax(min-content, 1fr) minmax(max-content, 2fr);
+        grid-template-rows: repeat(5, max-content);
+
+        & > a.imageContainer {
+            grid-area: 1/1/6/2;
+        }
+
+        & > div.orderIDContainer {
+            grid-area: 1/2/2/3;
+        }
+
+        & > div.dateContainer {
+            grid-area: 2/2/3/3;
+        }
+
+        & > div.addressContainer {
+            grid-area: 3/2/4/3;
+        }
+
+        & > div.totalContainer {
+            grid-area: 4/2/5/3;
+        }
+
+        & > a.buttonViewOrder {
+            grid-area: 5/2/6/3;
+
+            margin-left: 0;
+        }
+    }
+}

@@ -1,23 +1,78 @@
-import React, { useEffect, useContext } from 'react'
-import { GlobalContext } from '../context/GlobalState'
+import React, { useEffect, useContext } from "react";
+import { GlobalContext } from "../context/GlobalState";
+import LoadingIcon from "../components/LoadingIcon";
 
-export const Order = ({ oid ,props}) => {
-    console.log({oid})
-    const {order,getOrder} = useContext(GlobalContext)
-     useEffect(() => {
-        getOrder(oid)
-    }, [])
-    console.log(order)
+//@ts-ignore
+import cn from "./styles/Order.module.scss";
+import { PostersList } from "../components/PostersList";
+
+const getMonthString = (raw) => {
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    return months[raw.getMonth()];
+};
+
+const formatAddress = (raw) => {
+    const [streetAddress, city, postcode] = raw.split(",");
+
     return (
-        <div>
-            <h2>Order on {order.orderedOn}</h2>
-            <h2>Ordered to {order.billing_adress}</h2>
-            {/* {order.purchased_items.map((op)=>
-            <div>
-                <h2> {op.quanitity} items of</h2>
-            </div>
-            )} */}
-        </div>
-    )
-}
+        <ul className='address'>
+            <li>{streetAddress}</li>
+            <li>{city}</li>
+            <li>{postcode}</li>
+        </ul>
+    );
+};
 
+export const Order = ({ oid, ...props }) => {
+    const { order, getOrder } = useContext(GlobalContext);
+    const orderDate = (order && new Date(order.orderedOn)) || new Date();
+
+    useEffect(() => {
+        getOrder(oid);
+    }, []);
+
+    if (!order) return <LoadingIcon pageName={`Order ${oid}`} />;
+
+    return (
+        <div className='page-container'>
+            <div className='page-header'>
+                <h1>Your Order</h1>
+                <p>
+                    Details for your order on{" "}
+                    {`${orderDate.getDate()} ${getMonthString(orderDate)}`}
+                </p>
+            </div>
+
+            <div className='lower-content-container'>
+                <section className={cn.orderDetails}>
+                    <h2>Order Details</h2>
+
+                    <div className='information-grid'>
+                        <span>ID</span> <span className={cn.forceBreak}>{oid}</span>
+                        <span>Order Date</span> <span>{orderDate.toUTCString()}</span>
+                        <span>Address</span> <span>{formatAddress(order.billing_adress)}</span>
+                    </div>
+                </section>
+
+                <section className={cn.orderContents}>
+                    <h2>Order Contents</h2>
+                    <PostersList noButtons posters={order.purchased_items} />
+                </section>
+            </div>
+        </div>
+    );
+};

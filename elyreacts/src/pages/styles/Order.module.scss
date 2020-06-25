@@ -1,0 +1,23 @@
+.orderDetails {
+    & > div {
+        grid-template-columns: repeat(2, minmax(min-content, max-content));
+
+        margin-top: 1.5rem;
+
+        & > .forceBreak {
+            word-break: break-all;
+        }
+    }
+}
+
+.orderContents {
+    & > div {
+        margin-top: 1.5rem;
+    }
+
+    li.posterContainer {
+        max-width: 24rem;
+
+        overflow: none;
+    }
+}
