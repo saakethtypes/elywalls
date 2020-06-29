@@ -26,12 +26,21 @@
         transition: $transition_time_anim;
 
         border: none;
-        border-left: 0.15rem solid $color_grey_dark;
+        border-left: 0.15rem solid $color_grey;
         box-sizing: border-box;
 
-        margin: 0.25rem 0 0 0;
+        margin: 0.5rem 0 0 0;
 
         width: 16rem;
+
+        background: $color_background_alt;
+        color: $color_text;
+
+        // &::-webkit-inner-spin-button,
+        // &::-webkit-outer-spin-button {
+        //     -webkit-appearance: none;
+        //     margin: 0;
+        // }
 
         &:valid {
             border-color: $color_success;
@@ -198,6 +207,7 @@
         margin: 1.5rem 0 0 0;
 
         background: $color_background;
+        color: $color_text;
         border: 0.15rem solid $color_grey;
         // line-height: 1.5em; // todo: line-height on EVERYTHING
 
