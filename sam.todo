@@ -48,5 +48,5 @@ Still to do...
     ☐ Other
 
 // Bugs
-☐ feat: Animate loading icon (this issue is due to SVG prop naming in React)
+✔ feat: Animate loading icon @done(20-06-29 15:27)
 ☐ fix: Re-render Masonry when resizing viewport
