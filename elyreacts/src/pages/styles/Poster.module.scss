@@ -192,5 +192,15 @@
         & > div.imageContainer > div.image {
             background-position: right;
         }
+
+        & > div.informationContainer > div.purchaseCTAContainer {
+            margin-left: 0;
+            margin-right: auto;
+
+            & > * {
+                margin-left: 0;
+                margin-right: auto;
+            }
+        }
     }
 }
