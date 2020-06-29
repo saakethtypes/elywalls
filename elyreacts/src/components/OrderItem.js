@@ -31,9 +31,13 @@ export const OrderItem = ({ order }) => {
     return (
         <div className={cn.container}>
             <Link to={`/order/${order._id}`} className={cn.imageContainer}>
-                <img
-                    src={getPictureURL(order.purchased_items[0].item.pictureURL)}
-                    alt={`Preview of ${order.purchased_items[0].item.title}`}
+                <div
+                    className='image'
+                    style={{
+                        backgroundImage: `url("${getPictureURL(
+                            order.purchased_items[0].item.pictureURL
+                        )}")`,
+                    }}
                 />
             </Link>
 

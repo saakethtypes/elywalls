@@ -120,7 +120,12 @@ export const Poster = ({ posterID }) => {
             <div className='lower-content-container'>
                 <div className={cn.container}>
                     <div className={cn.imageContainer}>
-                        <img src={getPictureUrl(poster.pictureURL)} alt={poster.title} />
+                        <div
+                            className={`image ${cn.image}`}
+                            style={{
+                                backgroundImage: `url("${getPictureUrl(poster.pictureURL)}")`,
+                            }}
+                        />
                         {isLoggedIn && (
                             <div className={`${cn.buttons}`}>
                                 <ButtonAction

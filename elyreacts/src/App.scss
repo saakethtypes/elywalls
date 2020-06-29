@@ -108,7 +108,12 @@ em {
     font-style: italic;
 }
 
-a > img {
+div.image {
+    background-repeat: no-repeat;
+}
+
+a > img,
+a > div.image {
     filter: brightness(1);
     transition: $transition_time_anim_long;
 
