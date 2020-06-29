@@ -24,9 +24,9 @@ Still to do...
     ✔ PosterUpload (after Submit clicked) @done(20-06-24 11:12)
     ✔ Profile @done(20-06-24 11:12)
     ✔ Register @done(20-06-24 11:12)
-☐ feat: pages/Poster pages/Orders Make image as tall as informationContainer
-☐ feat: pages/Poster Expand image over screen (new ImageView component?)
-☐ refactor: Rename PostersWall to Posters
+✔ fix: components/OrderItem image makes parent expand @done(20-06-29 14:26)
+✔ fix: components/Poster image makes parent expand @done(20-06-29 14:41)
+✔ feat: pages/Poster pages/Orders Make image as tall as informationContainer @done(20-06-29 14:26)
 ☐ feat: Get errors for: [this isn't my work to do]
     ☐ Account
     ☐ Login
