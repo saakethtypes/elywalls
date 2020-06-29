@@ -4,8 +4,10 @@ import { StripeCustomers } from "../components/StripeCustomers";
 import LoadingIcon from "../components/LoadingIcon";
 
 import { PostersList } from "../components/PostersList";
-import LinkButton from "../components/LinkButton";
 import { Link } from "react-router-dom";
+
+// @ts-ignore
+import ICON_INSTAGRAM from "../assets/images/Instagram-Mark.svg";
 
 // @ts-ignore
 import cn from "./styles/Profile.module.scss";
@@ -52,6 +54,10 @@ export const Profile = ({ artistId }) => {
                         <span>Views</span>
                     </div>
                 </div>
+
+                <Link className={cn.instagramContainer} to={artist.linkedIG}>
+                    <img src={ICON_INSTAGRAM} alt='Instagram' />
+                </Link>
 
                 <div className={cn.imageContainer}>
                     <img src={getPictureUrl(artist.dpURL)} alt={`${artist.name} on Elywalls`} />

@@ -48,10 +48,17 @@ export const Account = ({ location }) => {
                         <span>Full Name</span> <span>{user.name}</span>
                         <span>Phone</span> <span>{user.phone}</span>
                         <span>Email</span> <span>{user.email}</span>
+                        {user.linkedIG && user.linkedIG !== "" && (
+                            <>
+                                <span>Instagram</span>
+                                <span>
+                                    <a href={`https://www.instagram.com/${user.linkedIG}`}>
+                                        {user.linkedIG}
+                                    </a>
+                                </span>
+                            </>
+                        )}
                     </div>
-                    <span>Instagram</span> <span><a href={`https://www.instagram.com/${user.linkedIG}`}>
-                    {user.linkedIG}
-                        </a></span>
 
                     <div className='buttons-container'>
                         <StripeCustomers />
