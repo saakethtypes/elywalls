@@ -264,6 +264,7 @@ button {
 
     &:hover {
         background: $color_grey_light;
+        color: $color_black;
     }
 
     &.button-primary {
@@ -271,6 +272,7 @@ button {
 
         &:hover {
             background: $color_brand_primary_light;
+            color: $color_text;
         }
     }
 
