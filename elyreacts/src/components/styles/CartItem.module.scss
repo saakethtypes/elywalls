@@ -39,6 +39,12 @@
 
         & > button {
             margin-top: 1.5rem;
+
+            background: $color_fail;
+
+            &:hover {
+                background: lighten($color_fail, 5);
+            }
         }
     }
 }
