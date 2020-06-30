@@ -23,6 +23,7 @@ import { Thankyou } from "./pages/Thankyou";
 import { OrdersList } from "./pages/OrdersList";
 import { Order } from "./pages/Order";
 import { Sales } from "./components/Sales";
+import { Error } from "./pages/Error";
 
 function App() {
     return (
@@ -48,17 +49,20 @@ function App() {
                             path='/order/:oid'
                             render={(props) => <Order oid={props.match.params.oid} {...props} />}
                         />
-                        <Route exact path='/sales/:artistId' 
-                        render={(props) => (
-                            <Sales artistId={props.match.params.artistId || ""} {...props} />
-                        )} />
+                        <Route
+                            exact
+                            path='/sales/:artistId'
+                            render={(props) => (
+                                <Sales artistId={props.match.params.artistId || ""} {...props} />
+                            )}
+                        />
                         <ProtectedRoute exact path='/account' component={Account} />
                         <ProtectedRoute exact path='/orders' component={OrdersList} />
                         <ProtectedRoute exact path='/cart' component={Cart} />
                         <ProtectedRoute exact path='/admires' component={Admired} />
                         <ProtectedRoute exact path='/publish-poster' component={PosterUpload} />
                         <ProtectedRoute exact path='/thank-you' component={Thankyou} />
-                        
+
                         <Route
                             path='/posters/:category?'
                             render={(props) => (
@@ -82,6 +86,9 @@ function App() {
                                 <PasswordReset rid={props.match.params.id} {...props} />
                             )}
                         />
+
+                        {/* Error page catch-all */}
+                        <Route path='*' render={(props) => <Error errorID={404} {...props} />} />
                     </Switch>
 
                     <Footer />
