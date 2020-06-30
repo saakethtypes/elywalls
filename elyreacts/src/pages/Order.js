@@ -5,6 +5,7 @@ import LoadingIcon from "../components/LoadingIcon";
 //@ts-ignore
 import cn from "./styles/Order.module.scss";
 import { PostersList } from "../components/PostersList";
+import { Poster } from "../components/Poster";
 
 const getMonthString = (raw) => {
     const months = [
@@ -70,7 +71,11 @@ export const Order = ({ oid, ...props }) => {
 
                 <section className={cn.orderContents}>
                     <h2>Order Contents</h2>
-                    <PostersList noButtons posters={order.purchased_items} />
+                    {order.purchased_items.map((pi)=>
+                  <div>
+                  <Poster poster={pi.item}/>
+                    <div>Quantity - {pi.quantity}</div>
+                    </div>)}
                 </section>
             </div>
         </div>

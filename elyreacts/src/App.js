@@ -22,6 +22,7 @@ import history from "./components/history";
 import { Thankyou } from "./pages/Thankyou";
 import { OrdersList } from "./pages/OrdersList";
 import { Order } from "./pages/Order";
+import { Sales } from "./components/Sales";
 
 function App() {
     return (
@@ -35,7 +36,6 @@ function App() {
                         <Route path='/register' render={(props) => <Register {...props} />} />
                         <Route exact path='/confirmed' component={ConfirmAccount} />
 
-                        <ProtectedRoute exact path='/account' component={Account} />
                         <Route
                             path='/profile/:artistId'
                             render={(props) => (
@@ -48,11 +48,17 @@ function App() {
                             path='/order/:oid'
                             render={(props) => <Order oid={props.match.params.oid} {...props} />}
                         />
+                        <Route exact path='/sales/:artistId' 
+                        render={(props) => (
+                            <Sales artistId={props.match.params.artistId || ""} {...props} />
+                        )} />
+                        <ProtectedRoute exact path='/account' component={Account} />
                         <ProtectedRoute exact path='/orders' component={OrdersList} />
                         <ProtectedRoute exact path='/cart' component={Cart} />
                         <ProtectedRoute exact path='/admires' component={Admired} />
                         <ProtectedRoute exact path='/publish-poster' component={PosterUpload} />
                         <ProtectedRoute exact path='/thank-you' component={Thankyou} />
+                        
                         <Route
                             path='/posters/:category?'
                             render={(props) => (

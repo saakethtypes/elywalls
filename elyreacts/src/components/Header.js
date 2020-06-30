@@ -111,6 +111,9 @@ export default () => {
                             <div className={cn.account}>
                                 <Link to='/orders'>Orders</Link>
                                 <Link to='/account'>Account</Link>
+                                <Link to={`/sales/${user.username}`}>
+                                    Sales
+                                </Link>
                                 <Link to='/' onClick={handleLogout}>
                                     Sign Out
                                 </Link>

@@ -574,7 +574,7 @@ exports.addToCart = async (req, res, next) => {
     try {
         const poster = await Poster.findById({ _id: req.params.posterId });
         console.log("addcart", req.params.posterId);
-        let cart_cr = await Cart.create({ item: poster });
+        let cart_cr = await Cart.create({ item: poster ,quantity:1,price_with_quantity:1*poster.price});
         cart_cr = await Cart.find({ _id: cart_cr._id });
         let result = 0;
         if (req.user.utype === "artist") {
@@ -885,6 +885,8 @@ exports.pay = async (req, res, next) => {
                 .then((response) => res.json(order_cr))
                 .catch((err) => res.json({ err: err }));
         }
+        result.cart.map(async (ci)=>{await Poster.findByIdAndUpdate({_id:ci.item._id},
+            { $inc: { purchases: 1 } })})
         return res.status(200).json({
             success: true,
             order: order_cr,
