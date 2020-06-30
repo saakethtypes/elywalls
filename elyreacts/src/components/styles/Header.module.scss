@@ -175,8 +175,9 @@ header.wrapper .container .menu {
     div.buttons {
         grid-area: auto; // Unset from other layouts
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, max-content);
+        grid-gap: 0.5rem;
 
         padding: 1rem 1.5rem;
         border-top: 1px solid $color_background;
@@ -184,7 +185,7 @@ header.wrapper .container .menu {
         background: $color_background_alt;
 
         & > * {
-            margin-right: 1rem;
+            // margin-right: 1rem;
             text-align: center;
         }
         & > *:last-child {
