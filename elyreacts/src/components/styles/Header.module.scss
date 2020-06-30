@@ -196,6 +196,7 @@ header.wrapper .container .menu {
             display: flex;
             align-items: center;
             justify-content: space-around;
+            flex-wrap: wrap;
 
             & > * {
                 padding: 0.5rem;
