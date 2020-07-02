@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
-import { OrderItem } from "../components/OrderItem";
+import { Order } from "../components/Order";
 import LinkButton from "../components/LinkButton";
 
 //@ts-ignore
@@ -48,7 +48,7 @@ export const OrdersList = () => {
 
                         <div className={cn.ordersContainer}>
                             {ordersPending.map((oi) => (
-                                <OrderItem order={oi} />
+                                <Order order={oi} />
                             ))}
                         </div>
                     </section>
@@ -57,7 +57,7 @@ export const OrdersList = () => {
                     <section className={cn.orders}>
                         <h2>Paid</h2>
                         <p>We're processing these orders - you should receive them soon.</p>
-                        {orders.length > 0 && ordersPaid.map((oi) => <OrderItem order={oi} />)}
+                        {orders.length > 0 && ordersPaid.map((oi) => <Order order={oi} />)}
                     </section>
                 )}
             </div>

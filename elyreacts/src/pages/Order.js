@@ -1,11 +1,10 @@
 import React, { useEffect, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import LoadingIcon from "../components/LoadingIcon";
+import { OrderItem } from "../components/OrderItem";
 
 //@ts-ignore
 import cn from "./styles/Order.module.scss";
-import { PostersList } from "../components/PostersList";
-import { Poster } from "../components/Poster";
 
 const getMonthString = (raw) => {
     const months = [
@@ -71,11 +70,9 @@ export const Order = ({ oid, ...props }) => {
 
                 <section className={cn.orderContents}>
                     <h2>Order Contents</h2>
-                    {order.purchased_items.map((pi)=>
-                  <div>
-                  <Poster poster={pi.item}/>
-                    <div>Quantity - {pi.quantity}</div>
-                    </div>)}
+                    {order.purchased_items.map(({ item, quantity }) => (
+                        <OrderItem key={item._id} item={item} quantityPurchased={quantity} />
+                    ))}
                 </section>
             </div>
         </div>
