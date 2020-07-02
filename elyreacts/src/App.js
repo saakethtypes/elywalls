@@ -1,9 +1,12 @@
 import React from "react";
 import { BrowserRouter as BRouter, Route, Switch } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalState";
+import history from "./components/history";
+import { ProtectedRoute } from "./ProtectedRoute";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { ProtectedRoute } from "./ProtectedRoute";
+
 import { PostersWall } from "./pages/PostersWall";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -16,14 +19,13 @@ import { PosterUpload } from "./pages/PosterUpload";
 import { ConfirmAccount } from "./pages/ConfirmAccount";
 import { PosterEdit } from "./pages/PosterEdit";
 import { PasswordReset } from "./pages/PasswordReset";
-import "./App.scss";
 import { Poster } from "./pages/Poster";
-import history from "./components/history";
 import { Thankyou } from "./pages/Thankyou";
 import { OrdersList } from "./pages/OrdersList";
 import { Order } from "./pages/Order";
-import { Sales } from "./components/Sales";
+import { Sales } from "./pages/Sales";
 import { Error } from "./pages/Error";
+import "./App.scss";
 
 function App() {
     return (
