@@ -27,24 +27,16 @@ Still to do...
 ✔ fix: components/OrderItem image makes parent expand @done(20-06-29 14:26)
 ✔ fix: components/Poster image makes parent expand @done(20-06-29 14:41)
 ✔ feat: pages/Poster pages/Orders Make image as tall as informationContainer @done(20-06-29 14:26)
-☐ feat: Get errors for: [this isn't my work to do]
-    ☐ Account
-    ☐ Login
-    ☐ PosterEdit (after Submit clicked)
-    ☐ PostersWall
-    ☐ PosterUpload (after Submit clicked)
-    ☐ Profile (error loading data)
-    ☐ Register (after Submit clicked)
 ✔ style: components/FormInput colours @done(20-06-29 15:02)
 ✔ style: pages/Artist profile @done(20-06-25 20:00)
 ✔ style: pages/Orders @done(20-06-25 20:00)
 ✔ style: OrderItem non-mobile layout @done(20-06-25 20:00)
 ✔ style: pages/Profile Instagram link @done(20-06-29 15:24)
 ✔ style: pages/NavError @done(20-07-02 14:28)
-☐ Add content to Footer
-    ☐ Links: Home, Posters, My Account
-    ☐ List of links to poster categories
-    ☐ Copyright/disclaimer
+✔ Add content to Footer @done(20-07-02 16:11)
+    ✔ Links: Home, Posters, My Account @done(20-07-02 16:11)
+    ✔ List of links to poster categories @done(20-07-02 16:11)
+    ✔ Copyright/disclaimer @done(20-07-02 16:11)
 ☐ components/Poster Center heart inside Like icon (rem issue?)
 ☐ pages/Poster style changes (again)
     ☐ Always display poster above text
