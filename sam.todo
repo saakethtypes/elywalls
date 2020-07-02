@@ -45,6 +45,6 @@ Still to do...
 // Bugs
 ✔ feat: Animate loading icon @done(20-06-29 15:27)
 ✔ fix: pages/Order poster size too wide @done(20-07-02 18:39)
-☐ components/Poster Center heart inside Like icon (rem issue?)
-☐ fix: Header mobile view causes page to expand
-☐ fix: Re-render Masonry when resizing viewport
+✔ components/Poster Center heart inside Like icon (rem issue?) @done(20-07-02 19:01)
+✔ fix: Header mobile view causes page to expand @done(20-07-02 19:01)
+✔ fix: Re-render Masonry when resizing viewport @done(20-07-02 19:01)
