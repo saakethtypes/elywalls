@@ -290,7 +290,7 @@ button {
         color: $color_text_alt;
     }
 
-    &.button-primary {
+    &.button-primary:not(:disabled) {
         background: $color_brand_primary;
 
         &:hover {
