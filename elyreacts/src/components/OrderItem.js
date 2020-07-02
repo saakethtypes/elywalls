@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { FormInput } from "../components/FormInput";
 
 // @ts-ignore
-import cn from "./styles/CartItem.module.scss";
+import cn from "./styles/OrderItem.module.scss";
 
 const getPictureUrl = (pictureUrl) => {
     try {
