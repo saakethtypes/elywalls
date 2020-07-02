@@ -38,12 +38,13 @@ Still to do...
     ✔ List of links to poster categories @done(20-07-02 16:11)
     ✔ Copyright/disclaimer @done(20-07-02 16:11)
 ☐ components/Poster Center heart inside Like icon (rem issue?)
-☐ pages/Poster style changes (again)
-    ☐ Always display poster above text
-    ☐ Use max-width on desktop to limit poster size
-    ☐ Use 100% width on mobile
+✔ pages/Poster style changes (again) @done(20-07-02 18:16)
+    ✔ Always display poster above text @done(20-07-02 18:16)
+    ✔ Use max-width on desktop to limit poster size @done(20-07-02 18:16)
+    ✔ Use 100% width on mobile @done(20-07-02 18:16)
 
 // Bugs
 ✔ feat: Animate loading icon @done(20-06-29 15:27)
+☐ fix: pages/Order poster size too wide
 ☐ fix: Header mobile view causes page to expand
 ☐ fix: Re-render Masonry when resizing viewport
