@@ -40,13 +40,18 @@ Still to do...
 ✔ style: pages/Orders @done(20-06-25 20:00)
 ✔ style: OrderItem non-mobile layout @done(20-06-25 20:00)
 ✔ style: pages/Profile Instagram link @done(20-06-29 15:24)
-☐ style: pages/NavError
-    ☐ 401
-    ☐ 403
-    ☐ 404
-    ☐ 500
-    ☐ Other
+✔ style: pages/NavError @done(20-07-02 14:28)
+☐ Add content to Footer
+    ☐ Links: Home, Posters, My Account
+    ☐ List of links to poster categories
+    ☐ Copyright/disclaimer
+☐ components/Poster Center heart inside Like icon (rem issue?)
+☐ pages/Poster style changes (again)
+    ☐ Always display poster above text
+    ☐ Use max-width on desktop to limit poster size
+    ☐ Use 100% width on mobile
 
 // Bugs
 ✔ feat: Animate loading icon @done(20-06-29 15:27)
+☐ fix: Header mobile view causes page to expand
 ☐ fix: Re-render Masonry when resizing viewport
