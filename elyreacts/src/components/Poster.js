@@ -106,7 +106,9 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
                             +
                         </ButtonAction>
                         {cat === "postersMade" && (
-                            <LinkButton to={`/edit-poster/${poster._id}`}>✎</LinkButton>
+                            <LinkButton className='button-icon' to={`/edit-poster/${poster._id}`}>
+                                ✎
+                            </LinkButton>
                         )}
                     </div>
                 )}

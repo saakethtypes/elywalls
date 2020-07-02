@@ -122,6 +122,32 @@ a > div.image {
     }
 }
 
+a.button-icon {
+    height: 1em;
+    width: 1em;
+    box-sizing: content-box;
+
+    padding: 0.75rem;
+    border-radius: 50%;
+
+    background: $color_background;
+    color: $color_grey_dark;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+    cursor: default;
+
+    &:hover {
+        background: $color_background;
+        color: $color_brand_primary;
+    }
+
+    &.active {
+        background: $color_brand_primary;
+        color: $color_text;
+    }
+}
+
 // Has child <ul>
 .tiled-list-container {
     display: flex;
@@ -300,7 +326,6 @@ button {
     }
 
     &.button-icon {
-        // todo: Is this even used?
         height: 1em;
         width: 1em;
         box-sizing: content-box;
