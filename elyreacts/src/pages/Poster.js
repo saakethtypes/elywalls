@@ -144,13 +144,13 @@ export const Poster = ({ posterID }) => {
 
                     <h2>Purchase</h2>
 
-                    {isAddedToCart && <p>You already have {poster.title} in your cart</p>}
                     {isLoggedIn ? (
                         <button
                             disabled={isAddedToCart}
                             onClick={handleClickCart}
                             className='button-primary'>
-                            Add to Cart
+                            {isAddedToCart && "Already in Cart"}
+                            {!isAddedToCart && "Add to Cart"}
                         </button>
                     ) : (
                         <LinkButton to='/login'>Sign in to Buy</LinkButton>
