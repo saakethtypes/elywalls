@@ -284,6 +284,12 @@ button {
         color: $color_black;
     }
 
+    &:disabled {
+        background: $color_background_alt;
+
+        color: $color_text_alt;
+    }
+
     &.button-primary {
         background: $color_brand_primary;
 

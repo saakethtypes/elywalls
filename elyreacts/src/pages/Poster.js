@@ -21,7 +21,7 @@ const getPictureUrl = (pictureUrl) => {
     try {
         return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
     } catch (err) {
-        // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+        // fixme: Remove this as it shouldn't be necessary outside of testing
         return "https://source.unsplash.com/random";
     }
 };
@@ -109,85 +109,52 @@ export const Poster = ({ posterID }) => {
 
     return (
         <div className='page-container'>
-            <div className='page-header'>
-                <h1>{poster.title}</h1>
-                <p>
-                    A poster by <Link to={`/profile/${poster.author}`}>{poster.author}</Link> on
-                    Elywalls
-                </p>
-            </div>
+            <div className={`lower-content-container ${cn.container}`}>
+                <div className={cn.imageContainer}>
+                    <img src={getPictureUrl(poster.pictureURL)} alt={poster.caption} />
+                </div>
 
-            <div className='lower-content-container'>
-                <div className={cn.container}>
-                    <div className={cn.imageContainer}>
-                        <div
-                            className={`image ${cn.image}`}
-                            style={{
-                                backgroundImage: `url("${getPictureUrl(poster.pictureURL)}")`,
-                            }}
-                        />
-                        {isLoggedIn && (
-                            <div className={`${cn.buttons}`}>
-                                <ButtonAction
-                                    onClickHandler={handleClickAdmire}
-                                    activated={isAdmired}>
-                                    {getAdmireIcon(isAdmired)}
-                                </ButtonAction>
-                            </div>
-                        )}
+                <div className={`${cn.informationContainer}`}>
+                    <div className={cn.statsContainer}>
+                        <span className={cn.iconLikes}></span>
+                        <small className={cn.countLikes}>{admiresp}</small>
+
+                        <span className={cn.iconViews}></span>
+                        <small className={cn.countViews}>{poster.views}</small>
                     </div>
 
-                    <div className={`${cn.informationContainer}`}>
-                        <h2>{poster.title}</h2>
+                    <h1>{poster.title}</h1>
 
-                        {/* todo: Consider changing to separate links instead of container */}
-                        <div className={cn.authorContainer}>
-                            <Link to={`/profile/${poster.author}`}>
-                                <img
-                                    src={"https://source.unsplash.com/random/128x128"}
-                                    alt={poster.author}
-                                />
-                            </Link>
-                            <small>
-                                By <a href={`/profile/${poster.author}`}>{poster.author}</a>
-                            </small>
-                        </div>
-
-                        <div className={cn.statsContainer}>
-                            <span className={cn.iconLikes}></span>
-                            <small className={cn.countLikes}>{admiresp}</small>
-
-                            <span className={cn.iconViews}></span>
-                            <small className={cn.countViews}>{poster.views}</small>
-                        </div>
-
-                        <div className={cn.captionContainer}>
-                            <h3>Caption</h3>
-                            <p>{poster.caption}</p>
-                        </div>
-
-                        <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
-
-                        <div className={cn.purchaseCTAContainer}>
-                            <h3>Purchase</h3>
-
-                            {!isAddedToCart ? (
-                                <p>Add {poster.title} to your cart to buy</p>
-                            ) : (
-                                <p>You already have {poster.title} in your cart</p>
-                            )}
-                            {isLoggedIn ? (
-                                <button
-                                    disabled={isAddedToCart}
-                                    onClick={handleClickCart}
-                                    className='button-primary'>
-                                    Add to Cart
-                                </button>
-                            ) : (
-                                <LinkButton to='/login'>Sign in to Buy</LinkButton>
-                            )}
-                        </div>
+                    <div className={cn.authorContainer}>
+                        <Link to={`/profile/${poster.author}`}>
+                            <img
+                                src={"https://source.unsplash.com/random/128x128"}
+                                alt={poster.author}
+                            />
+                        </Link>
+                        <small>
+                            By <a href={`/profile/${poster.author}`}>{poster.author}</a>
+                        </small>
                     </div>
+
+                    <h2>Caption</h2>
+                    <p>{poster.caption}</p>
+
+                    <strong className={cn.price}>₹ {poster.price.toFixed(2)}</strong>
+
+                    <h2>Purchase</h2>
+
+                    {isAddedToCart && <p>You already have {poster.title} in your cart</p>}
+                    {isLoggedIn ? (
+                        <button
+                            disabled={isAddedToCart}
+                            onClick={handleClickCart}
+                            className='button-primary'>
+                            Add to Cart
+                        </button>
+                    ) : (
+                        <LinkButton to='/login'>Sign in to Buy</LinkButton>
+                    )}
                 </div>
             </div>
 
