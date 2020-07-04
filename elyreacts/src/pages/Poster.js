@@ -9,9 +9,11 @@ import LoadingIcon from "../components/LoadingIcon";
 import cn from "./styles/Poster.module.scss";
 import { Link } from "react-router-dom";
 
-const ButtonAction = ({ onClickHandler, activated = false, children }) => {
+const ButtonAction = ({ onClickHandler, light = false, activated = false, children }) => {
     return (
-        <button className={`button-icon ${activated ? "active" : ""}`} onClick={onClickHandler}>
+        <button
+            className={`button-icon ${light ? "light" : ""} ${activated ? "active" : ""}`}
+            onClick={onClickHandler}>
             {children}
         </button>
     );
@@ -102,7 +104,7 @@ export const Poster = ({ posterID }) => {
 
     const getAdmireIcon = (fill) => {
         if (!fill) return <span>❤</span>;
-        return <span className={cn.iconLikes}></span>;
+        return <span className='icon-likes'></span>;
     };
 
     if (!poster) return <LoadingIcon />;
@@ -116,10 +118,10 @@ export const Poster = ({ posterID }) => {
 
                 <div className={`${cn.informationContainer}`}>
                     <div className={cn.statsContainer}>
-                        <span className={cn.iconLikes}></span>
+                        <span className='icon-likes'></span>
                         <small className={cn.countLikes}>{admiresp}</small>
 
-                        <span className={cn.iconViews}></span>
+                        <span className='icon-views'></span>
                         <small className={cn.countViews}>{poster.views}</small>
                     </div>
 
@@ -144,17 +146,26 @@ export const Poster = ({ posterID }) => {
 
                     <h2>Purchase</h2>
 
-                    {isLoggedIn ? (
-                        <button
-                            disabled={isAddedToCart}
-                            onClick={handleClickCart}
-                            className='button-primary'>
-                            {isAddedToCart && "Already in Cart"}
-                            {!isAddedToCart && "Add to Cart"}
-                        </button>
-                    ) : (
-                        <LinkButton to='/login'>Sign in to Buy</LinkButton>
-                    )}
+                    <div className={cn.ctaButtons}>
+                        {isLoggedIn ? (
+                            <button
+                                disabled={isAddedToCart}
+                                onClick={handleClickCart}
+                                className='button-primary'>
+                                {isAddedToCart && "Already in Cart"}
+                                {!isAddedToCart && "Add to Cart"}
+                            </button>
+                        ) : (
+                            <LinkButton to='/login'>Sign in to Buy</LinkButton>
+                        )}
+
+                        <ButtonAction
+                            light
+                            onClickHandler={handleClickAdmire}
+                            activated={isAdmired}>
+                            {getAdmireIcon(isAdmired)}
+                        </ButtonAction>
+                    </div>
                 </div>
             </div>
 

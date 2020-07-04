@@ -87,7 +87,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
 
     const getAdmireIcon = (fill) => {
         if (!fill) return <span>❤</span>;
-        return <span className={cn.iconLikes}></span>;
+        return <span className='icon-likes'></span>;
     };
 
     return (
@@ -123,7 +123,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
                     By <a href={`/profile/${poster.author}`}>{poster.author}</a>
                 </small>
                 <div className={cn.admiresContainer}>
-                    <span className={cn.iconLikes}></span>
+                    <span className='icon-likes'></span>
                     <strong>{admires}</strong>
                 </div>
                 <strong className={cn.price}>{poster.price.toFixed(2)}</strong>

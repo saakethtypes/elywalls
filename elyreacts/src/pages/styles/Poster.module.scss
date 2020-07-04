@@ -105,24 +105,20 @@
             margin: 0.25rem 0 0 0;
         }
 
-        & > div.purchaseCTAContainer {
+        & > div.ctaButtons {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-
-            margin-top: 1rem;
-
-            & > p {
-                margin: 0.25rem 0 0 0;
-
-                text-align: left;
-            }
 
             & > button,
             & > a {
                 align-self: center;
 
-                margin-top: 1.5rem;
+                margin-top: 0.5rem;
+
+                &:first-child {
+                    margin-top: 0;
+                }
             }
         }
     }
@@ -148,30 +144,6 @@
     }
 }
 
-.iconLikes {
-    display: inline-block;
-
-    width: 1.5rem;
-    height: 1rem;
-
-    background-image: url("../../assets/images/heart.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.iconViews {
-    display: inline-block;
-
-    width: 1.5rem;
-    height: 1rem;
-
-    background-image: url("../../assets/images/views.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
 @media only screen and (min-width: $media_width_tablet) {
     .container {
         grid-template-rows: 1fr;
@@ -182,6 +154,20 @@
                 margin: 0 auto 0 0;
 
                 text-align: left;
+            }
+
+            & > div.ctaButtons {
+                flex-direction: row;
+
+                & > a,
+                & > button {
+                    margin-top: 0;
+                    margin-left: 0.5rem;
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
             }
         }
     }
