@@ -52,6 +52,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
         price: poster.price || 0.0,
         views: poster.views || 0,
         admires: poster.admires || 0,
+        artistDp: poster.artistDp,
     };
 
     const checkAdmires = () => {
@@ -90,6 +91,16 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
         return <span className='icon-likes'></span>;
     };
 
+    const getDPUrl = (pictureUrl) => {
+        try {
+            console.log("...", pictureUrl);
+            return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
+        } catch (err) {
+            // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+            return "https://source.unsplash.com/random";
+        }
+    };
+    
     return (
         <div className={`${className} ${cn.container}`}>
             <div className={cn.previewContainer}>
@@ -102,9 +113,10 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
                         <ButtonAction onClickHandler={handleClickAdmire} activated={isAdmired}>
                             {getAdmireIcon(isAdmired)}
                         </ButtonAction>
+                        {user.user_type =='buyer'? 
                         <ButtonAction onClickHandler={handleClickCart} activated={isAddedToCart}>
                             +
-                        </ButtonAction>
+                        </ButtonAction>:null}
                         {cat === "postersMade" && (
                             <LinkButton className='button-icon' to={`/edit-poster/${poster._id}`}>
                                 ✎
@@ -116,7 +128,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
 
             <div className={cn.caption}>
                 <Link to={`/profile/${poster.author}`} className={cn.authorImageContainer}>
-                    <img src='https://source.unsplash.com/random/128x128' alt={poster.author} />
+                    <img src={getDPUrl(poster.artistDp)} alt={poster.author} />
                 </Link>
                 <h3>{poster.title}</h3>
                 <small>

@@ -55,9 +55,9 @@ export const Profile = ({ artistId }) => {
                     </div>
                 </div>
 
-                <Link className={cn.instagramContainer} to={artist.linkedIG}>
-                    <img src={ICON_INSTAGRAM} alt='Instagram' />
-                </Link>
+                <a className={cn.instagramContainer} href={`https://www.instagram.com/${artist.linkedIG}`}>
+                    <img src={ICON_INSTAGRAM} alt='Instagram'  />
+                </a>
 
                 <div className={cn.imageContainer}>
                     <img src={getPictureUrl(artist.dpURL)} alt={`${artist.name} on Elywalls`} />

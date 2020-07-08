@@ -8,6 +8,7 @@ import LoadingIcon from "../components/LoadingIcon";
 // @ts-ignore
 import cn from "./styles/Poster.module.scss";
 import { Link } from "react-router-dom";
+import { SalesItem } from "../components/SalesItem";
 
 const ButtonAction = ({ onClickHandler, light = false, activated = false, children }) => {
     return (
@@ -43,7 +44,7 @@ export const Poster = ({ posterID }) => {
 
     useEffect(() => {
         getPoster(posterID);
-    }, []);
+    }, []); 
 
     poster = {
         ...poster,
@@ -106,7 +107,16 @@ export const Poster = ({ posterID }) => {
         if (!fill) return <span>❤</span>;
         return <span className='icon-likes'></span>;
     };
-
+    
+    const getDPUrl = (pictureUrl) => {
+        try {
+            console.log("...", pictureUrl);
+            return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
+        } catch (err) {
+            // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+            return "https://source.unsplash.com/random";
+        }
+    };
     if (!poster) return <LoadingIcon />;
 
     return (
@@ -130,7 +140,7 @@ export const Poster = ({ posterID }) => {
                     <div className={cn.authorContainer}>
                         <Link to={`/profile/${poster.author}`}>
                             <img
-                                src={"https://source.unsplash.com/random/128x128"}
+                                src={getDPUrl(poster.artistDp)}
                                 alt={poster.author}
                             />
                         </Link>
@@ -138,16 +148,17 @@ export const Poster = ({ posterID }) => {
                             By <a href={`/profile/${poster.author}`}>{poster.author}</a>
                         </small>
                     </div>
-
-                    <h2>Caption</h2>
                     <p>{poster.caption}</p>
 
                     <strong className={cn.price}>₹ {poster.price.toFixed(2)}</strong>
-
-                    <h2>Purchase</h2>
-
+                    
                     <div className={cn.ctaButtons}>
-                        {isLoggedIn ? (
+                        {isLoggedIn?
+                            user.user_type =='buyer'?
+                            <div>
+                                <br></br>
+                                <h2>Purchase</h2>
+                                <br></br>
                             <button
                                 disabled={isAddedToCart}
                                 onClick={handleClickCart}
@@ -155,18 +166,41 @@ export const Poster = ({ posterID }) => {
                                 {isAddedToCart && "Already in Cart"}
                                 {!isAddedToCart && "Add to Cart"}
                             </button>
-                        ) : (
+
+                            <ButtonAction
+                                light
+                                onClickHandler={handleClickAdmire}
+                                activated={isAdmired}>
+                                {getAdmireIcon(isAdmired)}
+                            </ButtonAction>
+                            </div>:
+                            <div>
+                                <br></br>
+                            <ButtonAction
+                                light
+                                onClickHandler={handleClickAdmire}
+                                activated={isAdmired}>
+                                {getAdmireIcon(isAdmired)}
+                            </ButtonAction>
+                            </div>
+                         : (
                             <LinkButton to='/login'>Sign in to Buy</LinkButton>
                         )}
-
-                        <ButtonAction
-                            light
-                            onClickHandler={handleClickAdmire}
-                            activated={isAdmired}>
-                            {getAdmireIcon(isAdmired)}
-                        </ButtonAction>
                     </div>
+                    {isLoggedIn?
+                            user.username == poster.author?
+                            <div>
+                                <br></br>
+                <strong>{poster.purchases||0} sold</strong>
+                <br></br>
+                <br></br>
+                <strong>
+                    <span>⇧</span>₹ {(poster.price * (poster.purchases||0)).toFixed(2)} made
+                </strong>
+                            </div>                            
+                        :null:null}
                 </div>
+                
             </div>
 
             {poster.category !== "Unknown" && (

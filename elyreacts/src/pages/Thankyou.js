@@ -30,7 +30,7 @@ export const Thankyou = () => {
                         <LinkButton primary to="/posters/latest">
                             View Latest Posters
                         </LinkButton>
-                        <LinkButton to="/account">
+                        <LinkButton to="/orders">
                             View Your Orders
                         </LinkButton>
                     </div>

@@ -51,6 +51,10 @@ const PosterSchema = new mongoose.Schema({
     type:String,
     default:""
   },
+  artistDp:{
+    type:String,
+    default:""
+  },
 
 featured:{
     type:Boolean,

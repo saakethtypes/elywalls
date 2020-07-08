@@ -29,9 +29,8 @@ const {
        removeFromCart,
        getPostersAdmired,
        getArtistsAdmired,
-
-       
        pay,
+       getSales,
        //   orderDetails,
        //   createPosterIg
 } = require("../controllers/posterController");
@@ -55,6 +54,7 @@ router.route('/saveQuantity/:cartId').patch(auth, cartQuantity)
 router.route('/orders').get(auth,getOrders)
 router.route('/recommends/:cat/:aid/:pid').get(getRecommends)
 router.route('/order/:oid').get(getOrder)
+router.route('/sales/:aid').get(getSales)
 
 router.route("/poster/:posterId")
        .delete(auth, deletePoster)

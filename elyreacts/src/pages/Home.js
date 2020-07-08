@@ -95,7 +95,15 @@ export const Home = () => {
                 break;
         }
     };
-
+    const getDPUrl = (pictureUrl) => {
+        try {
+            console.log("...", pictureUrl);
+            return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
+        } catch (err) {
+            // todo/fixme: Remove this as it shouldn't be necessary outside of testing
+            return "https://source.unsplash.com/random";
+        }
+    };
     return (
         <div className={`page-container`}>
             <div className={cn.gridContainer}>
@@ -171,7 +179,7 @@ export const Home = () => {
                                     <a href={`/profile/${artist.username}`}>
                                         {/* todo: Add profile pictures */}
                                         <img
-                                            src={"https://source.unsplash.com/random/600x600"}
+                                            src={getDPUrl(artist.dpURL)}
                                             alt={artist.name}
                                         />
                                         <span>{artist.name}</span>

@@ -22,9 +22,9 @@ export const PosterUpload = (props) => {
     const [price, setPrice] = useState(INITIAL_PRICE);
     const [tags, setTags] = useState("");
     const [category, setCategory] = useState("");
+    const [artistDp, setartistDp] = useState("");
     const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
     const handleImageUpload = (picture) => {
         setPictures(picture);
     };
@@ -44,6 +44,7 @@ export const PosterUpload = (props) => {
                         madeBy: user.username,
                         category,
                         tags,
+                        artistDp:user.dpURL,
                     },
                     pictures[0],
                     props

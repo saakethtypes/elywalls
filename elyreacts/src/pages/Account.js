@@ -17,8 +17,8 @@ export const Account = ({ location }) => {
     useEffect(() => {
         getProfileArtist();
     }, []);
-    console.log(user);
-
+    const admiredPosters = user.admires.reverse()
+    console.log(admiredPosters[0].title)
     useLayoutEffect(() => {
         const sp = new URLSearchParams(location.search);
         const elPublished = document.getElementById("published");
@@ -59,17 +59,17 @@ export const Account = ({ location }) => {
                             </>
                         )}
                     </div>
-
+                    {user.user_type === "artist" &&
                     <div className='buttons-container'>
                         <StripeCustomers />
-                    </div>
+                    </div>}
                 </div>
 
                 {user.user_type === "buyer" && (
                     <div className='collection-container' id='admired'>
                         <h2>Admires</h2>
                         <p>Your admired posters</p>
-                        <PostersList posters={user.admires} />
+                        <PostersList posters={admiredPosters} />
                     </div>
                 )}
                 {user.user_type === "artist" && (

@@ -6,11 +6,14 @@ import { SalesItem } from "../components/SalesItem";
 //@ts-ignore
 import cn from "./styles/Sales.module.scss";
 
-export const Sales = ({ artistId = null }) => {
-    const { user } = useContext(GlobalContext);
+export const Sales = ({ artistId }) => {
+    const { user , getSales} = useContext(GlobalContext);
     const [profit, setProfit] = useState(0);
     const [sold, setSold] = useState(0);
-
+    useEffect(() => {
+        getSales(artistId);
+    }, [])
+    console.log(user)
     return (
         <div className='page-container'>
             <div className='page-header'>
@@ -41,7 +44,7 @@ export const Sales = ({ artistId = null }) => {
                                 key={poster._id}
                                 className={cn.salesItem}
                                 item={poster}
-                                quantitySold={54}
+                                quantitySold= {poster.purchases||0}
                             />
                         ))}
                     </div>

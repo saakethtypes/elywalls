@@ -206,9 +206,7 @@ const appreducer = (state, action) => {
                 ...state,
                 user:{
                     ...state.user,
-                    postersmade: 
-                        action.posters_made
-                    
+                    postersmade: action.posters_made
                 }
             };
         
@@ -224,6 +222,17 @@ const appreducer = (state, action) => {
                 ...state,
                 orders:action.orders
             };
+
+        case "SALES_GET":
+            console.log(action.salesPosters)
+            return {
+                ...state,
+                user:{
+                    ...state.user,
+                    postersmade: action.salesPosters
+                }
+            };
+
         case "ORDER_SINGLE_GET":
             console.log(action.order)
             return {

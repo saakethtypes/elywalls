@@ -65,24 +65,30 @@ export default () => {
                                 <Link to='/posters'>Posters</Link>
                             </li>
                             
-                            {user && (
-                                <>
-                                    <li>
-                                        <Link to='/admires'>Admires</Link>
-                                    </li>
-                                    
+                            {user && user.user_type === "buyer" && (
+                                <>                                    
                                     <li>
                                         <Link to='/cart'>Cart</Link>
+                                    </li>
+                                    <li>
+                                        <Link to='/orders'>Orders</Link>
                                     </li>
                                 </>
                             )}
 
                             {user && user.user_type === "artist" && (
+                                <>
                                 <li>
                                     <Link to={`/profile/${user.username}`}>
                                         My Profile
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to='/admires'>
+                                        Admires
+                                    </Link>
+                                </li>
+                                </>
                             )}
                         </ul>
                     </nav>
@@ -104,16 +110,16 @@ export default () => {
                                 <LinkButton primary to='/publish-poster'>
                                     Publish
                                 </LinkButton>
+                                <Link to={`/sales/${user.username}`}>
+                                    Sales
+                                </Link>
                             </>
                         )}
 
                         {user && (
                             <div className={cn.account}>
-                                <Link to='/orders'>Orders</Link>
                                 <Link to='/account'>Account</Link>
-                                <Link to={`/sales/${user.username}`}>
-                                    Sales
-                                </Link>
+                                
                                 <Link to='/' onClick={handleLogout}>
                                     Sign Out
                                 </Link>

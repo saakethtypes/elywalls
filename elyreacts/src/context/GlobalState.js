@@ -732,12 +732,14 @@ export const GlobalProvider = ({ children }) => {
                 picture,
                 String(new_poster.title) + String(new_poster.tags)
             );
+            console.log("here")
             formData.append("title", new_poster.title);
             formData.append("caption", new_poster.caption);
             formData.append("price", new_poster.price);
             formData.append("tags", new_poster.tags);
             formData.append("madeBy", new_poster.madeBy);
             formData.append("category", new_poster.category);
+            formData.append("artistDp", new_poster.artistDp);
             const config = {
                 headers: {
                     "x-auth-token": localStorage.getItem("jwt"),
@@ -794,7 +796,7 @@ export const GlobalProvider = ({ children }) => {
             console.log(res.data);
             dispatch({
                 type: "PROFILE_A",
-                posters_made: res.data.profile.postersmade,
+                posters_made: res.data.profile.postersmade.reverse(),
             });
         } catch (err) {
             dispatch({
@@ -820,6 +822,31 @@ export const GlobalProvider = ({ children }) => {
                 type: "ORDER_SINGLE_GET",
                 order: res.data.order,
             });
+        } catch (err) {
+            console.log(err)
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+
+    async function getSales(aid) {
+        try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt"),
+                },
+            };
+            const res = await axios.get(`/sales/${aid}`, config);
+            console.log(res.data.postersales);
+            dispatch({
+                type: "SALES_GET",
+                salesPosters: res.data.postersales,
+            });
+            localStorage.setItem("currentUser", JSON.stringify(state.user));
+
         } catch (err) {
             console.log(err)
             dispatch({
@@ -903,6 +930,7 @@ export const GlobalProvider = ({ children }) => {
                 getAdmiredPosters,
                 getTopArtists,
                 getRecommends,
+                getSales,
             }}>
             {children}
         </GlobalContext.Provider>

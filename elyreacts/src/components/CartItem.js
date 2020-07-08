@@ -17,8 +17,9 @@ export const CartItem = ({
         removeFromCart(cid);
     };
     const cq = (q) => {
-        setCartItemQuantity(ci._id, Number(q), ci.item.price * Number(q));
-    };
+        if(Number(q)<1){console.log("cant be negative")}
+        else{setCartItemQuantity(ci._id, Number(q), ci.item.price * Number(q));
+        }};
     let picUrl = null
     try{  let purl = ci.item.pictureURL.split('Db\\')[1] 
     console.log("../assets/postersDb/"+purl)
@@ -47,6 +48,7 @@ export const CartItem = ({
                     value={quantity}
                     inputProps={{
                         inputMode: "number",
+                        min : "1",
                         onChange: e => {
                             setquantity(e.target.value);
                             cq(e.target.value);

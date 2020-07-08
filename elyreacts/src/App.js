@@ -34,37 +34,22 @@ function App() {
                 <GlobalProvider>
                     <Header />
                     <Switch>
+
                         <Route exact path='/' component={Home} />
                         <Route exact path='/login' component={Login} />
                         <Route path='/register' render={(props) => <Register {...props} />} />
                         <Route exact path='/confirmed' component={ConfirmAccount} />
-
                         <Route
                             path='/profile/:artistId'
                             render={(props) => (
                                 <Profile artistId={props.match.params.artistId || ""} {...props} />
                             )}
                         />
-
                         <Route
                             exact
                             path='/order/:oid'
                             render={(props) => <Order oid={props.match.params.oid} {...props} />}
                         />
-                        <Route
-                            exact
-                            path='/sales/:artistId'
-                            render={(props) => (
-                                <Sales artistId={props.match.params.artistId || ""} {...props} />
-                            )}
-                        />
-                        <ProtectedRoute exact path='/account' component={Account} />
-                        <ProtectedRoute exact path='/orders' component={OrdersList} />
-                        <ProtectedRoute exact path='/cart' component={Cart} />
-                        <ProtectedRoute exact path='/admires' component={Admired} />
-                        <ProtectedRoute exact path='/publish-poster' component={PosterUpload} />
-                        <ProtectedRoute exact path='/thank-you' component={Thankyou} />
-
                         <Route
                             path='/posters/:category?'
                             render={(props) => (
@@ -77,19 +62,29 @@ function App() {
                                 <Poster posterID={props.match.params.id} {...props} />
                             )}
                         />
-                        <ProtectedRoute
-                            path='/edit-poster/:id'
-                            component={(props) => <PosterEdit posterID={props.match.params.id} />}
-                        />
-
                         <Route
                             path='/resetpassword/:id'
                             render={(props) => (
                                 <PasswordReset rid={props.match.params.id} {...props} />
                             )}
                         />
-
-                        {/* Error page catch-all */}
+                        <ProtectedRoute exact path='/account' component={Account} />
+                        <ProtectedRoute exact path='/orders' component={OrdersList} />
+                        <ProtectedRoute exact path='/cart' component={Cart} />
+                        <ProtectedRoute exact path='/admires' component={Admired} />
+                        <ProtectedRoute exact path='/publish-poster' component={PosterUpload} />
+                        <ProtectedRoute exact path='/thank-you' component={Thankyou} />
+                        <ProtectedRoute
+                            path='/sales/:artistId'
+                            component={(props) => (
+                                <Sales artistId={props.match.params.artistId || ""} {...props} />
+                            )}
+                        />
+                        <ProtectedRoute
+                            path='/edit-poster/:id'
+                            component={(props) => <PosterEdit posterID={props.match.params.id} />}
+                        />
+                        
                         <Route path='*' render={(props) => <Error errorID={404} {...props} />} />
                     </Switch>
 

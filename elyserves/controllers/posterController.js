@@ -33,9 +33,12 @@ exports.createPoster = async (req, res, next) => {
             price: req.body.price,
             madeBy: req.body.madeBy,
             caption: req.body.caption,
+            artistDp: req.body.artistDp
         };
+        let artlimit = await Artist.findById(req.user.id)
+        if(artlimit.postersmade.length<21){
         const new_poster = await Poster.create(poster);
-
+          
         //pushing to artist works
         const art_made = await Artist.findByIdAndUpdate(
             { _id: req.user.id },
@@ -72,7 +75,12 @@ exports.createPoster = async (req, res, next) => {
         return res.status(201).json({
             success: true,
             poster_created: new_poster,
+        });}else{
+            return res.status(201).json({
+                success: true,
+                msg:'Max publishable limit is only 20 posters.',
         });
+    }
     } catch (error) {
         if (error.name === "ValidationError") {
             const msgs = Object.values(error.errors).map((val) => val.message);
@@ -81,6 +89,7 @@ exports.createPoster = async (req, res, next) => {
                 err: msgs,
             });
         } else {
+            console.log(error)
             return res.status(507).json({
                 success: false,
                 err: error,
@@ -251,17 +260,11 @@ exports.getArtistPopular = async (req, res, next) => {
 };
 
 function getUnique(arr, comp) {
-    // store the comparison  values in array
     const unique = arr
         .map((e) => e[comp])
-
-        // store the indexes of the unique objects
         .map((e, i, final) => final.indexOf(e) === i && i)
-
-        // eliminate the false indexes & return unique objects
         .filter((e) => arr[e])
         .map((e) => arr[e]);
-
     return unique;
 }
 
@@ -338,11 +341,11 @@ exports.getPostersPopular = async (req, res, next) => {
 exports.getPostersPhotoshop = async (req, res, next) => {
     try {
         console.log("photoshop");
-        let result = await Photoshop.find({});
+        let result = await Photoshop.find({})
         result = result[0].items;
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: result.reverse(),
         });
     } catch (error) {
         return res.status(504).json({
@@ -359,7 +362,7 @@ exports.getPostersGraphic = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: result.reverse(),
         });
     } catch (error) {
         return res.status(503).json({
@@ -371,11 +374,11 @@ exports.getPostersGraphic = async (req, res, next) => {
 
 exports.getPostersPhotography = async (req, res, next) => {
     try {
-        let result = await Photography.find({});
+        let result = await Photography.find({})
         result = result[0].items;
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: result.reverse(),
         });
     } catch (error) {
         return res.status(505).json({
@@ -387,12 +390,12 @@ exports.getPostersPhotography = async (req, res, next) => {
 
 exports.getPostersTextography = async (req, res, next) => {
     try {
-        let result = await Textography.find({});
+        let result = await Textography.find({})
         result = result[0].items;
 
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: result.reverse(),
         });
     } catch (error) {
         return res.status(506).json({
@@ -481,7 +484,8 @@ exports.unadmirePoster = async (req, res, next) => {
         });
        
         if (chk) {
-            await Poster.findByIdAndUpdate({ _id: req.params.posterId }, { $inc: { admires: 1 } });
+            await Poster.findByIdAndUpdate({ _id: req.params.posterId }, 
+                { $inc: { admires: -1 } });
             result = await Poster.findById(req.params.posterId);
             if (req.user.utype === "buyer") {
             user = await User.findByIdAndUpdate(
@@ -577,14 +581,6 @@ exports.addToCart = async (req, res, next) => {
         let cart_cr = await Cart.create({ item: poster ,quantity:1,price_with_quantity:1*poster.price});
         cart_cr = await Cart.find({ _id: cart_cr._id });
         let result = 0;
-        if (req.user.utype === "artist") {
-            result = await Artist.findByIdAndUpdate(
-                { _id: req.user.id },
-                { $push: { cart: cart_cr[0] } }
-            );
-            result = await Artist.findById({ _id: req.user.id });
-            console.log(result.cart.length);
-        }
         if (req.user.utype === "buyer") {
             result = await User.findByIdAndUpdate(
                 { _id: req.user.id },
@@ -610,22 +606,7 @@ exports.cartQuantity = async (req, res, next) => {
             { _id: req.params.cartId },
             { quantity: req.body.q, price_with_quantity: req.body.pwq }
         );
-        if (req.user.utype === "artist") {
-            result = await Artist.updateOne(
-                {
-                    _id: req.user.id,
-                    cart: {
-                        $elemMatch: { _id: req.params.cartId },
-                    },
-                },
-                {
-                    $set: {
-                        "cart.$.quantity": req.body.q,
-                        "cart.$.price_with_quantity": req.body.pwq,
-                    },
-                }
-            );
-        } else {
+        if (req.user.utype === "buyer") {
             result = await User.updateOne(
                 {
                     _id: req.user.id,
@@ -658,16 +639,6 @@ exports.removeFromCart = async (req, res, next) => {
         console.log("removing");
         let cartt = await Cart.find({ _id: req.params.cid });
         console.log("remove", cartt);
-
-        if (req.user.utype === "artist") {
-            result = await Artist.findByIdAndUpdate(
-                { _id: req.user.id },
-                { $pull: { cart: { _id: req.params.cid } } }
-            );
-            result = await Artist.findById({ _id: req.user.id });
-
-            console.log(result.cart);
-        }
         if (req.user.utype === "buyer") {
             result = await User.findByIdAndUpdate(
                 { _id: req.user.id },
@@ -693,10 +664,6 @@ exports.getCarts = async (req, res, next) => {
     try {
         let result = 0;
         console.log("getting");
-        if (req.user.utype === "artist") {
-            result = await Artist.findById({ _id: req.user.id });
-            result = result.cart;
-        }
         if (req.user.utype === "buyer") {
             result = await User.findById({ _id: req.user.id });
             result = result.cart;
@@ -726,7 +693,7 @@ exports.getPostersAdmired = async (req, res, next) => {
             result = await User.findById({ _id: req.user.id });
             result = result.admires;
         }
-        console.log(result.length);
+        console.log(result[0].title);
         return res.status(200).json({
             success: true,
             posters: result,
@@ -752,7 +719,7 @@ exports.getArtistsAdmired = async (req, res, next) => {
         }
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: result.reverse(),
         });
     } catch (error) {
         return res.status(520).json({
@@ -765,10 +732,6 @@ exports.getArtistsAdmired = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
     try {
         let result = 0;
-        if (req.user.utype === "artist") {
-            result = await Artist.findById({ _id: req.user.id });
-            result = result.order_history;
-        }
         if (req.user.utype === "buyer") {
             result = await User.findById(req.user.id);
             result = result.order_history;
@@ -800,6 +763,28 @@ exports.getOrder = async (req, res, next) => {
     }
 };
 
+exports.getSales = async (req, res, next) => {
+    try {
+        let result = await Artist.find({ username: req.params.aid });
+        const postersSold = []
+        let poster = 0
+        for (let i = 0; i < result[0].postersmade.length; i++) {
+            poster = await Poster.findById({_id:result[0].postersmade[i]._id})
+            postersSold.push(poster)
+        }
+        return res.status(200).json({
+            success: true,
+            postersales: postersSold,
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(520).json({
+            success: false,
+            err: error,
+        });
+    }
+};
+
 exports.pay = async (req, res, next) => {
     try {
         let result = 0;
@@ -815,43 +800,7 @@ exports.pay = async (req, res, next) => {
             billing_adress,
             total_price:final_price
         }
-        if (req.user.utype === "artist") {
-            
-            result = await Artist.findById(req.user.id);
-            order.purchasedBy = [result.name,result.username,result.email,result.phone],
-            order.purchased_items = result.cart;
 
-            order_cr = await Order.create(order)
-
-            //email order
-            result = await Artist.findByIdAndUpdate({_id:req.user.id}
-              ,{$push:{order_history:order_cr}})
-            await Artist.findByIdAndUpdate({_id:req.user.id}
-                ,{cart:[]})
-            const price = req.body.totalPrice;
-            const token = req.body.token;
-            console.log(token)
-            const idempotencyKey = v4();
-
-            return stripe.customers
-                .create({
-                    email: token.email,
-                    source: token.id,
-                })
-                .then((customer) => {
-                    stripe.charges.create(
-                        {
-                            amount: price * 100,
-                            currency: "inr",
-                            customer: customer.id,
-                            description: "Posters purchase bill",
-                        },
-                        { idempotencyKey }
-                    );
-                })
-                .then((response) => res.json(order_cr))
-                .catch((err) => res.json({ err: err }));
-        }
         if (req.user.utype === "buyer") {
             result = await User.findById(req.user.id);
             order.purchasedBy = [result.name,result.username,result.email,result.phone],
@@ -862,6 +811,10 @@ exports.pay = async (req, res, next) => {
               ,{$push:{order_history:order_cr}})
             await User.findByIdAndUpdate({_id:req.user.id}
                 ,{cart:[]})
+            result.cart.map(async (ci)=>{
+                await Poster.findByIdAndUpdate({_id:ci.item._id},
+                    { $inc: { purchases: ci.quantity } })        
+            })
             const price = req.body.totalPrice;
             const token = req.body.token;
             const idempotencyKey = v4();
