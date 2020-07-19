@@ -190,7 +190,7 @@ export const Poster = ({ posterID }) => {
                 <br></br>
                 <br></br>
                 <strong>
-                    <span>⇧</span>₹ {(poster.price * (poster.purchases||0)).toFixed(2)} made
+                    <span>⇧</span>₹ {((poster.price * (poster.purchases||0))/2).toFixed(2)} made
                 </strong>
                             </div>                            
                         :null:null}

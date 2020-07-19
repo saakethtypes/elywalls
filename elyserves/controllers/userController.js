@@ -107,9 +107,10 @@ exports.registerArtist = async (req, res, next) => {
     if (req.files === null) {
       return res.json({ msg: "No file uploaded" });
   }
-    let checkExistM = await Artist.find({email:req.body.email})
+    //TODO uncomment let checkExistM = await Artist.find({email:req.body.email})
     let checkExistU = await Artist.find({username:req.body.username})
-    if(checkExistM || checkExistU){
+    //checkExistM || 
+    if(checkExistU.username){
       console.log("Username or Email alreadyt exists")
       return res.json({
         msg: "Email or username already exists",
@@ -729,7 +730,6 @@ exports.getProfileUser = async (req, res, next) => {
 exports.getProfileArtist = async (req, res, next) => {
   try {
     let result = await Artist.findById({_id: req.user.id});
-
     return res.status(200).json({
       success: true,
       profile: result

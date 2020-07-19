@@ -28,7 +28,7 @@ export const SalesItem = ({ item, quantitySold, className = "" }) => {
 
                 <strong>{quantitySold} sold</strong>
                 <strong>
-                    <span>⇧</span>₹ {(item.price * quantitySold).toFixed(2)} made
+                    <span>⇧</span>₹ {((item.price * quantitySold)/2).toFixed(2)} made
                 </strong>
             </div>
         </div>

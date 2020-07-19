@@ -197,15 +197,31 @@ exports.deletePoster = async (req, res, next) => {
 
 exports.editPoster = async (req, res, next) => {
     try {
-        await Poster.findByIdAndUpdate(
+        
+        let poster = await Poster.findByIdAndUpdate(
             { _id: req.params.posterId },
-            { title: req.body.title, caption: req.body.caption, tags: req.body.tags }
+            { title: req.body.formTitle, caption: req.body.formCaption, tags: req.body.formTags }
         );
+        let result  = await Artist.update(
+            {
+                "username": poster.madeBy,
+                "postersmade._id": 
+        mongodb.ObjectId(req.params.posterId )},
+            {
+                $set: {
+                     "postersmade.$.title": req.body.formTitle,
+                     "postersmade.$.tags": req.body.formTags, 
+                     "postersmade.$.caption": req.body.formCaption,
+                },
+            }
+        );
+        console.log(await Artist.findOne({username:poster.madeBy}))
         return res.status(200).json({
             success: true,
             msg: "Poster has been updated",
         });
     } catch (error) {
+        console.log(error)
         return res.status(501).json({
             success: false,
             err: error,

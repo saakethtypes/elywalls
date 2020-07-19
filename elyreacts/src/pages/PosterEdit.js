@@ -5,6 +5,7 @@ import LoadingIcon from "../components/LoadingIcon";
 
 // @ts-ignore
 import cn from "./styles/PosterEdit.module.scss";
+import { Link } from "react-router-dom";
 
 const getPictureUrl = (pictureUrl) => {
     try {
@@ -92,7 +93,9 @@ export const PosterEdit = ({ posterID ,props}) => {
                             value={tags}
                             onChange={(e) => setTags(e.target.value)}
                         />
-                        <button type='submit'>Submit</button>
+
+                        <button type='submit'>Submit
+                        </button>
                         <button className={cn.buttonDelete} onClick={(e) => handleDeletePoster(e)}>
                             Delete Poster
                         </button>

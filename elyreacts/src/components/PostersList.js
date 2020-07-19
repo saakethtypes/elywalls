@@ -15,6 +15,9 @@ export const PostersList = ({ posters = [], noButtons = false, cat = "" }) => {
     //   window.addEventListener('resize', (e) => {
     //   });
     // }, [])
+    const loadMore = () =>{
+        setScrollForever(true)
+    }
 
     return (
         <div className={cn.postersListContainer}>
@@ -38,6 +41,7 @@ export const PostersList = ({ posters = [], noButtons = false, cat = "" }) => {
                     ))}
                 </Masonry>
             )}
+            <button onClick={loadMore}>Load more</button>
 
             {posters.length === 0 && (
                 <div>

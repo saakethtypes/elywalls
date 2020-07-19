@@ -31,7 +31,7 @@ export const Sales = ({ artistId }) => {
                     <div className='information-grid'>
                         <span>Total Listed</span> <span>{user.postersmade.length}</span>
                         <span>Total Sold</span> <span>{totalSold}</span>
-                        <span>Total Earnings</span> <span>{totalProfit}</span>
+                        <span>Total Earnings</span> <span>{totalProfit/2}</span>
                     </div>
 
                     <div className='buttons-container'>

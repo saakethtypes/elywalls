@@ -526,6 +526,7 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
+            console.log(editted_poster)
             await axios.patch(`/poster-edit/${pid}`, editted_poster, config);
             dispatch({
                 type: "EDIT_POSTER",
@@ -753,7 +754,8 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.get("/profile", config);
+
+            const res = await axios.get(`/youraccount`, config);
             dispatch({
                 type: "PROFILE_A",
                 posters_made: res.data.profile.postersmade.reverse(),
