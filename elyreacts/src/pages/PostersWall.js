@@ -3,24 +3,33 @@ import { Link } from "react-router-dom";
 import { PostersList } from "../components/PostersList";
 import { GlobalContext } from "../context/GlobalState";
 import LoadingIcon from "../components/LoadingIcon";
+import cn from "./styles/PostersWall.module.scss";
+
+import  InfiniteScroll  from 'react-infinite-scroll-component';
 
 // @ts-ignore
-import cn from "./styles/PostersWall.module.scss";
 
 export const PostersWall = ({ category = "latest" }) => {
     let {
         posters: { isLoading, error, posters },
         getPosters,
+        getPostersMore,
+        loadLimit,
     } = useContext(GlobalContext);
-
+    const [page, setpage] = useState(0)
+    const skipCount = 10 
+    console.log(loadLimit)
     // todo/fixme(future): Use React Suspense instead of fetching async data inside useEffect
     useEffect(() => {
-        getPosters(category);
+        getPosters(category,page);
     }, [category]);
+    const fetchMore = () => {
+        setpage(page+skipCount)
+        getPostersMore(category,page)     
+    }
 
     if (error) return <span>An error occurred: {error.message}</span>;
     if (!posters) return <LoadingIcon />;
-
     return (
         <div className={`page-container`}>
             <div className={`page-header`}>
@@ -56,10 +65,16 @@ export const PostersWall = ({ category = "latest" }) => {
                         </li>
                     </ul>
                 </div>
-
+<InfiniteScroll
+dataLength={posters.length}
+next={fetchMore}
+hasMore={false}
+loader={<LoadingIcon/>}
+>
                 {isLoading && <span>Loading...</span>}
                 {!isLoading && error && <span>Error - see console</span>}
                 {!isLoading && !error && <PostersList posters={posters} />}
+ </InfiniteScroll>
             </div>
         </div>
     );

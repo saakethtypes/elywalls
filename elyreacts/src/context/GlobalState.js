@@ -51,7 +51,8 @@ const initialState = {
     total: 0,
     admires: useradmired,
     order:0,
-    orders:userorders
+    orders:userorders,
+    loadLimit:40
 };
 
 export const GlobalContext = createContext(initialState);
@@ -225,29 +226,33 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function getPosters(category = "all") {
-        const getEndpoint = (category) => {
-            switch (category) {
-                case "all":
-                    return "/all";
-                case "latest":
-                    return "/latest";
-                case "textography":
-                    return "/textography";
-                case "photoshop":
-                    return "/photoshop";
-                case "photography":
-                    return "/photography";
-                case "graphic-design":
-                    return "/graphic-design";
-                case "popular":
-                    return "/popular";
-                case "admires":
-                    return "/nonexistent";
-                default:
-                    return "all";
-            }
-        };
+    const getEndpoint = (category,infiPage) => {
+        console.log("hu")
+
+switch (category) {
+    case "all":
+        return `/all?infiPage=${infiPage}`;
+    case "latest":
+        return "/latest";
+    case "textography":
+        return `/textography?infiPage=${infiPage}`;
+    case "photoshop":
+        return `/photoshop?infiPage=${infiPage}`;
+    case "photography":
+        return `/photography?infiPage=${infiPage}`;
+    case "graphic-design":
+        return `/graphic-design?infiPage=${infiPage}`;
+    case "popular":
+        return "/popular";
+    case "admires":
+        return "/nonexistent";
+    default:
+        return "all";
+}
+};
+
+    async function getPosters(category = "all",infiPage) {
+        
 
         dispatch({
             type: "GET_POSTERS_STARTED",
@@ -257,17 +262,40 @@ export const GlobalProvider = ({ children }) => {
             const config = {
                 headers: { "Content-type": "Application/json" },
             };
-            const res = await axios.get(getEndpoint(category), config).catch((err) => {
+            const res = await axios.get(getEndpoint(category,infiPage), config).catch((err) => {
                 console.log(err);
             });
             dispatch({
                 type: "GET_POSTERS_SUCCEEDED",
                 payload: res.data.posters,
+                lengthLimit: res.data.AllLength||state.loadLimit
             });
         } catch (err) {
             console.log(err);
             dispatch({
                 type: "GET_POSTERS_FAILED",
+                payload: err.data,
+            });
+        }
+    }
+
+    async function getPostersMore(category = "all",infiPage) {
+        try {
+            const config = {
+                headers: { "Content-type": "Application/json" },
+            };
+            const res = await axios.get(getEndpoint(category,infiPage), config).catch((err) => {
+                console.log(err);
+            });
+            console.log(res.data.posters)
+            dispatch({
+                type: "GET_POSTERS_MORE",
+                payload: res.data.posters,
+            });
+
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
                 payload: err.data,
             });
         }
@@ -517,6 +545,8 @@ export const GlobalProvider = ({ children }) => {
             });
         }
     }
+
+    
 
     async function editPoster(pid, editted_poster,props) {
         try {
@@ -856,6 +886,7 @@ export const GlobalProvider = ({ children }) => {
                 recommends: state.recommends,
                 order: state.order,
                 orders: state.orders,
+                loadLimit: state.loadLimit,
                 login,
                 logout,
                 persistLog,
@@ -873,6 +904,7 @@ export const GlobalProvider = ({ children }) => {
                 pay,
                 getArtist,
                 getPoster,
+                getPostersMore,
                 createPoster,
                 deletePoster,
                 editPoster,

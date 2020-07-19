@@ -109,10 +109,21 @@ exports.createPoster = async (req, res, next) => {
 
 exports.getPostersAll = async (req, res, next) => {
     try {
-        const result = await Poster.find({});
+        const resultPopular = await Poster.find({})
+                    .skip(Number(req.query.infiPage))
+                    .limit(10)
+                    .sort({views:-1});
+        
+        const resultNew = await Poster.find({})
+        .skip(Number(req.query.infiPage))
+        .limit(10)
+        .sort({views: 1});
+        const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+        let lengthTotal = await Poster.count()
         return res.status(200).json({
             success: true,
-            posters: result,
+            posters: results,
+            AllLength: lengthTotal
         });
     } catch (err) {
         return res.status(400).json({
@@ -352,13 +363,26 @@ exports.getPostersPopular = async (req, res, next) => {
 
 exports.getPostersPhotoshop = async (req, res, next) => {
     try {
-        let result = await Photoshop.find({})
-        result = result[0].items;
+    const resultPopular = await Photoshop.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views:-1});
+
+    const resultNew = await Poster.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views: 1});
+
+    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+
+
+
         return res.status(200).json({
             success: true,
-            posters: result.reverse(),
+            posters: results,
         });
     } catch (error) {
+        console.log(error)
         return res.status(504).json({
             success: false,
             err: error,
@@ -368,12 +392,20 @@ exports.getPostersPhotoshop = async (req, res, next) => {
 
 exports.getPostersGraphic = async (req, res, next) => {
     try {
-        let result = await Graphic.find({});
-        result = result[0].items;
+        const resultPopular = await Graphic.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views:-1});
 
+    const resultNew = await Graphic.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views: 1});
+
+    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: result.reverse(),
+            posters: results,
         });
     } catch (error) {
         return res.status(503).json({
@@ -385,11 +417,20 @@ exports.getPostersGraphic = async (req, res, next) => {
 
 exports.getPostersPhotography = async (req, res, next) => {
     try {
-        let result = await Photography.find({})
-        result = result[0].items;
+        const resultPopular = await Photography.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views:-1});
+
+    const resultNew = await Photography.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views: 1});
+
+    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: result.reverse(),
+            posters: results,
         });
     } catch (error) {
         return res.status(505).json({
@@ -401,12 +442,20 @@ exports.getPostersPhotography = async (req, res, next) => {
 
 exports.getPostersTextography = async (req, res, next) => {
     try {
-        let result = await Textography.find({})
-        result = result[0].items;
+        const resultPopular = await Textography.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views:-1});
 
+    const resultNew = await Textography.find({})
+    .skip(Number(req.query.infiPage))
+    .limit(10)
+    .sort({views: 1});
+
+    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: result.reverse(),
+            posters: results,
         });
     } catch (error) {
         return res.status(506).json({

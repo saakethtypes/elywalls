@@ -60,9 +60,18 @@ const appreducer = (state, action) => {
                 posters: {
                     isLoading: false,
                     posters: action.payload
+                },
+                loadLimit:action.lengthLimit
+            };
+        
+        case "GET_POSTERS_MORE":
+            return {
+                ...state,
+                posters: {
+                    isLoading: false,
+                    posters: [...state.posters.posters,...action.payload]
                 }
             };
-
     
         case "ADMIRED_ARTISTS":
             return {

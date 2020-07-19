@@ -8,17 +8,6 @@ import cn from "./styles/PostersList.module.scss";
 
 export const PostersList = ({ posters = [], noButtons = false, cat = "" }) => {
     const rMasonryEl = useRef();
-    const [scrollForever, setScrollForever] = useState(false);
-    // todo: ^ set true when "Load more" button is clicked, then always load more at bottom of page
-
-    // useEffect(() => {
-    //   window.addEventListener('resize', (e) => {
-    //   });
-    // }, [])
-    const loadMore = () =>{
-        setScrollForever(true)
-    }
-
     return (
         <div className={cn.postersListContainer}>
             {posters.length > 0 && (
@@ -41,7 +30,6 @@ export const PostersList = ({ posters = [], noButtons = false, cat = "" }) => {
                     ))}
                 </Masonry>
             )}
-            <button onClick={loadMore}>Load more</button>
 
             {posters.length === 0 && (
                 <div>
