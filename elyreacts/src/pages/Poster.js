@@ -58,7 +58,7 @@ export const Poster = ({ posterID }) => {
     };
     const [admiresp, setAdmiresp] = useState(null);
     const [isAdmired, setIsAdmired] = useState(
-        (admires.filter((ap) => ap._id == posterID).length !== 0) 
+        (user && admires.filter((ap) => ap._id == posterID).length !== 0) 
     );
     const [isAddedToCart, setIsAddedToCart] = useState(
         (poster && cart && cart.filter((ap) => ap.item._id === posterID).length !== 0) || false
