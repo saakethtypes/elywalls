@@ -25,14 +25,14 @@ export const PasswordReset = ({rid}) => {
         <div className="page-container">
             <div className="page-header">
                 <h1>Reset Password</h1>
-                {!goahead &&
-                    <p>Reset your Elywalls account password</p>}
                 {goahead &&
+                    <p>Reset your Elywalls account password</p>}
+                {!goahead &&
                     <p>Your password has been reset</p>}
             </div>
 
             <div className="lower-content-container">
-                {!goahead &&
+                {goahead &&
                     <div className="form-container">
                         <FormInput
                             name="Password"

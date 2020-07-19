@@ -8,12 +8,17 @@ import cn from "./styles/Sales.module.scss";
 
 export const Sales = ({ artistId }) => {
     const { user , getSales} = useContext(GlobalContext);
-    const [profit, setProfit] = useState(0);
-    const [sold, setSold] = useState(0);
+    let totalSold = 0
+    let totalProfit = 0
+
     useEffect(() => {
         getSales(artistId);
     }, [])
-    console.log(user)
+
+    user.postersmade.map((poster) =>{
+        totalSold += poster.purchases
+        totalProfit += poster.purchases * poster.price
+    })
     return (
         <div className='page-container'>
             <div className='page-header'>
@@ -25,8 +30,8 @@ export const Sales = ({ artistId }) => {
                 <div className='information-container'>
                     <div className='information-grid'>
                         <span>Total Listed</span> <span>{user.postersmade.length}</span>
-                        <span>Total Sold</span> <span>{sold}</span>
-                        <span>Total Earnings</span> <span>{profit}</span>
+                        <span>Total Sold</span> <span>{totalSold}</span>
+                        <span>Total Earnings</span> <span>{totalProfit}</span>
                     </div>
 
                     <div className='buttons-container'>

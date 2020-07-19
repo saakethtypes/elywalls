@@ -8,7 +8,6 @@ import { GlobalContext } from '../context/GlobalState';
 
 export const Thankyou = () => {
     const {order_placed} = useContext(GlobalContext)
-    console.log(order_placed)
     return (
 
         <div className="page-container">

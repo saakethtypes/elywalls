@@ -31,7 +31,6 @@ router.route("/merge-customer").post(stripeMerge);
 router.route("/get-cards").get(stripeCards);
 
 const fileFilter = (req, file, cb) => {
-       console.log(file.mimetype)
        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'
         || file.mimetype === 'image/png' ) {
               cb(null, true);

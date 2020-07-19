@@ -45,7 +45,6 @@ export const Poster = ({ posterID }) => {
     useEffect(() => {
         getPoster(posterID);
     }, []); 
-
     poster = {
         ...poster,
         id: (poster && poster._id) || posterID,
@@ -57,45 +56,42 @@ export const Poster = ({ posterID }) => {
         views: (poster && poster.views) || 0,
         admires: (poster && poster.admires) || 0,
     };
-
-    const [admiresp, setAdmiresp] = useState(poster && poster.admires);
+    const [admiresp, setAdmiresp] = useState(null);
     const [isAdmired, setIsAdmired] = useState(
-        (poster && user && admires.filter((ap) => ap._id === poster._id).length !== 0) || false
+        (admires.filter((ap) => ap._id == posterID).length !== 0) 
     );
     const [isAddedToCart, setIsAddedToCart] = useState(
-        (poster && cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
+        (poster && cart && cart.filter((ap) => ap.item._id === posterID).length !== 0) || false
     );
 
     const checkAdmires = () => {
         let match = [];
-        if (user) match = admires.filter((ap) => ap._id === poster._id);
-        console.log(match);
+        if (user) match = admires.filter((ap) => ap._id === posterID);
         return match.length > 0;
     };
 
     const checkCart = () => {
         let match = [];
-        if (user) match = cart.filter((ap) => ap.item._id === poster._id);
+        if (user) match = cart.filter((ap) => ap.item._id === posterID);
         return match.length > 0;
     };
-
     const handleClickAdmire = (e) => {
         if (!checkAdmires()) {
             liked = true;
             admirePoster(poster);
             setIsAdmired(true);
-            setAdmiresp(admiresp + 1);
+            setAdmiresp(poster.admires + 1);
         } else {
             liked = false;
             unadmirePoster(poster);
             setIsAdmired(false);
-            setAdmiresp(admiresp - 1);
+            setAdmiresp(poster.admires );
         }
     };
 
     const handleClickCart = (e) => {
         if (!checkCart()) {
-            addToCart(poster._id);
+            addToCart(posterID);
             setIsAddedToCart(true);
         } else {
             setIsAddedToCart(true);
@@ -110,7 +106,6 @@ export const Poster = ({ posterID }) => {
     
     const getDPUrl = (pictureUrl) => {
         try {
-            console.log("...", pictureUrl);
             return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing
@@ -129,7 +124,7 @@ export const Poster = ({ posterID }) => {
                 <div className={`${cn.informationContainer}`}>
                     <div className={cn.statsContainer}>
                         <span className='icon-likes'></span>
-                        <small className={cn.countLikes}>{admiresp}</small>
+                        <small className={cn.countLikes}>{admiresp || poster.admires}</small>
 
                         <span className='icon-views'></span>
                         <small className={cn.countViews}>{poster.views}</small>
@@ -209,7 +204,7 @@ export const Poster = ({ posterID }) => {
                         <h2>Recommended</h2>
                         <p>If you like {poster.title}, you'll probably like these too.</p>
 
-                        <Recommends cat={poster.category} aid={poster.author} pid={poster._id} />
+                        <Recommends cat={poster.category} aid={poster.author} pid={posterID} />
                     </section>
                 </div>
             )}

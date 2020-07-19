@@ -48,3 +48,15 @@ Still to do...
 ✔ components/Poster Center heart inside Like icon (rem issue?) @done(20-07-02 19:01)
 ✔ fix: Header mobile view causes page to expand @done(20-07-02 19:01)
 ✔ fix: Re-render Masonry when resizing viewport @done(20-07-02 19:01)
+
+
+// Feature Fixes
+
+fix: admire/unadmire in frontend.
+fix: remove duplicates in the recommended
+add: blur image and show that instead
+add: notifications and redirects
+add: emails to artist/buyer
+add: get all orders for 24 hours and send to vendor
+add: poster single page design
+add: logo and welcome poster

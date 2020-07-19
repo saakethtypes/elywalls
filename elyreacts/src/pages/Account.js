@@ -18,7 +18,6 @@ export const Account = ({ location }) => {
         getProfileArtist();
     }, []);
     const admiredPosters = user.admires.reverse()
-    console.log(admiredPosters[0].title)
     useLayoutEffect(() => {
         const sp = new URLSearchParams(location.search);
         const elPublished = document.getElementById("published");

@@ -11,18 +11,13 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../../.env" });
 
 export const Cart = (props) => {
-    const { cart, getCart, pay } = useContext(GlobalContext);
+    const { cart, getCart, pay , user} = useContext(GlobalContext);
     const toa = () => {
         let totall = 0;
-        console.log(totall);
         cart.map((cart_item) => {
-            console.log(cart_item);
-            console.log(totall);
             // todo/fixme: price_with_quantity is undefined so this doesn't actually work
-            console.log(totall, cart_item.price_with_quantity);
             totall += cart_item.price_with_quantity;
         });
-        console.log("totall: ", totall);
         return totall;
     };
     const totall = toa();
@@ -32,10 +27,10 @@ export const Cart = (props) => {
     }, []);
 
     const makePayment = (token) => {
-        console.log(totall);
         const body = {
             token,
             totalPrice: totall,
+            email:user.email
         };
         pay(body, props);
     };
@@ -65,7 +60,8 @@ export const Cart = (props) => {
                         stripeKey={process.env.REACT_APP_KEY}
                         token={makePayment}
                         name='Pay with card'
-                        amount={totall}
+                        currency='inr'
+                        amount={totall*100}
                         billingAddress>
                         <button className='button-primary'>Pay Now</button>
                     </StripeCheckout>

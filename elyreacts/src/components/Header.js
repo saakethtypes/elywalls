@@ -30,9 +30,7 @@ export default () => {
         const linkEls = document.querySelectorAll(
             `header.${cn.wrapper} .${cn.container} a`
         );
-        console.dir(linkEls);
         linkEls.forEach((link) => {
-            console.log("Clicked");
             link.addEventListener("click", (e) => setMenuOpen(false));
         });
     });

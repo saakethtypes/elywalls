@@ -93,7 +93,6 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
 
     const getDPUrl = (pictureUrl) => {
         try {
-            console.log("...", pictureUrl);
             return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing

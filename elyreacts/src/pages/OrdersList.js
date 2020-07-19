@@ -58,6 +58,7 @@ export const OrdersList = () => {
                         <h2>Paid</h2>
                         <p>We're processing these orders - you should receive them soon.</p>
                         {orders.length > 0 && ordersPaid.map((oi) => <Order order={oi} />)}
+                        
                     </section>
                 )}
             </div>

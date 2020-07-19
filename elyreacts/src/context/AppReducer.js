@@ -217,14 +217,12 @@ const appreducer = (state, action) => {
                 };
     
         case "ORDER_GET":
-            console.log(action.orders)
             return {
                 ...state,
                 orders:action.orders
             };
 
         case "SALES_GET":
-            console.log(action.salesPosters)
             return {
                 ...state,
                 user:{
@@ -234,7 +232,6 @@ const appreducer = (state, action) => {
             };
 
         case "ORDER_SINGLE_GET":
-            console.log(action.order)
             return {
                 ...state,
                 order:action.order

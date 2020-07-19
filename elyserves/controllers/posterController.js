@@ -18,6 +18,15 @@ dotenv.config({ path: "../config.env" });
 const fs = require("fs");
 const { post } = require("../routes/userRoutes");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const nodemailer = require("nodemailer");
+
+let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "saakethlogs@gmail.com",
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
 exports.createPoster = async (req, res, next) => {
     try {
@@ -117,26 +126,22 @@ exports.deletePoster = async (req, res, next) => {
     try {
         console.log("deleted");
         const postesr = await Poster.findById({ _id: req.params.posterId });
-        console.log(postesr);
         if (req.user.utype === "artist") {
             let ree = await Artist.findByIdAndUpdate(
                 { _id: req.user.id },
                 { $pull: { postersmade: { _id: postesr._id } } }
             );
-            console.log(ree.postersmade.length);
         }
         if (req.user.utype === "artist") {
             ree = await Artist.findByIdAndUpdate(
                 { _id: req.user.id },
                 { $pull: { admires: { _id: postesr._id } } }
             );
-            console.log(ree.postersmade.length);
         } else {
             ree = await User.findByIdAndUpdate(
                 { _id: req.user.id },
                 { $pull: { admires: { _id: postesr._id } } }
             );
-            console.log(ree.postersmade.length);
         }
 
         if (postesr.category == "Photoshop") {
@@ -166,7 +171,6 @@ exports.deletePoster = async (req, res, next) => {
 
         let artist = await Artist.find({ _id: req.user.id });
 
-        console.log(artist[0].postersmade.length);
         await Poster.findByIdAndDelete({ _id: req.params.posterId }, (e) => console.log(e));
         fs.unlink(
             "../elyreacts/src/assets/postersDb/" + postesr.pictureURL.split("Db\\")[1],
@@ -192,9 +196,7 @@ exports.deletePoster = async (req, res, next) => {
 };
 
 exports.editPoster = async (req, res, next) => {
-    console.log("object");
     try {
-        console.log(req.body);
         await Poster.findByIdAndUpdate(
             { _id: req.params.posterId },
             { title: req.body.title, caption: req.body.caption, tags: req.body.tags }
@@ -230,7 +232,6 @@ exports.getPoster = async (req, res, next) => {
 exports.getArtist = async (req, res, next) => {
     try {
         const result = await Artist.find({ username: req.params.auname });
-        console.log(result)
         await Artist.findByIdAndUpdate({ _id: result[0]._id }, { $inc: { profileViews: 1 } });
         return res.status(200).json({
             success: true,
@@ -270,7 +271,6 @@ function getUnique(arr, comp) {
 
 exports.getRecommends = async (req, res, next) => {
     try {
-        console.log(req.params.aid, req.params.cat);
         let resultTopArtists = await Artist.find({})
             .sort({ profileViews: -1 })
             .select({ postersmade: 1 })
@@ -304,9 +304,7 @@ exports.getRecommends = async (req, res, next) => {
         });
 
         pool = pool.sort(() => 0.5 - Math.random());
-        console.log(pool.length);
         let finalpool = getUnique(pool, "_id");
-        console.log(finalpool.length);
 
         let selected = pool.slice(0, 12);
         return res.status(200).json({
@@ -314,7 +312,6 @@ exports.getRecommends = async (req, res, next) => {
             recommends: selected,
         });
     } catch (error) {
-        console.log(error);
         return res.status(512).json({
             success: false,
             err: error,
@@ -324,7 +321,6 @@ exports.getRecommends = async (req, res, next) => {
 
 exports.getPostersPopular = async (req, res, next) => {
     try {  
-        console.log("popularr")      
         const result = await Poster.find({}).limit(10).sort({ views: -1 });
         return res.status(200).json({
             success: true,
@@ -340,7 +336,6 @@ exports.getPostersPopular = async (req, res, next) => {
 
 exports.getPostersPhotoshop = async (req, res, next) => {
     try {
-        console.log("photoshop");
         let result = await Photoshop.find({})
         result = result[0].items;
         return res.status(200).json({
@@ -407,7 +402,6 @@ exports.getPostersTextography = async (req, res, next) => {
 
 exports.getPostersLatest = async (req, res, next) => {
     try {
-        console.log("object");
         const result = await Poster.find({}).limit(3).sort({ $natural: -1 });
         return res.status(200).json({
             success: true,
@@ -448,20 +442,21 @@ exports.admirePoster = async (req, res, next) => {
                     { $push: { admires: result } }
                 );
             }
+
+            console.log("Poster Admired",result.admires)
             return res.status(200).json({
                 success: true,
                 posters: result,
                 user: user,
             });
         } else {
-            console.log("liked already");
+            console.log("Liked Already")
             return res.status(200).json({
                 success: false,
                 msg: "Already liked",
             });
         }
     } catch (error) {
-        console.log(error);
         return res.status(513).json({
             success: false,
             err: error,
@@ -493,25 +488,25 @@ exports.unadmirePoster = async (req, res, next) => {
                 { $pull: { admires: { _id: result._id } } }
             );
         } else {
-            console.log(req.params.posterId);
             user = await Artist.findByIdAndUpdate(
                 { _id: req.user.id },
                 { $pull: { admires: { _id: result._id } } }
             );
-        }}else{
-            console.log("not liked itself");
+        }
+        console.log("Poster Unadmired",result.admires)
+
+        return res.status(200).json({
+            success: true,
+            user: user,
+        });
+    }else{
             return res.status(200).json({
                 success: false,
                 msg: "Not admired to unadmire",
             });
         }
-        console.log("poster unadmired", user.admires.length);
-        return res.status(200).json({
-            success: true,
-            user: user,
-        });
+        
     } catch (error) {
-        console.log(error);
         return res.status(514).json({
             success: false,
             err: error,
@@ -574,10 +569,8 @@ exports.unadmireArtist = async (req, res, next) => {
 };
 
 exports.addToCart = async (req, res, next) => {
-    console.log("add");
     try {
         const poster = await Poster.findById({ _id: req.params.posterId });
-        console.log("addcart", req.params.posterId);
         let cart_cr = await Cart.create({ item: poster ,quantity:1,price_with_quantity:1*poster.price});
         cart_cr = await Cart.find({ _id: cart_cr._id });
         let result = 0;
@@ -636,9 +629,7 @@ exports.cartQuantity = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
     try {
-        console.log("removing");
         let cartt = await Cart.find({ _id: req.params.cid });
-        console.log("remove", cartt);
         if (req.user.utype === "buyer") {
             result = await User.findByIdAndUpdate(
                 { _id: req.user.id },
@@ -660,10 +651,8 @@ exports.removeFromCart = async (req, res, next) => {
 };
 
 exports.getCarts = async (req, res, next) => {
-    console.log("cartget");
     try {
         let result = 0;
-        console.log("getting");
         if (req.user.utype === "buyer") {
             result = await User.findById({ _id: req.user.id });
             result = result.cart;
@@ -683,7 +672,6 @@ exports.getCarts = async (req, res, next) => {
 
 exports.getPostersAdmired = async (req, res, next) => {
     try {
-        console.log("im here");
         let result = 0;
         if (req.user.utype === "artist") {
             result = await Artist.findById({ _id: req.user.id });
@@ -819,27 +807,195 @@ exports.pay = async (req, res, next) => {
             const token = req.body.token;
             const idempotencyKey = v4();
 
-            return stripe.customers
-                .create({
-                    email: token.email,
-                    source: token.id,
-                })
-                .then((customer) => {
-                    stripe.charges.create(
-                        {
-                            amount: price * 100,
-                            currency: "inr",
-                            customer: customer.id,
-                            description: "Posters purchase bill",
-                        },
-                        { idempotencyKey }
-                    );
-                })
-                .then((response) => res.json(order_cr))
-                .catch((err) => res.json({ err: err }));
-        }
+            
         result.cart.map(async (ci)=>{await Poster.findByIdAndUpdate({_id:ci.item._id},
             { $inc: { purchases: 1 } })})
+        console.log(req.body.email)
+        let mailOptions = {
+            from: "saakethlogs@gmail.com",
+            to: req.body.email,
+            subject: "Thanks for the purchase",
+            html: `
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Elywalls</title>
+        
+                <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+                    integrity="sha256-gvEnj2axkqIj4wbYhPjbWV7zttgpzBVEgHub9AAZQD4="
+                    crossorigin="anonymous"
+                />
+                <link
+                    href="https://fonts.googleapis.com/css?family=Jost:300,regular,500,700,italic,700italic"
+                    rel="stylesheet"
+                />
+        
+                <style>
+                    html {
+                        font-family: "Jost", "Montserrat", -apple-system,
+                            BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+                            Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+                        font-size: 16px;
+        
+                        background: #fafafa;
+                        color: #121212;
+                    }
+        
+                    * {
+                        box-sizing: border-box;
+                    }
+        
+                    h1 {
+                        margin-top: 1.5rem;
+        
+                        font-size: 2.75rem;
+                        font-weight: 300;
+                    }
+                    h2 {
+                        margin-top: 1.5rem;
+        
+                        font-size: 1.75rem;
+                        font-weight: 300;
+                    }
+                    h3 {
+                        margin-top: 1.5rem;
+        
+                        font-size: 1rem;
+                        font-weight: 500;
+                    }
+                    p {
+                        margin-top: 0.5rem;
+        
+                        line-height: 1.5rem;
+                    }
+                    small {
+                        display: inline-block;
+                        margin-top: 1.5rem;
+        
+                        font-size: 0.75rem;
+                        font-weight: 500;
+                        line-height: 1.5rem;
+                        text-transform: uppercase;
+                    }
+                    strong {
+                        font-weight: 700;
+                    }
+                    em {
+                        font-style: italic;
+                    }
+                    code {
+                        padding: 0.125rem 0.25rem;
+                        border-radius: 0.25rem;
+                        background: #e6e9ec;
+                        font-family: "Iosevka", "Consolas", "Courier New", Courier,
+                            monospace;
+                    }
+                    a {
+                        display: inline-block;
+        
+                        text-decoration: none;
+                        color: #5e3fd1;
+                    }
+                    a.button {
+                        padding: 1rem 1.5rem;
+                        margin: 3rem 0 0 0;
+        
+                        color: #fafafa;
+                        background: #5e3fd1;
+        
+                        transition: 0.14s;
+                    }
+                    a.button:hover {
+                        color: #ffffff;
+                        background: #786ddd;
+                    }
+        
+                    .header {
+                        background: #5e3fd1;
+                        color: #fafafa;
+        
+                        padding: 3rem 1.5rem;
+        
+                        text-align: center;
+                    }
+        
+                    .content {
+                        width: 100%;
+                        max-width: 1280px;
+        
+                        margin: 3rem auto 0 auto;
+                        padding: 0 1.5rem;
+        
+                        text-align: center;
+                    }
+        
+                    .link-container {
+                        max-width: max-content;
+                        margin: 0 auto;
+                        border-bottom: 0.125rem solid #5e3fd1;
+        
+                        padding-bottom: 1.5rem;
+                    }
+                    .link-container p {
+                        font-size: 0.75rem;
+                    }
+                </style>
+            </head>
+        
+            <body>
+                <div class="header">
+                    <img src="" alt="Elywalls Logo" />
+                    <h1>Elywalls</h1>
+                    <p>Elegant posters by independent artists</p>
+                </div>
+        
+                <div class="content">
+                    <h2>Order details for ${result.name}'s purchases</h2>
+                    
+                    <h3>Billing address</h3>
+                    <p>
+                    ${req.body.token.card.address_line1},${
+                        req.body.token.card.address_city
+                    },${req.body.token.card.address_zip}</p>
+                    <h3>Posters bought - ${order_cr.purchased_items.length}</h3>
+                    <h3>Price</h3>
+                    <p>Total amount - ${req.body.totalPrice} Rs</p>
+                    <p>Order No. - ${order_cr._id}</p>
+                    </div>
+        
+                    <small>
+                        For assistance, please
+                        <a href="mailto:support@elywalls.com">contact us</a>.
+                    </small>
+                </div>
+            </body>
+        </html>
+    `,
+            };
+            await transporter.sendMail(mailOptions);
+            return stripe.customers
+            .create({
+                email: token.email,
+                source: token.id,
+            })
+            .then((customer) => {
+                stripe.charges.create(
+                    {
+                        amount: price * 100,
+                        currency: "inr",
+                        customer: customer.id,
+                        description: "Posters purchase bill",
+                    },
+                    { idempotencyKey }
+                );
+            })
+            .then((response) => res.json(order_cr))
+            .catch((err) => res.json({ err: err }));
+    }
         return res.status(200).json({
             success: true,
             order: order_cr,

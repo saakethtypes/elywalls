@@ -35,7 +35,6 @@ export const Register = ({ location }) => {
         e.preventDefault();
         setIsLoading(true);
 
-        console.log("Creating user");
 
         if (
             fullname.length > 3 &&
@@ -44,10 +43,8 @@ export const Register = ({ location }) => {
             email.length > 5 &&
             password === passwordConfirmation
         ) {
-            console.log("Credentials are valid");
 
             if (accountType === "buy") {
-                console.log("Creating user account");
                 console.dir({
                     name: fullname,
                     username,
@@ -64,7 +61,6 @@ export const Register = ({ location }) => {
                     phone,
                 });
             } else if (accountType === "sell") {
-                console.log("Creating artist account");
                 console.dir({
                     name: fullname,
                     username,

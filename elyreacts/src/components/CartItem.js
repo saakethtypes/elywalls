@@ -17,13 +17,11 @@ export const CartItem = ({
         removeFromCart(cid);
     };
     const cq = (q) => {
-        if(Number(q)<1){console.log("cant be negative")}
-        else{setCartItemQuantity(ci._id, Number(q), ci.item.price * Number(q));
+        if(Number(q)>1){
+            setCartItemQuantity(ci._id, Number(q), ci.item.price * Number(q));
         }};
     let picUrl = null
     try{  let purl = ci.item.pictureURL.split('Db\\')[1] 
-    console.log("../assets/postersDb/"+purl)
-    console.log(ci.item._id,ci.item.title)
     picUrl = require("../assets/postersDb/"+purl)
 }catch{let x = 0}
 

@@ -101,7 +101,7 @@ const FormCheckboxInput = ({
     inputProps,
     className
 }) => {
-    useEffect(() => console.log(checked), [checked]);
+    useEffect(() => console.log(), [checked]);
     return (
         <div className={`${cn.checkboxContainer} ${className}`}>
             <input

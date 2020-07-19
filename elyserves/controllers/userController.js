@@ -30,6 +30,15 @@ exports.registerUser = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
 
+    let checkExistM = await User.find({email:req.body.email})
+    let checkExistU = await User.find({username:req.body.username})
+    if(checkExistM.username || checkExistU.username){
+      console.log("Username or Email already exists")
+      return res.json({
+        msg: "Email or username already exists",
+      });
+    }
+
     let user = {
       name: req.body.name,
       email: req.body.email,
@@ -39,6 +48,7 @@ exports.registerUser = async (req, res, next) => {
     };
 
     user = await User.create(user);
+    console.log("User Created")
     jwt.sign(
       {
         user: user._id,
@@ -63,6 +73,7 @@ exports.registerUser = async (req, res, next) => {
           await transporter.sendMail(mailOptions);
         }
       }
+
     );
 
     jwt.sign(
@@ -89,7 +100,6 @@ exports.registerUser = async (req, res, next) => {
 };
   
 exports.registerArtist = async (req, res, next) => {
-  console.log("registerartist")
   try {
     const pass = req.body.password;
     const salt = bcrypt.genSaltSync(10);
@@ -97,7 +107,14 @@ exports.registerArtist = async (req, res, next) => {
     if (req.files === null) {
       return res.json({ msg: "No file uploaded" });
   }
-  
+    let checkExistM = await Artist.find({email:req.body.email})
+    let checkExistU = await Artist.find({username:req.body.username})
+    if(checkExistM || checkExistU){
+      console.log("Username or Email alreadyt exists")
+      return res.json({
+        msg: "Email or username already exists",
+      });
+    }    
     let artist = {
       name: req.body.name,
       email: req.body.email,
@@ -107,8 +124,9 @@ exports.registerArtist = async (req, res, next) => {
       dpURL: String(req.file.path),
       linkedIG:req.body.linkedIg
     };
-    console.log(artist)
     artist = await Artist.create(artist);
+    console.log("Artist Created")
+    
     jwt.sign(
       {
         user: artist._id,
@@ -117,6 +135,7 @@ exports.registerArtist = async (req, res, next) => {
       {
         expiresIn: "1d",
       },
+
       async (err, emailToken) => {
         if (err) {
         } else {
@@ -146,16 +165,13 @@ exports.registerArtist = async (req, res, next) => {
             crossorigin="anonymous"
         />
         <link
-            href="https://fonts.googleapis.com/css?family=Jost:300,regular,500,700,italic,700italic"
+            href="https://fonts.googleemailapis.com/css?family=Jost:300,regular,500,700,italic,700italic"
             rel="stylesheet"
         />
 
         <style>
             html {
-                font-family: "Jost", "Montserrat", -apple-system,
-                    BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-                    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-                font-size: 16px;
+                font-family: "Jost", email
 
                 background: #fafafa;
                 color: #121212;
@@ -172,21 +188,12 @@ exports.registerArtist = async (req, res, next) => {
                 font-weight: 300;
             }
             h2 {
-                margin-top: 1.5rem;
-
-                font-size: 1.75rem;
-                font-weight: 300;
-            }
-            h3 {
-                margin-top: 1.5rem;
+                margin-top: 1.5rem;email
 
                 font-size: 1rem;
                 font-weight: 500;
             }
-            p {
-                margin-top: 0.5rem;
-
-                line-height: 1.5rem;
+            p {email;
             }
             small {
                 display: inline-block;
@@ -198,7 +205,7 @@ exports.registerArtist = async (req, res, next) => {
                 text-transform: uppercase;
             }
             strong {
-                font-weight: 700;
+                font-weight: 700;email
             }
             em {
                 font-style: italic;
@@ -341,11 +348,9 @@ exports.confirmProfile = async (req, res, next) => {
 };
 
 exports.forgot = async (req, res, next) => {
-  console.log("asd", req.body);
   try {
     let resa = await Artist.findOne({email: req.body.email});
     let resu = await User.findOne({email: req.body.email});
-    console.log(resu || resa);
     let user = resu || resa;
     if (user) {
       const request = {
@@ -353,10 +358,8 @@ exports.forgot = async (req, res, next) => {
         id: req.body.id,
         uid: user._id
       };
-      console.log(request.uid);
       let reqp = await PasswordReq.create(request);
-      console.log(reqp);
-      console.log("email exists");
+      console.log("Email verified");
       let utype = "artist";
       let confURL = `http://localhost:3000/resetpassword/${req.body.id}`;
       let mailOptions = {
@@ -506,7 +509,7 @@ exports.forgot = async (req, res, next) => {
             </div>
     
             <div class="content">
-                <h2>Reset Password for ${resa.name || resu.name}</h2>
+                <h2>Reset Password for ${user.name}</h2>
     
                 <p>Click the link below to reset your password .</p>
     
@@ -533,7 +536,6 @@ exports.forgot = async (req, res, next) => {
       };
       await transporter.sendMail(mailOptions);
     } else {
-      console.log("doesnt exist");
       res.json({err: true, msg: "Email doesn't exist"});
     }
   } catch (error) {
@@ -545,7 +547,6 @@ exports.resetPass = async (req, res, next) => {
 
   try {
     const thisReq = await PasswordReq.findOne({"id": req.body.id});
-    console.log(thisReq);
     if (thisReq) {
       let resa = await Artist.findOne({email: thisReq.email});
       let resu = await User.findOne({_id: thisReq.uid});
@@ -572,7 +573,6 @@ exports.resetPass = async (req, res, next) => {
 
 exports.redirect = async (req, res, next) => {
   try {
-    console.log("login redirect");
   } catch (error) {
     return console.log("err", error);
   }
@@ -712,7 +712,6 @@ exports.editProfile = async (req, res, next) => {
 
 
 exports.getProfileUser = async (req, res, next) => {
-  console.log("user");
   try {
     let result = await User.findById(req.user.id);
     return res.status(200).json({

@@ -16,7 +16,6 @@ const FeaturedPostersList = ({ title, linkName }) => {
     const getPosters = async (category) => {
         return new Promise((resolve, reject) => {
             try {
-                console.log(category);
                 fetch(`/${category}`, {
                     method: "GET",
                 })
@@ -27,7 +26,6 @@ const FeaturedPostersList = ({ title, linkName }) => {
                     });
             } catch (err) {
                 setErr(err);
-                console.log(err.message);
                 reject(err);
             }
         });
@@ -97,7 +95,6 @@ export const Home = () => {
     };
     const getDPUrl = (pictureUrl) => {
         try {
-            console.log("...", pictureUrl);
             return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing

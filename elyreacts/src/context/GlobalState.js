@@ -13,7 +13,6 @@ let useradmired = null;
 let userorders = null;
 
 if (logUser) {
-    console.log(logUser);
     if (logUser.user_type === "artist") {
         logArtist = logUser;
         usercart = logUser.cart;
@@ -79,7 +78,6 @@ export const GlobalProvider = ({ children }) => {
 
     async function registerArtist(artist,dp) {
         try {
-            console.log("object",dp)
             const formData = new FormData();
             formData.append(
                 "artistDp",
@@ -97,7 +95,6 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log("gs regists")
             const res = await axios.post("/register-artist", formData, config);
         } catch (err) {
 
@@ -171,7 +168,6 @@ export const GlobalProvider = ({ children }) => {
 
     async function resetPass(password, id) {
         try {
-            console.log(password, id);
             const config = {
                 headers: {
                     "Content-type": "application/json",
@@ -231,7 +227,6 @@ export const GlobalProvider = ({ children }) => {
 
     async function getPosters(category = "all") {
         const getEndpoint = (category) => {
-            console.log(category);
             switch (category) {
                 case "all":
                     return "/all";
@@ -265,7 +260,6 @@ export const GlobalProvider = ({ children }) => {
             const res = await axios.get(getEndpoint(category), config).catch((err) => {
                 console.log(err);
             });
-            console.log(category, res);
             dispatch({
                 type: "GET_POSTERS_SUCCEEDED",
                 payload: res.data.posters,
@@ -287,12 +281,9 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log("reached cart gs", config);
 
             let ress = await axios.get("/cart", config).catch((err) => {
-                console.log(err.response);
             });
-            console.log(ress.data);
             let total = 0;
             ress.data.cartitems.map((ci) => {
                 total = total + Number(ci.price_with_quantity);
@@ -304,7 +295,6 @@ export const GlobalProvider = ({ children }) => {
             });
 
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("saved after getting carts");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -321,19 +311,15 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log("reached order gs", config);
 
             let ress = await axios.get("/orders", config).catch((err) => {
-                console.log(err.response);
             });
-            console.log(ress.data);
             dispatch({
                 type: "ORDER_GET",
                 orders: ress.data.orders
             });
 
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("saved after getting order");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -352,7 +338,6 @@ export const GlobalProvider = ({ children }) => {
             };
 
             let ress = await axios.get("/admired-posters", config);
-            console.log("admires", ress.data.posters);
 
             dispatch({
                 type: "GET_ADMIRED_POSTERS",
@@ -360,7 +345,6 @@ export const GlobalProvider = ({ children }) => {
             });
 
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("admires saved");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -378,7 +362,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let ress = await axios.get(`/recommends/${cat}/${aid}/${pid}`, config);
-            console.log("recc", ress.data.recommends);
 
             dispatch({
                 type: "RECOMMENDS",
@@ -386,7 +369,6 @@ export const GlobalProvider = ({ children }) => {
             });
 
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("admires saved");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -445,7 +427,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get(`/profile/${auname}`, config);
-            console.log(res.data.artist[0]);
             dispatch({
                 type: "ARTIST_PROFILE",
                 artist: res.data.artist[0],
@@ -467,7 +448,6 @@ export const GlobalProvider = ({ children }) => {
             };
 
             const res = await axios.get(`/topartists`, config);
-            console.log(res.data.artists);
             dispatch({
                 type: "TOP_ARTISTS",
                 artists: res.data.artists,
@@ -529,7 +509,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.delete(`/poster/${pid}`, config);
-            console.log(res.data.msg);
             return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
@@ -540,7 +519,6 @@ export const GlobalProvider = ({ children }) => {
     }
 
     async function editPoster(pid, editted_poster,props) {
-        console.log("object");
         try {
             const config = {
                 headers: {
@@ -548,9 +526,7 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log(editted_poster);
             await axios.patch(`/poster-edit/${pid}`, editted_poster, config);
-            console.log(JSON.parse(editted_poster));
             dispatch({
                 type: "EDIT_POSTER",
                 editted_poster: editted_poster,
@@ -576,25 +552,21 @@ export const GlobalProvider = ({ children }) => {
 
             let x = { s: 0 };
             const res = await axios.patch(`/cartadd/${pid}`, x, config);
-            console.log(res);
             if (res.data.err) {
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("currentUser");
-                console.log("redirect to login");
                 await axios.get(`/redirectlogin`, {
                     headers: {
                         "Content-type": "application/json",
                     },
                 });
             } else {
-                console.log("3) Added to cart in Db");
                 dispatch({
                     type: "ADD_TO_CART",
                     cart: res.data.cartObj[0],
                 });
             }
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("reached - saved after adding to cart");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -642,7 +614,6 @@ export const GlobalProvider = ({ children }) => {
                 item_removed: cid,
             });
             localStorage.setItem("currentUser", JSON.stringify(state.user));
-            console.log("reached - saved after removing from cart");
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -659,11 +630,8 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log("2)gs admire");
             let res = await axios.patch(`/admireP/${poster._id}/`, { x: 0 }, config);
-            console.log(res.data);
             if (res.data.err) {
-                console.log("redirect to login");
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("currentUser");
                 await axios.get(
@@ -676,7 +644,6 @@ export const GlobalProvider = ({ children }) => {
                     }
                 );
             } else {
-                console.log("admiring gs");
                 dispatch({
                     type: "ADMIRE_P",
                     newadmire: poster,
@@ -701,14 +668,12 @@ export const GlobalProvider = ({ children }) => {
             };
             let res = await axios.patch(`/unadmireP/${poster._id}/`, { s: 0 }, config);
             if (res.data.err) {
-                console.log("redirect to login");
                 await axios.get(`/redirectlogin`, {
                     headers: {
                         "Content-type": "application/json",
                     },
                 });
             } else {
-                console.log("undmiring gs");
 
                 dispatch({
                     type: "UNADMIRE_P",
@@ -732,7 +697,6 @@ export const GlobalProvider = ({ children }) => {
                 picture,
                 String(new_poster.title) + String(new_poster.tags)
             );
-            console.log("here")
             formData.append("title", new_poster.title);
             formData.append("caption", new_poster.caption);
             formData.append("price", new_poster.price);
@@ -746,13 +710,11 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.post("/publish-poster", formData, config);
-            console.log("doneuploaded broo");
 
             dispatch({
                 type: "CREATE_POSTER",
                 poster_created: res.data.poster_created,
             });
-            console.log(`/profile/${state.user.username}`)
             return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
@@ -771,7 +733,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get("/account", config);
-            console.log(res.data);
             dispatch({
                 type: "PROFILE_B",
                 profile: res.data.profile,
@@ -793,7 +754,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get("/profile", config);
-            console.log(res.data);
             dispatch({
                 type: "PROFILE_A",
                 posters_made: res.data.profile.postersmade.reverse(),
@@ -809,7 +769,6 @@ export const GlobalProvider = ({ children }) => {
 
     async function getOrder(oid) {
         try {
-            console.log(oid)
             const config = {
                 headers: {
                     "Content-Type": "application/json",
@@ -817,13 +776,11 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get(`/order/${oid}`, config);
-            console.log(res.data);
             dispatch({
                 type: "ORDER_SINGLE_GET",
                 order: res.data.order,
             });
         } catch (err) {
-            console.log(err)
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -840,7 +797,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.get(`/sales/${aid}`, config);
-            console.log(res.data.postersales);
             dispatch({
                 type: "SALES_GET",
                 salesPosters: res.data.postersales,
@@ -848,7 +804,6 @@ export const GlobalProvider = ({ children }) => {
             localStorage.setItem("currentUser", JSON.stringify(state.user));
 
         } catch (err) {
-            console.log(err)
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -865,7 +820,6 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.post(`/pay`, body, config);
-           console.log(res.data)
             dispatch({
                 type: "PAY",
                 order_placed:res.data
