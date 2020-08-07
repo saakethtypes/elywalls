@@ -3,7 +3,6 @@ import { GlobalContext } from "../context/GlobalState";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
 import LoadingIcon from "../components/LoadingIcon";
-
 // @ts-ignore
 import cn from "./styles/Login.module.scss";
 
@@ -11,12 +10,13 @@ export const Login = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { login, persistLog, forgotPass } = useContext(GlobalContext);
+    const { login, persistLog, forgotPass ,refreshToken,error} = useContext(GlobalContext);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
         login(username, password, props);
+        setIsLoading(false);
         setUsername("");
         setPassword("");
     };
@@ -33,11 +33,10 @@ export const Login = (props) => {
     const fpc = () => {
         setfp(!fp);
     };
-
     persistLog(props);
 
     if (isLoading) return <LoadingIcon />;
-
+    
     return (
         <div className='page-container'>
             <div className='page-header'>
@@ -47,7 +46,6 @@ export const Login = (props) => {
                     <Link to='/register'>click here to register</Link>.
                 </p>
             </div>
-
             {!fp && (
                 <div className={`form-container`}>
                     <form onSubmit={handleFormSubmit}>

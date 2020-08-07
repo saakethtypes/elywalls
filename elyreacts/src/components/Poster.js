@@ -81,13 +81,13 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
 
     const handleClickCart = (e) => {
         if (!checkCart()) {
-            addToCart(poster._id);
+            addToCart(poster._id,poster.title);
             setIsAddedToCart(true);
         }
     };
 
     const getAdmireIcon = (fill) => {
-        if (!fill) return <span>❤</span>;
+        if (!fill) return <span className='icon-unlikes'> </span>;
         return <span className='icon-likes'></span>;
     };
 
@@ -137,7 +137,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
                     <span className='icon-likes'></span>
                     <strong>{admires}</strong>
                 </div>
-                <strong className={cn.price}>{poster.price.toFixed(2)}</strong>
+                <strong className={cn.price}>{poster.price} ₹</strong>
             </div>
         </div>
     );

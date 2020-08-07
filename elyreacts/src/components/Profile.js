@@ -30,7 +30,7 @@ export const Profile = ({ artistId }) => {
     return (
         <div className='page-container'>
             <div className={cn.pageHeader}>
-                <h1>{artist.name}</h1>
+                <h1>{artist.nae}</h1>
                 <p>{`@${artist.username}`}</p>
 
                 {user && artist.username !== user.username && (
@@ -40,6 +40,7 @@ export const Profile = ({ artistId }) => {
                         </small>
                     </div>
                 )}
+                
 
                 <div className={cn.statsContainer}>
                     <div>

@@ -1,5 +1,7 @@
 const express = require("express");
 const auth = require("../controllers/authCheck");
+const sharp = require("sharp");
+const getStream = require('get-stream')
 
 const router = express.Router();
 const {
@@ -31,6 +33,7 @@ const {
        getArtistsAdmired,
        pay,
        getSales,
+       getHeros
        //   orderDetails,
        //   createPosterIg
 } = require("../controllers/posterController");
@@ -62,6 +65,7 @@ router.route("/poster/:posterId")
 
 router.route("/poster-edit/:posterId").patch(auth, editPoster)
 router.route('/cart').get(auth,getCarts) 
+router.route('/heros').get(getHeros) 
 
 router.route("/cartadd/:posterId")
        .patch(auth, addToCart)
@@ -83,6 +87,7 @@ const fileFilter = (req, file, cb) => {
 }
 const storage = multer.diskStorage({
        destination: function (req, file, cb) {
+              //resized operations
               cb(null, '../elyreacts/src/assets/postersDb');
        },
        filename: function (req, file, cb) {
@@ -92,10 +97,47 @@ const storage = multer.diskStorage({
               String(new Date().getTime())+"."+ext )
        }
 })
+
 const upload = multer({
        storage: storage,
        fileFilter: fileFilter
 }).single('posterImg')
+
+const fileFilterResized = (req, file, cb) => {
+       if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'
+        || file.mimetype === 'image/png' ) {
+       cb(null, true)
+       } else {
+              cb(null, false);
+       }
+}
+
+const storageResized = multer.diskStorage({
+       destination:  function (req, file, cb) {
+       console.log("s resizing..")
+       const buffer =  getStream(file.stream)
+        file = sharp(buffer)
+        .resize(10, 20)
+        .toFormat("jpeg")
+        .jpeg({ quality: 90 })
+        console.log(file)
+
+        cb(null, '../elyreacts/src/assets/postersDb');
+       },
+       filename: function (req, file, cb) {
+              let ext = String(file.mimetype).split("/")
+              ext = ext[1]
+              cb(null, String(file.originalname) + 
+              String(new Date().getTime())+"."+ext )
+       }
+})
+
+const uploadResized = multer({
+       storage: storageResized,
+       fileFilter: fileFilterResized
+}).single('posterImg')
+
+
 
 router.route('/publish-poster').post(auth, upload, createPoster)
 

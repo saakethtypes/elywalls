@@ -144,7 +144,9 @@ export const PosterUpload = (props) => {
                         Publish
                     </button>
                 </form>
-
+                <p>
+                    You will not be paid for any work as the website is not being managed by anyone and users can only view your work.
+                </p>
                 <small>
                     By publishing your work, you declare that the work and all contained elements
                     are entirely your work.

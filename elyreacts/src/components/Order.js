@@ -21,22 +21,29 @@ const formatDate = (raw) => {
     return <p>{raw.toUTCString()}</p>;
 };
 
-const getPictureURL = (url) => {
-    return "https://source.unsplash.com/random/2160x1440";
+
+const getPictureUrl = (pictureUrl) => {
+    try {
+        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+    } catch (err) {
+        // fixme: Remove this as it shouldn't be necessary outside of testing
+        return "https://source.unsplash.com/random";
+    }
 };
 
 export const Order = ({ order }) => {
-    const orderDate = new Date(order.orderedOn);
 
+    const orderDate = new Date(order.orderedOn);
     return (
         <div className={cn.container}>
             <Link to={`/order/${order._id}`} className={cn.imageContainer}>
                 <div
                     className='image'
                     style={{
-                        backgroundImage: `url("${getPictureURL(
-                            order.purchased_items[0].item.pictureURL
-                        )}")`,
+                        backgroundImage: `url("${
+                            require("../assets/postersDb/"+
+                            order.purchased_items[0].item.pictureURL.split("Db")[1].substring(1))
+                        }")`,
                     }}
                 />
             </Link>

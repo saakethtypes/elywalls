@@ -170,7 +170,6 @@ a.button-icon {
     & > ul {
         overflow: hidden;
 
-        max-height: 0;
         margin-top: 0.5rem;
 
         transition: $transition_time_anim;
@@ -255,9 +254,9 @@ ul.tiled-list {
                 position: relative;
 
                 padding: 0.25em;
-
-                font-family: "Playfair Display", serif;
-
+                font-family: "Montserrat"; 
+                font-family: 'Roboto', sans-serif;
+                font-weight: 100; 
                 &::after {
                     content: "";
                     position: absolute;
@@ -652,7 +651,7 @@ div.information-grid {
         margin: 0.25rem;
     }
 }
-
+   
 .icon-likes {
     display: inline-block;
 
@@ -664,7 +663,16 @@ div.information-grid {
     background-repeat: no-repeat;
     background-position: center;
 }
+.icon-unlikes {
+    display: inline-block;
 
+    width: 1rem;
+    height: 1rem;
+    background-image: url("./assets/images/like.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 .icon-views {
     display: inline-block;
 

@@ -100,7 +100,7 @@ export const Poster = ({ posterID }) => {
     };
 
     const getAdmireIcon = (fill) => {
-        if (!fill) return <span>❤</span>;
+        if (!fill) return <span className='icon-unlikes'></span>;
         return <span className='icon-likes'></span>;
     };
     
@@ -116,6 +116,10 @@ export const Poster = ({ posterID }) => {
 
     return (
         <div className='page-container'>
+            <div className='page-header'>
+                <h1>{poster.title}</h1>
+                <p>{poster.caption}</p>
+            </div>
             <div className={`lower-content-container ${cn.container}`}>
                 <div className={cn.imageContainer}>
                     <img src={getPictureUrl(poster.pictureURL)} alt={poster.caption} />
@@ -130,8 +134,6 @@ export const Poster = ({ posterID }) => {
                         <small className={cn.countViews}>{poster.views}</small>
                     </div>
 
-                    <h1>{poster.title}</h1>
-
                     <div className={cn.authorContainer}>
                         <Link to={`/profile/${poster.author}`}>
                             <img
@@ -139,14 +141,14 @@ export const Poster = ({ posterID }) => {
                                 alt={poster.author}
                             />
                         </Link>
-                        <small>
+                        <h3>
                             By <a href={`/profile/${poster.author}`}>{poster.author}</a>
-                        </small>
+                        </h3>
                     </div>
-                    <p>{poster.caption}</p>
-
+<br></br>
                     <strong className={cn.price}>₹ {poster.price.toFixed(2)}</strong>
-                    
+                    <h2>{poster.category}</h2>
+
                     <div className={cn.ctaButtons}>
                         {isLoggedIn?
                             user.user_type =='buyer'?
@@ -161,7 +163,7 @@ export const Poster = ({ posterID }) => {
                                 {isAddedToCart && "Already in Cart"}
                                 {!isAddedToCart && "Add to Cart"}
                             </button>
-
+                            
                             <ButtonAction
                                 light
                                 onClickHandler={handleClickAdmire}
@@ -170,13 +172,6 @@ export const Poster = ({ posterID }) => {
                             </ButtonAction>
                             </div>:
                             <div>
-                                <br></br>
-                            <ButtonAction
-                                light
-                                onClickHandler={handleClickAdmire}
-                                activated={isAdmired}>
-                                {getAdmireIcon(isAdmired)}
-                            </ButtonAction>
                             </div>
                          : (
                             <LinkButton to='/login'>Sign in to Buy</LinkButton>

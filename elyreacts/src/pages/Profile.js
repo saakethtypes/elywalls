@@ -14,7 +14,6 @@ import cn from "./styles/Profile.module.scss";
 
 const getPictureUrl = (pictureUrl) => {
     try {
-        console.log("...", pictureUrl);
         return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
     } catch (err) {
         // todo/fixme: Remove this as it shouldn't be necessary outside of testing
@@ -26,6 +25,7 @@ export const Profile = ({ artistId }) => {
     let { artist, user, getArtist } = useContext(GlobalContext);
     useEffect(() => {
         getArtist(artistId);
+
     }, []);
 
     if (!artist) return <LoadingIcon />; // todo: make this look nice
@@ -36,13 +36,21 @@ export const Profile = ({ artistId }) => {
                 <h1>{artist.name}</h1>
                 <p>{`@${artist.username}`}</p>
 
-                {user && artist.username !== user.username && (
+                {user && artist.username == user.username && (
+                    <div className={cn.reportButtonContainer}>
+                        <h3>
+                            <Link to={`/account/edit/${artist._id}`}>Edit</Link>
+                        </h3>
+                    </div>
+                )}
+                {user && artist.username ==! user.username && (
                     <div className={cn.reportButtonContainer}>
                         <small>
-                            <Link to='/account/edit'>Report User</Link>
+                            <a href='mailto:elywalls@gmail.com'>Report User</a>
                         </small>
                     </div>
                 )}
+                
 
                 <div className={cn.statsContainer}>
                     <div>
@@ -58,13 +66,14 @@ export const Profile = ({ artistId }) => {
                 <a className={cn.instagramContainer} href={`https://www.instagram.com/${artist.linkedIG}`}>
                     <img src={ICON_INSTAGRAM} alt='Instagram'  />
                 </a>
-
                 <div className={cn.imageContainer}>
                     <img src={getPictureUrl(artist.dpURL)} alt={`${artist.name} on Elywalls`} />
                 </div>
             </div>
 
             <div className={`${cn.contentContainer} collection-container`}>
+            <h3 className={cn.caption}>{artist.quote}</h3>
+
                 <h2>Published</h2>
                 <PostersList posters={artist.postersmade} />
             </div>

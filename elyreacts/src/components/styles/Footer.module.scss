@@ -68,6 +68,16 @@ footer.container {
     }
 }
 
+.contactbuis {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    text-align: center;
+    color: red;
+    font-weight: 500;
+    font-size: medium;
+}
+
 @media only screen and (min-width: $media_width_tablet) {
     .mainContent {
         grid-template-columns: max-content max-content max-content auto;
@@ -76,4 +86,5 @@ footer.container {
 
         margin: 0 auto;
     }
+    
 }

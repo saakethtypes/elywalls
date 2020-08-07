@@ -15,10 +15,10 @@ export const PostersWall = ({ category = "latest" }) => {
         getPosters,
         getPostersMore,
         loadLimit,
+        goAhead
     } = useContext(GlobalContext);
     const [page, setpage] = useState(0)
     const skipCount = 10 
-    console.log(loadLimit)
     // todo/fixme(future): Use React Suspense instead of fetching async data inside useEffect
     useEffect(() => {
         getPosters(category,page);
@@ -68,7 +68,7 @@ export const PostersWall = ({ category = "latest" }) => {
 <InfiniteScroll
 dataLength={posters.length}
 next={fetchMore}
-hasMore={false}
+hasMore={goAhead}
 loader={<LoadingIcon/>}
 >
                 {isLoading && <span>Loading...</span>}

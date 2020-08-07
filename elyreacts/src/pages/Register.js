@@ -20,7 +20,7 @@ export const Register = ({ location }) => {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [igLink, setigLink] = useState("");
-    const [accountType, setAccountType] = useState();
+    const [accountType, setAccountType] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { registerUser } = useContext(GlobalContext);
     const { registerArtist } = useContext(GlobalContext);
@@ -91,6 +91,7 @@ export const Register = ({ location }) => {
             setPasswordConfirmation("");
             setEmail("");
             setPhone("");
+            setigLink("")
             setIsSubmitted(true);
 
             // todo: redirect after login
@@ -106,10 +107,11 @@ export const Register = ({ location }) => {
                 animationIn: ["animated", "fadeIn"],
                 animationOut: ["animated", "fadeOut"],
                 dismiss: {
-                    duration: 1000,
+                    duration: 3000,
                 },
             });
         }
+        setIsLoading(false)
     };
 
     if (isLoading) return <LoadingIcon />;
@@ -123,6 +125,8 @@ export const Register = ({ location }) => {
 
             <div className={`form-container ${cn.registrationFormContainer}`}>
                 {accountType == "sell" ? (
+                    <>
+                    <h2>Hello artist</h2>
                     <ImageUploader
                         withIcon={true}
                         onChange={handleImageUpload}
@@ -132,12 +136,14 @@ export const Register = ({ location }) => {
                         label='Accepted .jpeg | .jpg | .png'
                         buttonText='Choose A Display Picture'
                         withPreview={true}
-                    />
+                    /></>
                 ) : null}
+                
                 <form onSubmit={handleFormSubmit} className={cn.registrationForm}>
+                    
                     <FormRadioInput
                         name='accountType'
-                        displayName='Register to...'
+                        displayName="I'm here to .."
                         options={[
                             {
                                 value: "buy",
@@ -150,7 +156,7 @@ export const Register = ({ location }) => {
                         ]}
                         onChange={(e) => setAccountType(e.target.value)}
                     />
-
+{accountType.length>2?<>
                     <FormInput
                         type='text'
                         name='name'
@@ -182,7 +188,7 @@ export const Register = ({ location }) => {
                     />
                     <FormInput
                         type='tel'
-                        name='phone'
+                        name='phone (+91)'
                         value={phone}
                         autoComplete='tel'
                         inputProps={{
@@ -220,31 +226,18 @@ export const Register = ({ location }) => {
                             autoComplete='off'
                         />
                     ) : null}
-                    <FormRadioInput
-                        name='accountType'
-                        displayName='Register to...'
-                        options={[
-                            {
-                                value: "buy",
-                                isDefault: false,
-                            },
-                            {
-                                value: "sell",
-                                isDefault: false,
-                            },
-                        ]}
-                        onChange={(e) => setAccountType(e.target.value)}
-                    />
+                    
                     <button className='button-primary' type='submit'>
                         Register
                     </button>
+                    </>:null}
                 </form>
             </div>
             {isSubmitted && (
-                <div>
+                <p className='page-preface'>
                     Please check your email to activate your account.{" "}
                     <a href='https://gmail.com'>Open Email</a>
-                </div>
+                </p>
             )}
         </div>
     );

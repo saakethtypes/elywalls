@@ -15,7 +15,9 @@ const {registerUser,
         resetPass,
         redirect,
         stripeMerge,
-        stripeCards} = require("../controllers/userController");
+        updateQuote,
+        stripeCards,
+        getRefreshToken} = require("../controllers/userController");
 
 router.route("/register-buyer").post(registerUser);
 router.route("/login").post(login); //res -> artist/user
@@ -29,6 +31,8 @@ router.route("/redirectlogin").get(redirect);
 router.route("/confirmation/:utype/:token").get(confirmProfile);
 router.route("/merge-customer").post(stripeMerge);
 router.route("/get-cards").get(stripeCards);
+router.route("/update-quote").post(auth,updateQuote);
+router.route("/get-token/:uname/:ut").get(auth,getRefreshToken);
 
 const fileFilter = (req, file, cb) => {
        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg'

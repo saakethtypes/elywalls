@@ -64,7 +64,8 @@ const ArtistSchema = new mongoose.Schema({
   quote:{
       type:String,
       required:false,
-      maxlength:350
+      maxlength:350,
+      default: "Hi! Check out my work down below"
   },
 
   postersmade:{

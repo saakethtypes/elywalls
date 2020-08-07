@@ -3,6 +3,7 @@ import {GlobalContext} from '../context/GlobalState';
 import {Link} from "react-router-dom";
 import {FormInput} from "../components/FormInput";
 import LinkButton from '../components/LinkButton';
+import { store } from "react-notifications-component";
 
 export const PasswordReset = ({rid}) => {
 
@@ -11,9 +12,25 @@ export const PasswordReset = ({rid}) => {
 
     const resetpass = () => {
         if (password.length > 3 && password == confirmPass) {
+            console.log('resetting password')
             resetPass(password, rid);
             setgoahead(true);
+            setconfirmPass("")
+            setpassword("")
         } else {
+             store.addNotification({
+                title: ` Passwords didnt match or too short`,
+                message: `The password has to be more than 5 letters`,
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 4000,
+                  onScreen: true,
+                },
+              });
             console.log("password didnt match or too short");
         }
     };

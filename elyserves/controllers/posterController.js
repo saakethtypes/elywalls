@@ -32,6 +32,7 @@ exports.createPoster = async (req, res, next) => {
     try {
         console.log("uploading..");
         if (req.files === null) {
+            console.log("File is null")
             return res.json({ msg: "No file uploaded" });
         }
         const poster = {
@@ -109,22 +110,40 @@ exports.createPoster = async (req, res, next) => {
 
 exports.getPostersAll = async (req, res, next) => {
     try {
-        const resultPopular = await Poster.find({})
+        if(Poster.countDocuments()<10){const resultPopular = await Poster.find({})
+        .sort({ $natural: -1 })
                     .skip(Number(req.query.infiPage))
                     .limit(10)
-                    .sort({views:-1});
-        
+                    
         const resultNew = await Poster.find({})
+        .sort({ $natural: 1 })
         .skip(Number(req.query.infiPage))
         .limit(10)
-        .sort({views: 1});
-        const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
-        let lengthTotal = await Poster.count()
+        results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+        let lengthTotal = await Poster.countDocuments()
+        let go = true
+        if (Number(req.query.infiPage) < lengthTotal/2 ){
+            go = false
+        }
         return res.status(200).json({
             success: true,
             posters: results,
+            go:go,
             AllLength: lengthTotal
         });
+    }else{
+let results = await Poster.find({})
+let lengthTotal = await Poster.countDocuments()
+
+return res.status(200).json({
+    success: true,
+    posters: results,
+    go:false,
+    AllLength: lengthTotal
+});
+        }
+
+        
     } catch (err) {
         return res.status(400).json({
             success: false,
@@ -363,23 +382,21 @@ exports.getPostersPopular = async (req, res, next) => {
 
 exports.getPostersPhotoshop = async (req, res, next) => {
     try {
-    const resultPopular = await Photoshop.find({})
-    .skip(Number(req.query.infiPage))
-    .limit(10)
-    .sort({views:-1});
-
-    const resultNew = await Poster.find({})
+    const resultPopular = await Photoshop.findOne({})
+    //     ,{$unwind:'$items'})
+    // .skip(Number(req.query.infiPage))
+    // .limit(10)
+    // .sort({views:-1});
+    // console.log(resultPopular)
+    const resultNew = await Photoshop.find({})
     .skip(Number(req.query.infiPage))
     .limit(10)
     .sort({views: 1});
 
-    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
-
-
-
+    // const results = [resultPopular ,resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: results,
+            posters: resultPopular.items,
         });
     } catch (error) {
         console.log(error)
@@ -392,20 +409,20 @@ exports.getPostersPhotoshop = async (req, res, next) => {
 
 exports.getPostersGraphic = async (req, res, next) => {
     try {
-        const resultPopular = await Graphic.find({})
-    .skip(Number(req.query.infiPage))
-    .limit(10)
-    .sort({views:-1});
+        const resultPopular = await Graphic.findOne({})
+    // .skip(Number(req.query.infiPage))
+    // .limit(10)
+    // .sort({views:-1});
 
     const resultNew = await Graphic.find({})
     .skip(Number(req.query.infiPage))
     .limit(10)
     .sort({views: 1});
 
-    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+    // const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: results,
+            posters: resultPopular.items,
         });
     } catch (error) {
         return res.status(503).json({
@@ -417,22 +434,22 @@ exports.getPostersGraphic = async (req, res, next) => {
 
 exports.getPostersPhotography = async (req, res, next) => {
     try {
-        const resultPopular = await Photography.find({})
-    .skip(Number(req.query.infiPage))
-    .limit(10)
-    .sort({views:-1});
-
+        const resultPopular = await Photography.findOne({})
+    // .skip(Number(req.query.infiPage))
+    // .limit(10)
+    // .sort({views:-1});
     const resultNew = await Photography.find({})
     .skip(Number(req.query.infiPage))
     .limit(10)
     .sort({views: 1});
 
-    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+    // const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: results,
+            posters: resultPopular.items,
         });
     } catch (error) {
+        console.log(error)
         return res.status(505).json({
             success: false,
             err: error,
@@ -442,20 +459,20 @@ exports.getPostersPhotography = async (req, res, next) => {
 
 exports.getPostersTextography = async (req, res, next) => {
     try {
-        const resultPopular = await Textography.find({})
-    .skip(Number(req.query.infiPage))
-    .limit(10)
-    .sort({views:-1});
+        const resultPopular = await Textography.findOne({})
+    // .skip(Number(req.query.infiPage))
+    // .limit(10)
+    // .sort({views:-1});
 
     const resultNew = await Textography.find({})
     .skip(Number(req.query.infiPage))
     .limit(10)
     .sort({views: 1});
 
-    const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
+    // const results = [...resultPopular ,...resultNew].sort( () => Math.random() - 0.5)
         return res.status(200).json({
             success: true,
-            posters: results,
+            posters: resultPopular.items,
         });
     } catch (error) {
         return res.status(506).json({
@@ -467,7 +484,7 @@ exports.getPostersTextography = async (req, res, next) => {
 
 exports.getPostersLatest = async (req, res, next) => {
     try {
-        const result = await Poster.find({}).limit(3).sort({ $natural: -1 });
+        const result = await Poster.find({}).limit(10).sort({ $natural: -1 });
         return res.status(200).json({
             success: true,
             posters: result,
@@ -508,7 +525,7 @@ exports.admirePoster = async (req, res, next) => {
                 );
             }
 
-            console.log("Poster Admired",result.admires)
+            console.log("Poster Admired",result.admires,user.admires.length)
             return res.status(200).json({
                 success: true,
                 posters: result,
@@ -558,7 +575,7 @@ exports.unadmirePoster = async (req, res, next) => {
                 { $pull: { admires: { _id: result._id } } }
             );
         }
-        console.log("Poster Unadmired",result.admires)
+        console.log("Poster Unadmired",result.admires,user.admires.length)
 
         return res.status(200).json({
             success: true,
@@ -742,11 +759,10 @@ exports.getPostersAdmired = async (req, res, next) => {
             result = await Artist.findById({ _id: req.user.id });
             result = result.admires;
         }
-        if (req.user.utype === "buyer") {
+        else {
             result = await User.findById({ _id: req.user.id });
             result = result.admires;
         }
-        console.log(result[0].title);
         return res.status(200).json({
             success: true,
             posters: result,
@@ -872,10 +888,6 @@ exports.pay = async (req, res, next) => {
             const token = req.body.token;
             const idempotencyKey = v4();
 
-            
-        result.cart.map(async (ci)=>{await Poster.findByIdAndUpdate({_id:ci.item._id},
-            { $inc: { purchases: 1 } })})
-        console.log(req.body.email)
         let mailOptions = {
             from: "saakethlogs@gmail.com",
             to: req.body.email,
@@ -1027,6 +1039,7 @@ exports.pay = async (req, res, next) => {
                         req.body.token.card.address_city
                     },${req.body.token.card.address_zip}</p>
                     <h3>Posters bought - ${order_cr.purchased_items.length}</h3>
+                    <h3>${order_cr.purchased_items[0].item.title} X ${order_cr.purchased_items[0].quantity}... </h3>
                     <h3>Price</h3>
                     <p>Total amount - ${req.body.totalPrice} Rs</p>
                     <p>Order No. - ${order_cr._id}</p>
@@ -1034,7 +1047,7 @@ exports.pay = async (req, res, next) => {
         
                     <small>
                         For assistance, please
-                        <a href="mailto:support@elywalls.com">contact us</a>.
+                        <a href="mailto:elywalls@gmail.com">contact us</a>.
                     </small>
                 </div>
             </body>
@@ -1088,6 +1101,22 @@ exports.createPosterIg = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             poster_created: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            err: error,
+        });
+    }
+};
+
+exports.getHeros = async (req, res, next) => {
+    try {
+    const ph = await Poster.find({}).limit(4).sort({ views: -1 });
+   
+        return res.status(200).json({
+            success: true,
+            heros: ph,
         });
     } catch (error) {
         return res.status(500).json({

@@ -4,7 +4,9 @@ import axios from "axios";
 import auth from "../auth";
 import { Redirect } from "react-router-dom";
 import { v4 } from "uuid";
-
+import { store } from "react-notifications-component";
+import 'react-notifications-component/dist/theme.css'
+import LoadingIcon from "../components/LoadingIcon";
 let logUser = JSON.parse(localStorage.getItem("currentUser") || null);
 let ls = false;
 let usercart = null;
@@ -52,7 +54,15 @@ const initialState = {
     admires: useradmired,
     order:0,
     orders:userorders,
-    loadLimit:40
+    loadLimit:40,
+    goAhead:true,
+    heros:{heros:[
+        "welcome",
+        "welcome1",
+        "welcome2",
+        "welcome3",
+        "welcome4",
+    ]}
 };
 
 export const GlobalContext = createContext(initialState);
@@ -128,10 +138,36 @@ export const GlobalProvider = ({ children }) => {
                 auth.login(() => {
                     props.history.push("/");
                 });
+                await store.addNotification({
+                    title: `Hey ${res.data.profile.name}! 👋`,
+                    message: `Welcome back! Continue styling your walls`,
+                    type: "success",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 4000,
+                      onScreen: true,
+                    },
+                  });
                 console.log("logged in ");
             } else {
-                console.log("yeah not logged in cuz", res.data.msg);
-            }
+               await store.addNotification({
+                    title: "Login Failed",
+                    message: `${res.data.msg}`,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 3000,
+                      onScreen: true,
+                    },
+                  });
+
+                }
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -144,7 +180,19 @@ export const GlobalProvider = ({ children }) => {
         console.log("logout");
         localStorage.removeItem("jwt");
         localStorage.removeItem("currentUser");
-
+        await store.addNotification({
+            title: `Come back soon! 👋`,
+            message: `Logged out`,
+            type: "success",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 3000,
+              onScreen: true,
+            },
+          });
         dispatch({
             type: "LOGOUT",
         });
@@ -158,8 +206,23 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let token = v4();
+            console.log("reseting password")
+            await store.addNotification({
+                title: `Hey! Check your Inbox`,
+                message: `We've sent you a mail`,
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             await axios.post(`/forgot-password`, { email: email, id: token }, config);
         } catch (err) {
+            console.log(err)
             dispatch({
                 type: "ERROR",
                 payload: err.data,
@@ -174,7 +237,20 @@ export const GlobalProvider = ({ children }) => {
                     "Content-type": "application/json",
                 },
             };
-            await axios.post(`/reset-password/`, { password: password, id: id }, config);
+            const res = await axios.post(`/reset-password/`, { password: password, id: id }, config);
+            await store.addNotification({
+                title: `Password Updated.`,
+                message: `You can now log back in.`,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -213,7 +289,19 @@ export const GlobalProvider = ({ children }) => {
             };
 
             await axios.post("/edit-profile", editted_profile, config);
-
+            await store.addNotification({
+                title: `Updated your profile`,
+                message: ":)",
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             dispatch({
                 type: "EDIT_PROFILE",
                 editted_user: editted_profile,
@@ -231,6 +319,7 @@ export const GlobalProvider = ({ children }) => {
 
 switch (category) {
     case "all":
+        console.log(infiPage)
         return `/all?infiPage=${infiPage}`;
     case "latest":
         return "/latest";
@@ -262,12 +351,14 @@ switch (category) {
             const config = {
                 headers: { "Content-type": "Application/json" },
             };
-            const res = await axios.get(getEndpoint(category,infiPage), config).catch((err) => {
+            const res = await axios.get(getEndpoint(category,infiPage+10), config).catch((err) => {
                 console.log(err);
             });
+            console.log(res.data)
             dispatch({
                 type: "GET_POSTERS_SUCCEEDED",
                 payload: res.data.posters,
+
                 lengthLimit: res.data.AllLength||state.loadLimit
             });
         } catch (err) {
@@ -281,16 +372,34 @@ switch (category) {
 
     async function getPostersMore(category = "all",infiPage) {
         try {
+            await store.addNotification({
+                title: `Fetching more art ...`,
+                message: `Haven't you found The One yet?`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             const config = {
                 headers: { "Content-type": "Application/json" },
             };
             const res = await axios.get(getEndpoint(category,infiPage), config).catch((err) => {
                 console.log(err);
             });
-            console.log(res.data.posters)
+            var postersUnique = res.data.posters.filter(
+                function(item, index){
+                return res.data.posters.indexOf(item) >= index;
+            });
+
             dispatch({
                 type: "GET_POSTERS_MORE",
-                payload: res.data.posters,
+                payload: postersUnique,
+                goAhead: res.data.go,
             });
 
         } catch (err) {
@@ -389,6 +498,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
+            
             let ress = await axios.get(`/recommends/${cat}/${aid}/${pid}`, config);
 
             dispatch({
@@ -455,6 +565,7 @@ switch (category) {
                 },
             };
             const res = await axios.get(`/profile/${auname}`, config);
+            
             dispatch({
                 type: "ARTIST_PROFILE",
                 artist: res.data.artist[0],
@@ -497,6 +608,19 @@ switch (category) {
                 },
             };
             await axios.get(`/${aid}/admireA`, config);
+            await store.addNotification({
+                title: `Added to your favorites 💜 `,
+                message: `Collection available in your account`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             dispatch({
                 type: "ADMIRE_A",
             });
@@ -517,6 +641,7 @@ switch (category) {
                 },
             };
             await axios.get(`/${aid}/unadmireA`, config);
+            
             dispatch({
                 type: "UNADMIRE_A",
             });
@@ -537,6 +662,19 @@ switch (category) {
                 },
             };
             const res = await axios.delete(`/poster/${pid}`, config);
+            await store.addNotification({
+                title: `Deleted your art 💔 `,
+                message: `You won't be able to make any profits off of it anymore`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
@@ -556,8 +694,20 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            console.log(editted_poster)
             await axios.patch(`/poster-edit/${pid}`, editted_poster, config);
+            await store.addNotification({
+                title: `Editted your poster`,
+                message: `New idea?`,
+               type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             dispatch({
                 type: "EDIT_POSTER",
                 editted_poster: editted_poster,
@@ -572,7 +722,7 @@ switch (category) {
         }
     }
 
-    async function addToCart(pid) {
+    async function addToCart(pid,pname) {
         try {
             const config = {
                 headers: {
@@ -583,20 +733,17 @@ switch (category) {
 
             let x = { s: 0 };
             const res = await axios.patch(`/cartadd/${pid}`, x, config);
+            
             if (res.data.err) {
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("currentUser");
-                await axios.get(`/redirectlogin`, {
-                    headers: {
-                        "Content-type": "application/json",
-                    },
-                });
             } else {
                 dispatch({
                     type: "ADD_TO_CART",
                     cart: res.data.cartObj[0],
                 });
             }
+            
             localStorage.setItem("currentUser", JSON.stringify(state.user));
         } catch (err) {
             dispatch({
@@ -640,6 +787,19 @@ switch (category) {
                 },
             };
             await axios.delete(`/cartdelete/${cid}`, config);
+            await store.addNotification({
+                title: `Item has been removed from your cart`,
+                message: `:(`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             dispatch({
                 type: "DELETE_FROM_CART",
                 item_removed: cid,
@@ -662,18 +822,35 @@ switch (category) {
                 },
             };
             let res = await axios.patch(`/admireP/${poster._id}/`, { x: 0 }, config);
+            await store.addNotification({
+                title: `Added to your favorites 💜 `,
+                message: `Collection available in your account`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             if (res.data.err) {
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("currentUser");
-                await axios.get(
-                    `/redirectlogin`,
-
-                    {
-                        headers: {
-                            "Content-type": "application/json",
-                        },
-                    }
-                );
+                await store.addNotification({
+                    title: `You need to login again to make any action `,
+                    message: `Token Expired`,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 3000,
+                      onScreen: true,
+                    },
+                  });
             } else {
                 dispatch({
                     type: "ADMIRE_P",
@@ -698,12 +875,36 @@ switch (category) {
                 },
             };
             let res = await axios.patch(`/unadmireP/${poster._id}/`, { s: 0 }, config);
+            await store.addNotification({
+                title: `Removed from your favorites 💔 `,
+                message: `Collection available in your account`,
+                type: "info",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
             if (res.data.err) {
-                await axios.get(`/redirectlogin`, {
-                    headers: {
-                        "Content-type": "application/json",
+
+                localStorage.removeItem("jwt");
+                localStorage.removeItem("currentUser");
+                await store.addNotification({
+                    title: `You need to login again to make any action `,
+                    message: `Token Expired`,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 3000,
+                      onScreen: true,
                     },
-                });
+                  });
             } else {
 
                 dispatch({
@@ -746,6 +947,19 @@ switch (category) {
                 type: "CREATE_POSTER",
                 poster_created: res.data.poster_created,
             });
+                await store.addNotification({
+                    title: `${new_poster.title} is now published and ready to be sold`,
+                    message: `YAY!`,
+                    type: "success",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 3000,
+                      onScreen: true,
+                    },
+                  });
             return props.history.push(`/profile/${state.user.username}`);
         } catch (err) {
             dispatch({
@@ -843,6 +1057,100 @@ switch (category) {
         }
     }
 
+    // async function getHeros() {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 "Content-type": "application/json",
+    //             },
+    //         };
+    //         const res = await axios.get(`/heros`, config);
+    //         dispatch({
+    //             type: "HEROS",
+    //             heros:res.data
+    //         });
+    //     } catch (err) {
+    //         dispatch({
+    //             type: "ERROR",
+    //             payload: err.data,
+    //         });
+    //     }
+    // }
+
+    async function confirmAcc(utype,token,props) {
+        try {
+            const config = {
+                headers: {
+
+                    "Content-type": "application/json",
+                    
+                },
+            };
+            const res = await axios.get(`/confirmation/${utype}/${token}`, config);
+            if(res.data.success){
+               return props.history.push('/confirmed')
+            }else{
+                return props.history.push('/')
+            }
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+
+    async function updateCap(editted_cap,props) {
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    "x-auth-token": localStorage.getItem("jwt"),
+
+                },
+            };
+            await axios.post(`/update-quote`, {"quote":editted_cap}, config);
+            await store.addNotification({
+                title: `Updated your Quote`,
+                message: "People always love to know what drives the artist",
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });
+            dispatch({
+                type: "EDIT_CAP",
+                editted_user: editted_cap,
+            });
+            return props.history.push(`/`)
+        } catch (err) {
+            dispatch({
+                type: "ERROR",
+                payload: err.data,
+            });
+        }
+    }
+    async function refreshToken() {
+        if(state.user  != null){
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+              "x-auth-token": localStorage.getItem("jwt"),
+            },
+          }; 
+
+          let res = await axios.get(`/get-token/${state.user.username}/${state.user.user_type}`,config)
+          localStorage.setItem('jwt',res.data.token)
+          localStorage.setItem('currentUser',JSON.stringify(res.data.user))
+
+        }
+      }
+
     async function pay(body,props) {
         try {
             const config = {
@@ -852,6 +1160,20 @@ switch (category) {
                 },
             };
             const res = await axios.post(`/pay`, body, config);
+            if(res.data.success){
+            await store.addNotification({
+                title: `Payment successfull!`,
+                message: `YAY! ✋ *clap* `,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 3000,
+                  onScreen: true,
+                },
+              });}
             dispatch({
                 type: "PAY",
                 order_placed:res.data
@@ -887,6 +1209,8 @@ switch (category) {
                 order: state.order,
                 orders: state.orders,
                 loadLimit: state.loadLimit,
+                heros:state.heros,
+                goAhead:state.goAhead,
                 login,
                 logout,
                 persistLog,
@@ -913,12 +1237,16 @@ switch (category) {
                 admireArtist,
                 unadmireArtist,
                 addToCart,
+                confirmAcc,
                 setCartItemQuantity,
                 removeFromCart,
                 getAdmiredPosters,
                 getTopArtists,
                 getRecommends,
                 getSales,
+                updateCap,
+                refreshToken,
+                // getHeros
             }}>
             {children}
         </GlobalContext.Provider>

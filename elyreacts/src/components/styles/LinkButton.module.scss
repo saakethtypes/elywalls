@@ -5,22 +5,20 @@
 
     padding: 0.75rem 1rem;
 
-    background: $color_grey_dark;
+    background: $color_brand_primary;
 
-    font-family: "Playfair Display", serif;
+    font-family: 'Abril Fatface', cursive;
 
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-
-    color: $color_text;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300; 
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    color: black;
 
     transition: $transition_time_link;
 
     &:hover {
-        background: $color_grey;
-
+        background: $color_brand_primary_light;
         color: $color_text;
     }
 

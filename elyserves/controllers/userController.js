@@ -62,13 +62,162 @@ exports.registerUser = async (req, res, next) => {
           console.log("error", err);
         } else {
           let utype = "user";
-          let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
+          let confURL = `http://localhost:3000/confirm/${utype}/${emailToken}`;
           let mailOptions = {
             from: "saakethlogs@gmail.com",
             to: req.body.email,
             subject: "Elywalls Confirmation",
-            html: `Click on this link to activate your account:
-        <i><a href = "${confURL}">${confURL}</a></i>`,
+            html: `
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>Elywalls</title>
+            
+                    <link
+                        rel="stylesheet"
+                        href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+                        integrity="sha256-gvEnj2axkqIj4wbYhPjbWV7zttgpzBVEgHub9AAZQD4="
+                        crossorigin="anonymous"
+                    />
+                    <link
+                        href="https://fonts.googleemailapis.com/css?family=Jost:300,regular,500,700,italic,700italic"
+                        rel="stylesheet"
+                    />
+            
+                    <style>
+                        html {
+                            font-family: "Jost", email
+            
+                            background: #fafafa;
+                            color: #121212;
+                        }
+            
+                        * {
+                            box-sizing: border-box;
+                        }
+            
+                        h1 {
+                            margin-top: 1.5rem;
+            
+                            font-size: 2.75rem;
+                            font-weight: 300;
+                        }
+                        h2 {
+                            margin-top: 1.5rem;email
+            
+                            font-size: 1rem;
+                            font-weight: 500;
+                        }
+                        p {email;
+                        }
+                        small {
+                            display: inline-block;
+                            margin-top: 1.5rem;
+            
+                            font-size: 0.75rem;
+                            font-weight: 500;
+                            line-height: 1.5rem;
+                            text-transform: uppercase;
+                        }
+                        strong {
+                            font-weight: 700;email
+                        }
+                        em {
+                            font-style: italic;
+                        }
+                        code {
+                            padding: 0.125rem 0.25rem;
+                            border-radius: 0.25rem;
+                            background: #e6e9ec;
+                            font-family: "Iosevka", "Consolas", "Courier New", Courier,
+                                monospace;
+                        }
+                        a {
+                            display: inline-block;
+            
+                            text-decoration: none;
+                            color: #5e3fd1;
+                        }
+                        a.button {
+                            padding: 1rem 1.5rem;
+                            margin: 3rem 0 0 0;
+            
+                            color: #fafafa;
+                            background: #5e3fd1;
+            
+                            transition: 0.14s;
+                        }
+                        a.button:hover {
+                            color: #ffffff;
+                            background: #786ddd;
+                        }
+            
+                        .header {
+                            background: #5e3fd1;
+                            color: #fafafa;
+            
+                            padding: 3rem 1.5rem;
+            
+                            text-align: center;
+                        }
+            
+                        .content {
+                            width: 100%;
+                            max-width: 1280px;
+            
+                            margin: 3rem auto 0 auto;
+                            padding: 0 1.5rem;
+            
+                            text-align: center;
+                        }
+            
+                        .link-container {
+                            max-width: max-content;
+                            margin: 0 auto;
+                            border-bottom: 0.125rem solid #5e3fd1;
+            
+                            padding-bottom: 1.5rem;
+                        }
+                        .link-container p {
+                            font-size: 0.75rem;
+                        }
+                    </style>
+                </head>
+            
+                <body>
+                    <div class="header">
+                        <img src="" alt="Elywalls Logo" />
+                        <h1>Elywalls</h1>
+                        <p>Elegant posters by independent artists</p>
+                    </div>
+            
+                    <div class="content">
+                        <h2>Verify your account</h2>
+            
+                        <p>Click the link below to activate your account.</p>
+            
+                        <div class="link-container">
+                            <a class="button" href = "${confURL}">
+                                Activate
+                            </a>
+            
+                            <h3>Not working?</h3>
+                            <p>
+                                Paste this into your URL bar:
+                                <code>https://elywalls.com/account</code>
+                            </p>
+                        </div>
+            
+                        <small>
+                            For assistance, please
+                            <a href="mailto:support@elywalls.com">Contact us</a>.
+                        </small>
+                    </div>
+                </body>
+            </html>
+                    `,
           };
           await transporter.sendMail(mailOptions);
         }
@@ -141,17 +290,12 @@ exports.registerArtist = async (req, res, next) => {
         if (err) {
         } else {
           let utype = "artist";
-          let confURL = `http://localhost:5000/confirmation/${utype}/${emailToken}`;
+          let confURL = `http://localhost:3000/confirm/${utype}/${emailToken}`;
           let mailOptions = {
             from: "saakethlogs@gmail.com",
             to: req.body.email,
             subject: "Elywalls Confirmation",
             html: `
-            <!--
-    Password reset template
-
-    Add/remove elements as required for other templates
--->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -341,11 +485,14 @@ exports.confirmProfile = async (req, res, next) => {
     } else {
       res = await User.findByIdAndUpdate({_id: id}, {confirmed: true});
       res = await User.findById({_id: id});
+
     }
   } catch (error) {
+    console.log(error)
     return console.log("err", error);
   }
-  return res.redirect("http://localhost:3000/confirmed");
+
+  return res.json({success:true,msg:"Confirmed Account"})
 };
 
 exports.forgot = async (req, res, next) => {
@@ -560,9 +707,10 @@ exports.resetPass = async (req, res, next) => {
           {password: hash});
         res.json({err: false, msg: "Password updated"});
       } else {
+        console.log(thisReq.uid,ua)
         await User.findByIdAndUpdate({_id: mongodb.ObjectId(thisReq.uid)},
           {password: hash});
-        res.json({err: true, msg: "Email doesn't exist"});
+        res.json({err: true, msg: "Password updated"});
       }
     } else {
       res.json({err: true, msg: "Sent Token failed"});
@@ -742,6 +890,26 @@ exports.getProfileArtist = async (req, res, next) => {
   }
 };
 
+exports.updateQuote = async (req, res, next) => {
+  try {
+    console.log(req.body)
+    let result = await Artist.findByIdAndUpdate({_id: req.user.id},{
+      quote:req.body.quote.formCaption,
+      name: req.body.quote.formTitle,
+      linkedIG: req.body.quote.formTags,
+    });
+    return res.status(200).json({
+      success: true,
+      msg: "Account updated"
+    });
+  } catch (error) {
+    return res.status(510).json({
+      success: false,
+      err: error
+    });
+  }
+};
+
 exports.stripeMerge = async ({user, body: {cardToken}}, res, next) => {
   if (!user.stripeCustomerId) {
     const stripeCustomerId = await createCustomer(user.email);
@@ -754,8 +922,49 @@ exports.stripeMerge = async ({user, body: {cardToken}}, res, next) => {
   return addCustomerCard(user.stripeCustomerId, cardToken);
 };
 
+exports.getRefreshToken = async (req,res,next)=>{
+  console.log(req.params.uname)
+  if(req.params.ut=='buyer'){
+  let user = await User.find({username:req.params.uname});
+       jwt.sign(
+        { id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: 3600 },
+        (err, token) => {
+          if (err) {
+            return res.json({ err: err });
+          } 
+          return res.json({
+            msg: "Token refreshed",
+            user: user,
+            token:token
+          });
+        }
+       )
+  }else{
+    let user = await Artist.find({username:req.params.uname});
+       jwt.sign(
+        { id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: 3600 },
+        (err, token) => {
+          if (err) {
+            return res.json({ err: err });
+          } 
+          return res.json({
+            msg: "Token refreshed",
+            user: user,
+            token:token
+          });
+        }
+       )
+  }
+
+}
+
 exports.stripeCards = async ({user}, res, next) => {
   if (!user.stripeCustomerId) return [];
 
   return listCustomerCards(user.stripeCustomerId);
 };
+

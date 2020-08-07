@@ -16,6 +16,7 @@ export const Sales = ({ artistId }) => {
     }, [])
 
     user.postersmade.map((poster) =>{
+        console.log(poster)
         totalSold += poster.purchases
         totalProfit += poster.purchases * poster.price
     })
@@ -32,8 +33,12 @@ export const Sales = ({ artistId }) => {
                         <span>Total Listed</span> <span>{user.postersmade.length}</span>
                         <span>Total Sold</span> <span>{totalSold}</span>
                         <span>Total Earnings</span> <span>{totalProfit/2}</span>
-                    </div>
+                        <span>This week's sales</span> <span>{totalProfit/2}</span>
 
+                    </div>
+                    <p><b>You will be paid on every Friday according to your sales that week</b></p>
+                    <p><span>Reach out to us regarding payment issues <a href="mailto:elywalls@gmail.com">Here.</a></span>
+                    </p>
                     <div className='buttons-container'>
                         <LinkButton to='/publish-poster'>Publish A Poster</LinkButton>
                     </div>

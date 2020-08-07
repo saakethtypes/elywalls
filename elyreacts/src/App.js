@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ReactNotification from 'react-notifications-component';
 
 import { PostersWall } from "./pages/PostersWall";
 import { Home } from "./pages/Home";
@@ -18,6 +19,7 @@ import { Admired } from "./pages/Admired";
 import { PosterUpload } from "./pages/PosterUpload";
 import { ConfirmAccount } from "./pages/ConfirmAccount";
 import { PosterEdit } from "./pages/PosterEdit";
+import { EditAccount } from "./pages/EditAccount";
 import { PasswordReset } from "./pages/PasswordReset";
 import { Poster } from "./pages/Poster";
 import { Thankyou } from "./pages/Thankyou";
@@ -25,7 +27,9 @@ import { OrdersList } from "./pages/OrdersList";
 import { Order } from "./pages/Order";
 import { Sales } from "./pages/Sales";
 import { Error } from "./pages/Error";
+
 import "./App.scss";
+import { Confirm } from "./components/Confirm";
 
 function App() {
     return (
@@ -33,12 +37,17 @@ function App() {
             <BRouter basename='/' history={history}>
                 <GlobalProvider>
                     <Header />
+                    <ReactNotification />
+
                     <Switch>
 
                         <Route exact path='/' component={Home} />
                         <Route exact path='/login' component={Login} />
                         <Route path='/register' render={(props) => <Register {...props} />} />
                         <Route exact path='/confirmed' component={ConfirmAccount} />
+                        <Route exact path='/confirm/:utype/:token' component={(props) => (
+                                <Confirm utype={props.match.params.utype} token = {props.match.params.token} props = {props}  />
+                            )} />
                         <Route
                             path='/profile/:artistId'
                             render={(props) => (
@@ -75,6 +84,10 @@ function App() {
                         <ProtectedRoute exact path='/publish-poster' component={PosterUpload} />
                         <ProtectedRoute exact path='/thank-you' component={Thankyou} />
                         <ProtectedRoute
+                            path='/account/edit/:id'
+                            component={(props) => <EditAccount aID={props.match.params.id} />}
+                        />
+                        <ProtectedRoute
                             path='/sales/:artistId'
                             component={(props) => (
                                 <Sales artistId={props.match.params.artistId || ""} {...props} />
@@ -82,7 +95,7 @@ function App() {
                         />
                         <ProtectedRoute
                             path='/edit-poster/:id'
-                            component={(props) => <PosterEdit posterID={props.match.params.id} />}
+                            component={(props) => <PosterEdit posterID={props.match.params.id}  />}
                         />
                         
                         <Route path='*' render={(props) => <Error errorID={404} {...props} />} />

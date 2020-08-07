@@ -24,7 +24,7 @@ export const OrdersList = () => {
 
     let ordersPending = orders.filter((oi) => oi.payment_status === false);
     let ordersPaid = orders.filter((oi) => oi.payment_status !== false);
-
+console.log(orders)
     return (
         <div className='page-container'>
             <div className='page-header'>

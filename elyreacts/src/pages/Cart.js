@@ -47,7 +47,7 @@ export const Cart = (props) => {
             <div className='lower-content-container'>
                 <div className={cn.cartItemsContainer}>
                     {cart.map((cart_item, index) => (
-                        <CartItem ci={cart_item} className={cn.cartItem} />
+                        <CartItem key = {index} ci={cart_item} className={cn.cartItem} />
                     ))}
                 </div>
 
@@ -55,12 +55,13 @@ export const Cart = (props) => {
                     <h2>Checkout</h2>
 
                     <p>Total: {totall} Rs</p>
-
+<h3 className={cn.disc}> Disclaimer : This is NOT a functional business yet. All the payments are only to support the developer and will not in any way deliver you any products OR make you profits for selling them (i.e artist account).
+</h3>
                     <StripeCheckout
                         stripeKey={process.env.REACT_APP_KEY}
                         token={makePayment}
                         name='Pay with card'
-                        currency='inr'
+                        currency='INR'
                         amount={totall*100}
                         billingAddress>
                         <button className='button-primary'>Pay Now</button>

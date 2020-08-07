@@ -1,5 +1,10 @@
 /elyreacts/node_modules
-/elyreacts/Poster Database
+/elyreacts/src/assets/postersDb
+/elyreacts/src/assets/artistsDp
+/elyreacts/src/assets/originals
+/elyreacts/src/assets/heros
+
+
 /.pnp
 /.pnp.js
 elyserves/node_modules

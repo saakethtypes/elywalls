@@ -66,11 +66,21 @@ export default () => {
             <div className={cn.lowerContent}>
                 <span className={cn.copyright}>&copy; 2020 - Elywalls</span>
                 <small>
-                    Designed in the UK by{" "}
-                    <a rel='noreferrer noopener' target='_blank' href='https://samcross.digital/'>
-                        Sam Cross Digital
+                    brought to life in India by {" "}
+                    <a rel='noreferrer noopener' target='_blank' href='https://saakethtypes.github.io/'>
+                        Saakethtypes - lead programmer
                     </a>
                 </small>
+
+                <small>
+                    Designed in the UK by{" "}
+                    <a rel='noreferrer noopener' target='_blank' href='https://samcross.digital/'>
+                        Sam Cross Digital - designer
+                    </a>
+                </small>
+                <h2 className={cn.contactbuis}>Any interest in taking up the buissiness? <a href = 'mailto:saakethlogs@gmail.com'>Contact @saaketh</a> 
+                </h2>
+
                 <small className={cn.copying}>
                     Unauthorised duplication of user-uploaded content is prohibited by law
                 </small>

@@ -4,8 +4,7 @@ const appreducer = (state, action) => {
         case "ERROR":
             return {
                 ...state,
-                ...state.error,
-                error: action.payload
+                error: action.msg
             };
 
             case "GET_USER":
@@ -30,6 +29,12 @@ const appreducer = (state, action) => {
                 ...state,
                 user: null,
                 log_status: false
+            };
+
+        case "HEROS":
+            return {
+                ...state,
+                heros: action.heros
             };
 
         case "EDIT_PROFILE":
@@ -70,7 +75,8 @@ const appreducer = (state, action) => {
                 posters: {
                     isLoading: false,
                     posters: [...state.posters.posters,...action.payload]
-                }
+                },
+                goAhead: action.goAhead
             };
     
         case "ADMIRED_ARTISTS":

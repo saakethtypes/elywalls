@@ -61,35 +61,38 @@ export const Home = () => {
         getTopArtists,
         artists,
         user,
+        getHeros,
+        heros
     } = useContext(GlobalContext);
 
     // todo: Set full poster with info, instead of an image URL.
     // This way, info can be placed into the text on the image.
-    const [heroImageUrl, setHeroImageUrl] = useState("https://source.unsplash.com/random/400x600");
+    const [heroImageUrl, setHeroImageUrl] = useState(`welcome`);
 
     useEffect(() => {
         // getPosters("latest");
         getTopArtists();
         setHeroImage();
+        // getHeros()
     }, []);
 
     const setHeroImage = (type = "") => {
         // Todo: load posters from getPosters("popular"), and choose one poster per category
         switch (type) {
             case "latest":
-                setHeroImageUrl("https://source.unsplash.com/random/401x600");
+                setHeroImageUrl(heros.heros[0]);
                 break;
             case "textography":
-                setHeroImageUrl("https://source.unsplash.com/random/402x600");
+                setHeroImageUrl(heros.heros[1]);
                 break;
             case "graphic-design":
-                setHeroImageUrl("https://source.unsplash.com/random/403x600");
+                setHeroImageUrl(heros.heros[2]);
                 break;
             case "photoshop":
-                setHeroImageUrl("https://source.unsplash.com/random/404x600");
+                setHeroImageUrl(heros.heros[3]);
                 break;
             default:
-                setHeroImageUrl("https://source.unsplash.com/random/405x600");
+                setHeroImageUrl(heros.heros[0]);
                 break;
         }
     };
@@ -97,10 +100,22 @@ export const Home = () => {
         try {
             return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
+            console.log(err)
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing
             return "https://source.unsplash.com/random";
         }
     };
+
+    const getPictureUrl = (pictureUrl) => {
+        try {
+            return require(`../assets/heros/${pictureUrl}.png`);
+        } catch (err) {
+            console.log(err)
+            // fixme: Remove this as it shouldn't be necessary outside of testing
+            return "https://source.unsplash.com/random";
+        }
+    };
+
     return (
         <div className={`page-container`}>
             <div className={cn.gridContainer}>
@@ -111,7 +126,7 @@ export const Home = () => {
 
                 <div className={cn.heroImageContainer}>
                     <Link to='/posters/all' className={cn.heroImage}>
-                        <img src={heroImageUrl} />
+                        <img src={getPictureUrl(heroImageUrl)} />
                     </Link>
 
                     <small className={cn.heroImageAuthor}>
@@ -153,7 +168,7 @@ export const Home = () => {
 
             <div className='lower-content-container'>
                 <div className='hero-container'>
-                    <img src='https://source.unsplash.com/random' alt='Random image (temporary)' />
+                    <img src= {getPictureUrl('collection_thumb_home')} />
 
                     <div>
                         <h2>Elegant Posters</h2>

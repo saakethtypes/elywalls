@@ -21,7 +21,8 @@ export const CartItem = ({
             setCartItemQuantity(ci._id, Number(q), ci.item.price * Number(q));
         }};
     let picUrl = null
-    try{  let purl = ci.item.pictureURL.split('Db\\')[1] 
+    try{  let purl = ci.item.pictureURL.split("Db/")[1] 
+
     picUrl = require("../assets/postersDb/"+purl)
 }catch{let x = 0}
 
