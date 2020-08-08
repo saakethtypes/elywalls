@@ -63,6 +63,7 @@ export const Cart = (props) => {
                         name='Pay with card'
                         currency='INR'
                         amount={totall*100}
+                        email={user.email}
                         billingAddress>
                         <button className='button-primary'>Pay Now</button>
                     </StripeCheckout>

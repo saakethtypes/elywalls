@@ -205,8 +205,18 @@ export const Home = () => {
                 <FeaturedPostersList title='Popular' linkName='popular' />
                 <FeaturedPostersList title='Graphic Design' linkName='graphic-design' />
                 <FeaturedPostersList title='Photoshop' linkName='photoshop' />
-                <FeaturedPostersList title='Textography' linkName='textography' />
                 <FeaturedPostersList title='Photography' linkName='photography' />
+                {/* <div className='hero-container'>
+                    <div>
+                        <h2>#Instafamous</h2>
+                        <p>Our top artists</p>
+
+                        <LinkButton primary to='/posters/all'>
+                        Find us on Instagram                        </LinkButton>
+                    </div>
+                    <img src= {getPictureUrl('collection_thumb_home')} />
+                </div> */}
+                <FeaturedPostersList title='Textography' linkName='textography' />
                 <FeaturedPostersList title='Recent Posts' linkName='latest' />
             </div>
         </div>

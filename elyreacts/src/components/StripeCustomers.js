@@ -6,7 +6,7 @@ export const StripeCustomers = () => {
 
     return (
         <LinkButton to={STRIPE_URL}>
-            Connect to Stripe
+            Connect your Paypal I
         </LinkButton>
     );
 };

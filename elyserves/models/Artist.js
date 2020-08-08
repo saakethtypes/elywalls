@@ -78,15 +78,7 @@ const ArtistSchema = new mongoose.Schema({
       default:1
   },
 
-  buys_per_poster:{
-      type:Number,
-      default:0
-  },
 
-  profit_per_poster:{
-      type:Number,
-      default:0
-  },
 
   total_profit:{
     type:Number,
@@ -103,12 +95,12 @@ const ArtistSchema = new mongoose.Schema({
       type:Boolean,
       default:false
   },
-  
 
-  average_sales_weekly:{
-      type:Number
+  current_week_sales:{
+      type:Number,
+      default:0
   },
-
+  
   profileViews:{
       type:Number,
       default:1

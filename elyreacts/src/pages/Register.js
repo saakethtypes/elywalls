@@ -41,7 +41,8 @@ export const Register = ({ location }) => {
             password.length > 3 &&
             username.length > 3 &&
             email.length > 5 &&
-            password === passwordConfirmation
+            password === passwordConfirmation &&
+            phone
         ) {
 
             if (accountType === "buy") {
@@ -60,7 +61,8 @@ export const Register = ({ location }) => {
                     email,
                     phone,
                 });
-            } else if (accountType === "sell") {
+            } else if (accountType === "sell" && igLink &&
+            pictures) {
                 console.dir({
                     name: fullname,
                     username,
@@ -82,7 +84,19 @@ export const Register = ({ location }) => {
                     pictures[0]
                 );
             } else {
-                console.log("Invalid accountType");
+                store.addNotification({
+                    title: "Fill out all fields",
+                    message: "Make sure your passwords match and Profile pic is also required",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 5000,
+                    },
+                });
+                
             }
 
             setFullname("");
@@ -99,15 +113,15 @@ export const Register = ({ location }) => {
             console.log("Details verification failed");
             // Todo: Verify credentials better
             store.addNotification({
-                title: "Registration Failed",
-                message: "A field is too short.",
+                title: "Fill out all fields",
+                message: "Make sure everything is right.",
                 type: "danger",
                 insert: "top",
                 container: "top-right",
                 animationIn: ["animated", "fadeIn"],
                 animationOut: ["animated", "fadeOut"],
                 dismiss: {
-                    duration: 3000,
+                    duration: 5000,
                 },
             });
         }

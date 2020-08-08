@@ -17,9 +17,11 @@ dotenv.config({path: "../config.env"});
 
 
 let transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.zoho.in",
+  port:465,
+  secure: true,
   auth: {
-    user: "saakethlogs@gmail.com",
+    user: "hello@elywalls.com",
     pass: process.env.EMAIL_PASS,
   },
 });
@@ -30,14 +32,20 @@ exports.registerUser = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pass, salt);
 
-    let checkExistM = await User.find({email:req.body.email})
-    let checkExistU = await User.find({username:req.body.username})
-    if(checkExistM.username || checkExistU.username){
+    let checkExistM = await User.findOne({email:req.body.email})
+    let checkExistU = await User.findOne({username:req.body.username})
+    let checkExistMa = await Artist.findOne({email:req.body.email})
+    let checkExistUa = await Artist.findOne({username:req.body.username})
+    if(checkExistM !== null || checkExistU !== null||
+      checkExistMa !== null|| checkExistUa !== null){
       console.log("Username or Email already exists")
       return res.json({
+        err:true,
+
         msg: "Email or username already exists",
       });
     }
+
 
     let user = {
       name: req.body.name,
@@ -64,7 +72,7 @@ exports.registerUser = async (req, res, next) => {
           let utype = "user";
           let confURL = `http://localhost:3000/confirm/${utype}/${emailToken}`;
           let mailOptions = {
-            from: "saakethlogs@gmail.com",
+            from: "hello@elywalls.com",
             to: req.body.email,
             subject: "Elywalls Confirmation",
             html: `
@@ -212,7 +220,7 @@ exports.registerUser = async (req, res, next) => {
             
                         <small>
                             For assistance, please
-                            <a href="mailto:support@elywalls.com">Contact us</a>.
+                            <a href="mailto:hello@elywalls.com">Contact us</a>.
                         </small>
                     </div>
                 </body>
@@ -242,6 +250,7 @@ exports.registerUser = async (req, res, next) => {
       }
     );
   } catch (err) {
+    console.log(err)
     return res.json({
       err: err,
     });
@@ -256,15 +265,19 @@ exports.registerArtist = async (req, res, next) => {
     if (req.files === null) {
       return res.json({ msg: "No file uploaded" });
   }
-    //TODO uncomment let checkExistM = await Artist.find({email:req.body.email})
-    let checkExistU = await Artist.find({username:req.body.username})
-    //checkExistM || 
-    if(checkExistU.username){
-      console.log("Username or Email alreadyt exists")
-      return res.json({
-        msg: "Email or username already exists",
-      });
-    }    
+  let checkExistM = await User.findOne({email:req.body.email})
+  let checkExistU = await User.findOne({username:req.body.username})
+  let checkExistMa = await Artist.findOne({email:req.body.email})
+  let checkExistUa = await Artist.findOne({username:req.body.username})
+  if(checkExistM !== null || checkExistU !== null||
+    checkExistMa !== null|| checkExistUa !== null){
+    console.log("Username or Email already exists")
+    return res.json({
+      err:true,
+      msg: "Email or username already exists",
+    });
+  }
+
     let artist = {
       name: req.body.name,
       email: req.body.email,
@@ -292,7 +305,7 @@ exports.registerArtist = async (req, res, next) => {
           let utype = "artist";
           let confURL = `http://localhost:3000/confirm/${utype}/${emailToken}`;
           let mailOptions = {
-            from: "saakethlogs@gmail.com",
+            from: "hello@elywalls.com",
             to: req.body.email,
             subject: "Elywalls Confirmation",
             html: `
@@ -440,7 +453,7 @@ exports.registerArtist = async (req, res, next) => {
 
             <small>
                 For assistance, please
-                <a href="mailto:support@elywalls.com">Contact us</a>.
+                <a href="mailto:hello@elywalls.com">Contact us</a>.
             </small>
         </div>
     </body>
@@ -510,8 +523,9 @@ exports.forgot = async (req, res, next) => {
       console.log("Email verified");
       let utype = "artist";
       let confURL = `http://localhost:3000/resetpassword/${req.body.id}`;
+      
       let mailOptions = {
-        from: "saakethlogs@gmail.com",
+        from: "hello@elywalls.com",
         to: req.body.email,
         subject: "Elywalls Password reset",
         html: `<!--
@@ -675,7 +689,7 @@ exports.forgot = async (req, res, next) => {
     
                 <small>
                     For assistance, please
-                    <a href="mailto:support@elywalls.com">contact us</a>.
+                    <a href="mailto:hello@elywalls.com">contact us</a>.
                 </small>
             </div>
         </body>

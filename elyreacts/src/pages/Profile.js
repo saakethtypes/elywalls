@@ -43,7 +43,7 @@ export const Profile = ({ artistId }) => {
                         </h3>
                     </div>
                 )}
-                {user && artist.username ==! user.username && (
+                {user && artist.username !== user.username && (
                     <div className={cn.reportButtonContainer}>
                         <small>
                             <a href='mailto:elywalls@gmail.com'>Report User</a>

@@ -78,8 +78,8 @@ export default () => {
                         Sam Cross Digital - designer
                     </a>
                 </small>
-                <h2 className={cn.contactbuis}>Any interest in taking up the buissiness? <a href = 'mailto:saakethlogs@gmail.com'>Contact @saaketh</a> 
-                </h2>
+                {/* <h2 className={cn.contactbuis}>Interested in taking up the buissiness? <a href = 'mailto:hello@elywalls.com'>@saaketh</a> 
+                </h2> */}
 
                 <small className={cn.copying}>
                     Unauthorised duplication of user-uploaded content is prohibited by law

@@ -33,15 +33,21 @@ export const Sales = ({ artistId }) => {
                         <span>Total Listed</span> <span>{user.postersmade.length}</span>
                         <span>Total Sold</span> <span>{totalSold}</span>
                         <span>Total Earnings</span> <span>{totalProfit/2}</span>
-                        <span>This week's sales</span> <span>{totalProfit/2}</span>
-
+                        <span>This week's sales</span> <span>{user.current_week_sales}</span>
                     </div>
-                    <p><b>You will be paid on every Friday according to your sales that week</b></p>
-                    <p><span>Reach out to us regarding payment issues <a href="mailto:elywalls@gmail.com">Here.</a></span>
-                    </p>
+
+                    <p><b>Profits will be transferred onto your paypal account every Friday according to your profit that week</b></p>
+                    {user.paypal?
+                    <div className='buttons-container'>
+                        <h3>Paypal connected</h3>
+                    </div>
+                    :<div className='buttons-container'>
+                    <LinkButton href="mailto:hello@elywalls.com?subject= Hey Artist! Give us your Paypal ID and we will get back to you.">Connect your paypal</LinkButton>
+                </div>}
                     <div className='buttons-container'>
                         <LinkButton to='/publish-poster'>Publish A Poster</LinkButton>
                     </div>
+                    
                 </div>
 
                 <div className={cn.postersContainer}>
@@ -59,6 +65,8 @@ export const Sales = ({ artistId }) => {
                         ))}
                     </div>
                 </div>
+                <p><span>Reach out to us regarding any payment issues <a href="mailto:hello@elywalls.com">Here.</a></span></p>
+                   
             </div>
         </div>
     );

@@ -60,7 +60,7 @@ export const Account = ({ location }) => {
                     </div>
                     {user.user_type === "artist" &&
                     <div className='buttons-container'>
-                        <StripeCustomers />
+                        {/* <StripeCustomers /> */}
                     </div>}
                 </div>
 

@@ -19,11 +19,14 @@ const fs = require("fs");
 const { post } = require("../routes/userRoutes");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const nodemailer = require("nodemailer");
+const { time } = require("console");
 
 let transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.zoho.in",
+    port:465,
+    secure: true,
     auth: {
-      user: "saakethlogs@gmail.com",
+      user: "hello@elywalls.com",
       pass: process.env.EMAIL_PASS,
     },
   });
@@ -854,6 +857,8 @@ exports.getSales = async (req, res, next) => {
     }
 };
 
+
+
 exports.pay = async (req, res, next) => {
     try {
         let result = 0;
@@ -888,8 +893,19 @@ exports.pay = async (req, res, next) => {
             const token = req.body.token;
             const idempotencyKey = v4();
 
+            for (let i = 0; i < order_cr.purchased_items.length; i++) {
+                let artis = order_cr.purchased_items[i].item.madeBy
+                await Artist.findOneAndUpdate({username:artis},
+                    { $inc: { total_profit: order_cr.purchased_items[i].price_with_quantity ,
+                        current_week_sales: order_cr.purchased_items[i].price_with_quantity}
+                })
+                
+            }
+
+
+            
         let mailOptions = {
-            from: "saakethlogs@gmail.com",
+            from: "hello@elywalls.com",
             to: req.body.email,
             subject: "Thanks for the purchase",
             html: `

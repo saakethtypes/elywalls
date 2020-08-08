@@ -78,7 +78,35 @@ export const GlobalProvider = ({ children }) => {
                 },
                 data: {},
             };
-            await axios.post("/register-buyer", user, config);
+            const res = await axios.post("/register-buyer", user, config);
+            if(res.data.err==true){
+             store.addNotification({
+                title: `Sorry! Someone else was first`,
+                message: `Pick a different username`,
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 4000,
+                  onScreen: true,
+                },
+              });}else{
+                await store.addNotification({
+                    title: `Start styling your walls once you verify!`,
+                    message: `We've sent you an email`,
+                    type: "success",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                      duration: 4000,
+                      onScreen: true,
+                    },
+                  });
+              }
         } catch (err) {
             dispatch({
                 type: "ERROR",
@@ -107,8 +135,36 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             const res = await axios.post("/register-artist", formData, config);
+            if(res.data.err==true){
+                store.addNotification({
+                   title: `Sorry! Someone else was first`,
+                   message: `Pick a different username or email`,
+                   type: "danger",
+                   insert: "top",
+                   container: "top-right",
+                   animationIn: ["animated", "fadeIn"],
+                   animationOut: ["animated", "fadeOut"],
+                   dismiss: {
+                     duration: 4000,
+                     onScreen: true,
+                   },
+                 });}else{
+                   await store.addNotification({
+                       title: `Start styling your walls once you verify!`,
+                       message: `We've sent you an email`,
+                       type: "success",
+                       insert: "top",
+                       container: "top-right",
+                       animationIn: ["animated", "fadeIn"],
+                       animationOut: ["animated", "fadeOut"],
+                       dismiss: {
+                         duration: 4000,
+                         onScreen: true,
+                       },
+                     });
+                 }
+        
         } catch (err) {
-
             console.log(err)
             dispatch({
                 type: "ERROR",
