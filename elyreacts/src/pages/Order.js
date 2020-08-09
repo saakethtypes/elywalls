@@ -36,6 +36,7 @@ const formatAddress = (raw) => {
         </ul>
     );
 };
+/*eslint-disable*/
 
 export const Order = ({ oid, ...props }) => {
     const { order, getOrder } = useContext(GlobalContext);

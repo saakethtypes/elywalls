@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
-import { FormInput } from "../components/FormInput";
+import React from "react";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/OrderItem.module.scss";
 
 const getPictureUrl = (pictureUrl) => {

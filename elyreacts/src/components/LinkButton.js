@@ -1,6 +1,8 @@
 import React from 'react';
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from './styles/LinkButton.module.scss';
 import { Link } from 'react-router-dom';
 

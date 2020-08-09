@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 
 import LinkButton from '../components/LinkButton';
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from './styles/Thankyou.module.scss';
 import { GlobalContext } from '../context/GlobalState';
 

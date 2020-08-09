@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import PT from 'prop-types';
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from './styles/FormInput.module.scss';
 
 

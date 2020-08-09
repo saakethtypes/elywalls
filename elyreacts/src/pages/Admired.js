@@ -1,5 +1,6 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
+/*eslint-disable*/
 
 import { PostersList } from "../components/PostersList";
 import LoadingIcon from "../components/LoadingIcon";

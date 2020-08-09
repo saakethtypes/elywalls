@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 //@ts-ignore
 import ELYWALLS_LOGO from "../assets/images/Logo.svg";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Footer.module.scss";
 
 export default () => {

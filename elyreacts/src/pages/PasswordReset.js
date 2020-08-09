@@ -1,12 +1,10 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {GlobalContext} from '../context/GlobalState';
-import {Link} from "react-router-dom";
 import {FormInput} from "../components/FormInput";
 import LinkButton from '../components/LinkButton';
 import { store } from "react-notifications-component";
-
 export const PasswordReset = ({rid}) => {
-
+/* eslint-disable*/
     const {resetPass} = useContext(GlobalContext);
     const [goahead, setgoahead] = useState(false);
 

@@ -21,15 +21,8 @@ const formatDate = (raw) => {
     return <p>{raw.toUTCString()}</p>;
 };
 
+/*eslint-disable*/
 
-const getPictureUrl = (pictureUrl) => {
-    try {
-        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
-    } catch (err) {
-        // fixme: Remove this as it shouldn't be necessary outside of testing
-        return "https://source.unsplash.com/random";
-    }
-};
 
 export const Order = ({ order }) => {
 

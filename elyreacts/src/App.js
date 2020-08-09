@@ -1,5 +1,7 @@
+/*eslint-disable*/
+
 import React from "react";
-import { BrowserRouter as BRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as BRouter, Route, Switch  } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalState";
 import history from "./components/history";
 import { ProtectedRoute } from "./ProtectedRoute";

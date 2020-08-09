@@ -1,16 +1,20 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
-import { StripeCustomers } from "../components/StripeCustomers";
+import React, { useEffect, useContext } from "react";
 import LoadingIcon from "../components/LoadingIcon";
 
 import { PostersList } from "../components/PostersList";
 import { Link } from "react-router-dom";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import ICON_INSTAGRAM from "../assets/images/Instagram-Mark.svg";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Profile.module.scss";
+/*eslint-disable*/
 
 const getPictureUrl = (pictureUrl) => {
     try {

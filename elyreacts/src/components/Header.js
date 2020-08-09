@@ -1,14 +1,18 @@
-import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
+import React, {  useContext, useState, useLayoutEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import auth from "../auth";
 
 import LinkButton from "./LinkButton";
 
-// @ts-ignore // todo: Add type defs for SVG, SCSS files
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+ // todo: Add type defs for SVG, SCSS files
 import LOGO from "../assets/images/Logo.svg";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Header.module.scss";
 
 export default () => {

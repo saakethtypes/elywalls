@@ -4,8 +4,11 @@ import { GlobalContext } from "../context/GlobalState";
 import LinkButton from "../components/LinkButton";
 import { Recommends } from "../components/Recommends";
 import LoadingIcon from "../components/LoadingIcon";
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Poster.module.scss";
 import { Link } from "react-router-dom";
 import { SalesItem } from "../components/SalesItem";

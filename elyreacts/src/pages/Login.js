@@ -3,8 +3,11 @@ import { GlobalContext } from "../context/GlobalState";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
 import LoadingIcon from "../components/LoadingIcon";
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Login.module.scss";
+/*eslint-disable*/
 
 export const Login = (props) => {
     const [username, setUsername] = useState("");
@@ -42,8 +45,9 @@ export const Login = (props) => {
             <div className='page-header'>
                 <h1 className='page-title'>Sign In</h1>
                 <p className='page-preface'>
-                    Sign in to Admire and purchase products, or{" "}
-                    <Link to='/register'>click here to register</Link>.
+                    Sign in to Admire and purchase posters
+                    <p><Link to='/register'>New to Elywalls?</Link>
+                        </p>
                 </p>
             </div>
             {!fp && (

@@ -1,14 +1,12 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import ImageUploader from "react-images-upload";
 import { GlobalContext } from "../context/GlobalState";
-import { Redirect } from "react-router-dom";
 
 import LoadingIcon from "../components/LoadingIcon";
 
 import { FormInput, FormCheckboxInput, FormDropdownInput } from "../components/FormInput";
 
 //@ts-ignore
-import cn from "./styles/PosterUpload.module.scss";
 
 const MAX_IMAGE_SIZE = 15242880;
 const INITIAL_PRICE = 160;
@@ -22,7 +20,6 @@ export const PosterUpload = (props) => {
     const [price, setPrice] = useState(INITIAL_PRICE);
     const [tags, setTags] = useState("");
     const [category, setCategory] = useState("");
-    const [artistDp, setartistDp] = useState("");
     const [declaredOwnWork, setDeclaredOwnWork] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const handleImageUpload = (picture) => {

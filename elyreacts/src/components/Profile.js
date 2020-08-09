@@ -1,13 +1,14 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
-import { StripeCustomers } from "../components/StripeCustomers";
+import React, { useEffect, useContext } from "react";
 import LoadingIcon from "../components/LoadingIcon";
 
 import { PostersList } from "../components/PostersList";
-import LinkButton from "../components/LinkButton";
 import { Link } from "react-router-dom";
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Profile.module.scss";
 
 const getPictureUrl = (pictureUrl) => {
@@ -36,11 +37,11 @@ export const Profile = ({ artistId }) => {
                 {user && artist.username !== user.username && (
                     <div className={cn.reportButtonContainer}>
                         <small>
-                            <Link to='/account/edit'>Report User</Link>
+                            <Link href=''>Report User</Link>
                         </small>
                     </div>
                 )}
-                
+                                      
 
                 <div className={cn.statsContainer}>
                     <div>

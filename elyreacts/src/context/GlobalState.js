@@ -2,11 +2,11 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
 import auth from "../auth";
-import { Redirect } from "react-router-dom";
+/* eslint-disable*/
+
 import { v4 } from "uuid";
 import { store } from "react-notifications-component";
 import 'react-notifications-component/dist/theme.css'
-import LoadingIcon from "../components/LoadingIcon";
 let logUser = JSON.parse(localStorage.getItem("currentUser") || null);
 let ls = false;
 let usercart = null;

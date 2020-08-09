@@ -7,14 +7,16 @@ import cn from "./styles/PostersWall.module.scss";
 
 import  InfiniteScroll  from 'react-infinite-scroll-component';
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
+/*eslint-disable*/
 
 export const PostersWall = ({ category = "latest" }) => {
     let {
         posters: { isLoading, error, posters },
         getPosters,
         getPostersMore,
-        loadLimit,
         goAhead
     } = useContext(GlobalContext);
     const [page, setpage] = useState(0)

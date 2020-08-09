@@ -1,9 +1,11 @@
-import React, { useState, useLayoutEffect, useEffect, useRef } from "react";
+import React,{useRef } from "react";
 import Masonry from "react-masonry-component";
 
 import { Poster, FakePoster } from "../components/Poster";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/PostersList.module.scss";
 
 export const PostersList = ({ posters = [], noButtons = false, cat = "" }) => {

@@ -10,6 +10,7 @@ const getGreeting = (n) => {
     if (n === 0 || n > 1) return `You have ${n} orders`;
     else return `You have ${n} order`;
 };
+/*eslint-disable*/
 
 export const OrdersList = () => {
     let { orders, getOrders } = useContext(GlobalContext);

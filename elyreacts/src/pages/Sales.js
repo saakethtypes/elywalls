@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {  useEffect, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import LinkButton from "../components/LinkButton";
 import { SalesItem } from "../components/SalesItem";
+/*eslint-disable*/
 
 //@ts-ignore
 import cn from "./styles/Sales.module.scss";

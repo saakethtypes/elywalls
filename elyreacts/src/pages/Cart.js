@@ -1,10 +1,13 @@
 import { GlobalContext } from "../context/GlobalState";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { CartItem } from "../components/CartItem";
 import StripeCheckout from "react-stripe-checkout";
 import LoadingIcon from "../components/LoadingIcon";
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Cart.module.scss";
 
 const dotenv = require("dotenv");

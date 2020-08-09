@@ -1,16 +1,17 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import { store } from "react-notifications-component";
 import { GlobalContext } from "../context/GlobalState";
 import ImageUploader from "react-images-upload";
 import { FormInput, FormRadioInput } from "../components/FormInput";
 import LoadingIcon from "../components/LoadingIcon";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Register.module.scss";
 
 const MAX_IMAGE_SIZE = 15242880;
-const INITIAL_PRICE = 160;
+/*eslint-disable*/
 
 export const Register = ({ location }) => {
     const [fullname, setFullname] = useState("");

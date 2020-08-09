@@ -7,6 +7,7 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
 import { StripeCustomers } from "../components/StripeCustomers";
+/* eslint-disable*/
 
 import { PostersList } from "../components/PostersList";
 import LoadingIcon from "../components/LoadingIcon";

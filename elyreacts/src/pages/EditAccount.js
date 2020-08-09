@@ -1,8 +1,11 @@
 import { GlobalContext } from "../context/GlobalState";
 import React, { useEffect, useContext, useState } from "react";
 import { FormInput } from "../components/FormInput";
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/PosterEdit.module.scss";
 
 

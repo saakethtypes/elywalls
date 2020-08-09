@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import { PostersList } from "./PostersList";
+/* eslint-disable*/
 
 export const Recommends = (cat, aid, pid) => {
     const { recommends, getRecommends } = useContext(GlobalContext);

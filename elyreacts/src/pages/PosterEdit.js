@@ -3,7 +3,9 @@ import React, { useEffect, useContext, useState } from "react";
 import { FormInput } from "../components/FormInput";
 import LoadingIcon from "../components/LoadingIcon";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/PosterEdit.module.scss";
 import { Link } from "react-router-dom";
 

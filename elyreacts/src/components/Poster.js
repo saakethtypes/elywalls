@@ -4,7 +4,9 @@ import { GlobalContext } from "../context/GlobalState";
 
 import LinkButton from "./LinkButton";
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Poster.module.scss";
 
 const ButtonAction = ({ onClickHandler, activated = false, children }) => {
@@ -23,6 +25,7 @@ const getPictureUrl = (pictureUrl) => {
         return "https://source.unsplash.com/random";
     }
 };
+/*eslint-disable*/
 
 export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) => {
     const {
@@ -42,6 +45,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
     const [isAddedToCart, setIsAddedToCart] = useState(
         (cart && cart.filter((ap) => ap.item._id === poster._id).length !== 0) || false
     );
+/*eslint-disable*/
 
     poster = {
         ...poster,

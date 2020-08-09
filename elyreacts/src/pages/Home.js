@@ -1,11 +1,13 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 
-import { PostersList } from "../components/PostersList";
 import LinkButton from "../components/LinkButton";
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from "./styles/Home.module.scss";
 import { Poster } from "../components/Poster";
 
@@ -34,6 +36,7 @@ const FeaturedPostersList = ({ title, linkName }) => {
     useEffect(() => {
         getPosters(linkName);
     }, []);
+/*eslint-disable*/
 
     return (
         <div className={`collection-container`}>
@@ -53,11 +56,11 @@ const FeaturedPostersList = ({ title, linkName }) => {
         </div>
     );
 };
+/*eslint-disable*/
 
 export const Home = () => {
     const {
         posters: { isLoading, error, posters },
-        getPosters,
         getTopArtists,
         artists,
         user,
@@ -174,7 +177,7 @@ export const Home = () => {
                         <h2>Elegant Posters</h2>
                         <p>By independent artists</p>
 
-                        <LinkButton primary to='/posters/all'>
+                        <LinkButton primary to='/posters/popular'>
                             View the Collection
                         </LinkButton>
                     </div>

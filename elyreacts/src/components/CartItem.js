@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { FormInput } from '../components/FormInput';
-import { Poster } from '../components/Poster';
 import { GlobalContext } from '../context/GlobalState';
+/*eslint-disable*/
 
-// @ts-ignore
+// @ts-ignore \n /*eslint-disable*/
+ /*eslint-disable*/
+
 import cn from './styles/CartItem.module.scss';
 
 export const CartItem = ({
