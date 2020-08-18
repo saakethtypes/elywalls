@@ -701,6 +701,7 @@ exports.forgot = async (req, res, next) => {
       res.json({err: true, msg: "Email doesn't exist"});
     }
   } catch (error) {
+    console.log(error)
     return console.log("err", error);
   }
 };

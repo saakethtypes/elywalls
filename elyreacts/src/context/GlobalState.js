@@ -78,7 +78,7 @@ export const GlobalProvider = ({ children }) => {
                 },
                 data: {},
             };
-            const res = await axios.post("/register-buyer", user, config);
+            const res = await axios.post("/api/register-buyer", user, config);
             if(res.data.err==true){
              store.addNotification({
                 title: `Sorry! Someone else was first`,
@@ -134,7 +134,7 @@ export const GlobalProvider = ({ children }) => {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.post("/register-artist", formData, config);
+            const res = await axios.post("/api/register-artist", formData, config);
             if(res.data.err==true){
                 store.addNotification({
                    title: `Sorry! Someone else was first`,
@@ -181,7 +181,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let usercred = { username: uname, password: pass };
-            const res = await axios.post("/login", usercred, config);
+            const res = await axios.post("/api/login", usercred, config);
 
             if (res.data.logged) {
                 localStorage.setItem("currentUser", JSON.stringify(res.data.profile));
@@ -276,7 +276,7 @@ export const GlobalProvider = ({ children }) => {
                   onScreen: true,
                 },
               });
-            await axios.post(`/forgot-password`, { email: email, id: token }, config);
+            await axios.post(`/api/forgot-password`, { email: email, id: token }, config);
         } catch (err) {
             console.log(err)
             dispatch({
@@ -293,7 +293,7 @@ export const GlobalProvider = ({ children }) => {
                     "Content-type": "application/json",
                 },
             };
-            const res = await axios.post(`/reset-password/`, { password: password, id: id }, config);
+            const res = await axios.post(`/api/reset-password/`, { password: password, id: id }, config);
             await store.addNotification({
                 title: `Password Updated.`,
                 message: `You can now log back in.`,
@@ -323,7 +323,7 @@ export const GlobalProvider = ({ children }) => {
             },
         };
         if (token) {
-            const res = await axios.post("/verify", { token: String(token) }, config);
+            const res = await axios.post("/api/verify", { token: String(token) }, config);
             let verified = res.data.veri;
             if (!verified) {
                 localStorage.removeItem("jwt");
@@ -344,7 +344,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
 
-            await axios.post("/edit-profile", editted_profile, config);
+            await axios.post("/api/edit-profile", editted_profile, config);
             await store.addNotification({
                 title: `Updated your profile`,
                 message: ":)",
@@ -392,7 +392,7 @@ switch (category) {
     case "admires":
         return "/nonexistent";
     default:
-        return "all";
+        return "/all";
 }
 };
 
@@ -407,7 +407,7 @@ switch (category) {
             const config = {
                 headers: { "Content-type": "Application/json" },
             };
-            const res = await axios.get(getEndpoint(category,infiPage+10), config).catch((err) => {
+            const res = await axios.get('/api'+getEndpoint(category,infiPage+10), config).catch((err) => {
                 console.log(err);
             });
             console.log(res.data)
@@ -444,7 +444,7 @@ switch (category) {
             const config = {
                 headers: { "Content-type": "Application/json" },
             };
-            const res = await axios.get(getEndpoint(category,infiPage), config).catch((err) => {
+            const res = await axios.get('/api'+getEndpoint(category,infiPage), config).catch((err) => {
                 console.log(err);
             });
             var postersUnique = res.data.posters.filter(
@@ -475,7 +475,7 @@ switch (category) {
                 },
             };
 
-            let ress = await axios.get("/cart", config).catch((err) => {
+            let ress = await axios.get("/api/cart", config).catch((err) => {
             });
             let total = 0;
             ress.data.cartitems.map((ci) => {
@@ -505,7 +505,7 @@ switch (category) {
                 },
             };
 
-            let ress = await axios.get("/orders", config).catch((err) => {
+            let ress = await axios.get("/api/orders", config).catch((err) => {
             });
             dispatch({
                 type: "ORDER_GET",
@@ -530,7 +530,7 @@ switch (category) {
                 },
             };
 
-            let ress = await axios.get("/admired-posters", config);
+            let ress = await axios.get("/api/admired-posters", config);
 
             dispatch({
                 type: "GET_ADMIRED_POSTERS",
@@ -555,7 +555,7 @@ switch (category) {
                 },
             };
             
-            let ress = await axios.get(`/recommends/${cat}/${aid}/${pid}`, config);
+            let ress = await axios.get(`/api/recommends/${cat}/${aid}/${pid}`, config);
 
             dispatch({
                 type: "RECOMMENDS",
@@ -579,7 +579,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.get("/admired-artists", config);
+            const res = await axios.get("/api/admired-artists", config);
 
             dispatch({
                 type: "ADMIRED_ARTISTS",
@@ -600,7 +600,7 @@ switch (category) {
                     "Content-type": "application/json",
                 },
             };
-            const res = await axios.get(`/poster/${pid}`, config);
+            const res = await axios.get(`/api/poster/${pid}`, config);
             dispatch({
                 type: "POSTER_SINGLE",
                 poster: res.data.poster,
@@ -620,7 +620,7 @@ switch (category) {
                     "Content-type": "application/json",
                 },
             };
-            const res = await axios.get(`/profile/${auname}`, config);
+            const res = await axios.get(`/api/profile/${auname}`, config);
             
             dispatch({
                 type: "ARTIST_PROFILE",
@@ -642,7 +642,7 @@ switch (category) {
                 },
             };
 
-            const res = await axios.get(`/topartists`, config);
+            const res = await axios.get(`/api/topartists`, config);
             dispatch({
                 type: "TOP_ARTISTS",
                 artists: res.data.artists,
@@ -696,7 +696,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            await axios.get(`/${aid}/unadmireA`, config);
+            await axios.get(`/api/${aid}/unadmireA`, config);
             
             dispatch({
                 type: "UNADMIRE_A",
@@ -717,7 +717,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.delete(`/poster/${pid}`, config);
+            const res = await axios.delete(`/api/poster/${pid}`, config);
             await store.addNotification({
                 title: `Deleted your art 💔 `,
                 message: `You won't be able to make any profits off of it anymore`,
@@ -788,7 +788,7 @@ switch (category) {
             };
 
             let x = { s: 0 };
-            const res = await axios.patch(`/cartadd/${pid}`, x, config);
+            const res = await axios.patch(`/api/cartadd/${pid}`, x, config);
             
             if (res.data.err) {
                 localStorage.removeItem("jwt");
@@ -817,7 +817,7 @@ switch (category) {
             },
         };
         try {
-            await axios.patch(`saveQuantity/${cid}`, { q: q, pwq: p }, config);
+            await axios.patch(`/api/saveQuantity/${cid}`, { q: q, pwq: p }, config);
 
             dispatch({
                 type: "CART_QUANTITY",
@@ -877,7 +877,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            let res = await axios.patch(`/admireP/${poster._id}/`, { x: 0 }, config);
+            let res = await axios.patch(`/api/admireP/${poster._id}/`, { x: 0 }, config);
             await store.addNotification({
                 title: `Added to your favorites 💜 `,
                 message: `Collection available in your account`,
@@ -930,7 +930,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            let res = await axios.patch(`/unadmireP/${poster._id}/`, { s: 0 }, config);
+            let res = await axios.patch(`/api/unadmireP/${poster._id}/`, { s: 0 }, config);
             await store.addNotification({
                 title: `Removed from your favorites 💔 `,
                 message: `Collection available in your account`,
@@ -997,7 +997,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.post("/publish-poster", formData, config);
+            const res = await axios.post("/api/publish-poster", formData, config);
 
             dispatch({
                 type: "CREATE_POSTER",
@@ -1033,7 +1033,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.get("/account", config);
+            const res = await axios.get("/api/account", config);
             dispatch({
                 type: "PROFILE_B",
                 profile: res.data.profile,
@@ -1055,7 +1055,7 @@ switch (category) {
                 },
             };
 
-            const res = await axios.get(`/youraccount`, config);
+            const res = await axios.get(`/api/youraccount`, config);
             dispatch({
                 type: "PROFILE_A",
                 posters_made: res.data.profile.postersmade.reverse(),
@@ -1077,7 +1077,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.get(`/order/${oid}`, config);
+            const res = await axios.get(`/api/order/${oid}`, config);
             dispatch({
                 type: "ORDER_SINGLE_GET",
                 order: res.data.order,
@@ -1098,7 +1098,7 @@ switch (category) {
                     "x-auth-token": localStorage.getItem("jwt"),
                 },
             };
-            const res = await axios.get(`/sales/${aid}`, config);
+            const res = await axios.get(`/api/sales/${aid}`, config);
             dispatch({
                 type: "SALES_GET",
                 salesPosters: res.data.postersales,
@@ -1142,7 +1142,7 @@ switch (category) {
                     
                 },
             };
-            const res = await axios.get(`/confirmation/${utype}/${token}`, config);
+            const res = await axios.get(`/api/confirmation/${utype}/${token}`, config);
             if(res.data.success){
                return props.history.push('/confirmed')
             }else{
@@ -1165,7 +1165,7 @@ switch (category) {
 
                 },
             };
-            await axios.post(`/update-quote`, {"quote":editted_cap}, config);
+            await axios.post(`/api/update-quote`, {"quote":editted_cap}, config);
             await store.addNotification({
                 title: `Updated your Quote`,
                 message: "People always love to know what drives the artist",
@@ -1200,7 +1200,7 @@ switch (category) {
             },
           }; 
 
-          let res = await axios.get(`/get-token/${state.user.username}/${state.user.user_type}`,config)
+          let res = await axios.get(`/api/get-token/${state.user.username}/${state.user.user_type}`,config)
           localStorage.setItem('jwt',res.data.token)
           localStorage.setItem('currentUser',JSON.stringify(res.data.user))
 
