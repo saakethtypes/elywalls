@@ -29,7 +29,8 @@
     "start": "PORT=3030 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+"deploy:prod": "rsync -avzhe ssh --progress ./build/* root@elywalls.com:/home/ubuntu/elywalls.com"
   },
   "eslintConfig": {
     "extends": "react-app"

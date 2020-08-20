@@ -1,0 +1,46 @@
+{
+  "name": "indiwalls",
+  "version": "1.0.0",
+  "description": "Posters from artists",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js",
+c    "client": "cd ../elyreacts/build && npm start",
+    "dev": "concurrently \" npm run server \" \" npm run client\" ",
+    "client-install": "npm install --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saakethtypes/elywalls.git"
+  },
+  "author": "Saaketh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saakethtypes/elywalls/issues"
+  },
+  "homepage": "https://github.com/saakethtypes/elywalls#readme",
+  "dependencies": {
+    "@types/history": "^4.7.5",
+    "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "get-stream": "^5.1.0",
+    "history": "^4.10.1",
+    "image-size": "^0.8.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.13",
+    "mongoose-type-email": "^1.0.12",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.6",
+    "nodemon": "^2.0.3",
+    "path": "^0.12.7",
+    "sharp": "^0.25.4",
+    "stripe": "^8.52.0",
+    "uuid": "^8.0.0"
+  }
+}

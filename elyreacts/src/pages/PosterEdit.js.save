@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const getPictureUrl = (pictureUrl) => {
     try {
-        return require("/home/ubuntu/elywalls.com/DB/assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+        return require("//" + pictureUrl.split("Db")[1].substring(1));
     } catch (err) {
         // todo/fixme: Remove this as it shouldn't be necessary outside of testing
         return "https://source.unsplash.com/random";

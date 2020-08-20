@@ -18,7 +18,7 @@ const FeaturedPostersList = ({ title, linkName }) => {
     const getPosters = async (category) => {
         return new Promise((resolve, reject) => {
             try {
-                fetch(`/${category}`, {
+                fetch(`/api/${category}`, {
                     method: "GET",
                 })
                     .then((r) => r.json())
@@ -101,7 +101,7 @@ export const Home = () => {
     };
     const getDPUrl = (pictureUrl) => {
         try {
-            return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
+            return require("/home/ubuntu/elywalls.com/DB/assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
             console.log(err)
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing
@@ -111,7 +111,7 @@ export const Home = () => {
 
     const getPictureUrl = (pictureUrl) => {
         try {
-            return require(`../assets/heros/${pictureUrl}.png`);
+            return require(`/home/ubuntu/elywalls.com/DB/assets/heros/${pictureUrl}.png`);
         } catch (err) {
             console.log(err)
             // fixme: Remove this as it shouldn't be necessary outside of testing
@@ -134,7 +134,7 @@ export const Home = () => {
 
                     <small className={cn.heroImageAuthor}>
                         <Link to='/posters/all'>Welcome Poster</Link> by{" "}
-                        <Link to='/profile/test.artist'>Author Name</Link>
+                        <Link to='/profile/ruxx'>ruxx</Link>
                     </small>
                 </div>
 

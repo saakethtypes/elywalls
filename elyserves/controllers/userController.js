@@ -70,7 +70,7 @@ exports.registerUser = async (req, res, next) => {
           console.log("error", err);
         } else {
           let utype = "user";
-          let confURL = `http://localhost:3030/confirm/${utype}/${emailToken}`;
+          let confURL = `https://elywalls.com/confirm/${utype}/${emailToken}`;
           let mailOptions = {
             from: "hello@elywalls.com",
             to: req.body.email,
@@ -303,7 +303,7 @@ exports.registerArtist = async (req, res, next) => {
         if (err) {
         } else {
           let utype = "artist";
-          let confURL = `http://localhost:3030/confirm/${utype}/${emailToken}`;
+          let confURL = `https://elywalls.com/confirm/${utype}/${emailToken}`;
           let mailOptions = {
             from: "hello@elywalls.com",
             to: req.body.email,
@@ -522,7 +522,7 @@ exports.forgot = async (req, res, next) => {
       let reqp = await PasswordReq.create(request);
       console.log("Email verified");
       let utype = "artist";
-      let confURL = `http://localhost:3030/resetpassword/${req.body.id}`;
+      let confURL = `https://elywalls.com/resetpassword/${req.body.id}`;
       
       let mailOptions = {
         from: "hello@elywalls.com",
@@ -740,7 +740,7 @@ exports.redirect = async (req, res, next) => {
   } catch (error) {
     return console.log("err", error);
   }
-  return res.redirect("http://localhost:3030/login");
+  return res.redirect("https://elywalls.com/login");
 };
 
 exports.login = async (req, res, next) => {

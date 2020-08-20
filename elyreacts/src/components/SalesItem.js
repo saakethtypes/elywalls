@@ -7,7 +7,7 @@ import cn from "./styles/SalesItem.module.scss";
 
 const getPictureUrl = (pictureUrl) => {
     try {
-        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+        return require("/home/ubuntu/elywalls.com/DB/assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
     } catch (err) {
         // fixme: Remove this as it shouldn't be necessary outside of testing
         return "https://source.unsplash.com/random";

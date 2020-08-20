@@ -206,7 +206,7 @@ exports.deletePoster = async (req, res, next) => {
 
         await Poster.findByIdAndDelete({ _id: req.params.posterId }, (e) => console.log(e));
         fs.unlink(
-            "../elyreacts/src/assets/postersDb/" + postesr.pictureURL.split("Db\\")[1],
+            "/home/ubuntu/elywalls.com/DB/assets/postersDb/" + postesr.pictureURL.split("Db\\")[1],
             (err) => {
                 if (err) {
                     console.log("failed to delete local image:" + err);

@@ -19,7 +19,7 @@ const ButtonAction = ({ onClickHandler, activated = false, children }) => {
 
 const getPictureUrl = (pictureUrl) => {
     try {
-        return require("../assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
+        return require("/home/ubuntu/elywalls.com/DB/assets/postersDb/" + pictureUrl.split("Db")[1].substring(1));
     } catch (err) {
         // todo/fixme: Remove this as it shouldn't be necessary outside of testing
         return "https://source.unsplash.com/random";
@@ -97,7 +97,7 @@ export const Poster = ({ poster, noButtons = false, cat = "", className = "" }) 
 
     const getDPUrl = (pictureUrl) => {
         try {
-            return require("../assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
+            return require("/home/ubuntu/elywalls.com/DB/assets/artistsDp/" + pictureUrl.split("Dp")[1].substring(1));
         } catch (err) {
             // todo/fixme: Remove this as it shouldn't be necessary outside of testing
             return "https://source.unsplash.com/random";

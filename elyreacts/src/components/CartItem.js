@@ -25,7 +25,7 @@ export const CartItem = ({
     let picUrl = null
     try{  let purl = ci.item.pictureURL.split("Db/")[1] 
 
-    picUrl = require("../assets/postersDb/"+purl)
+    picUrl = require("/home/ubuntu/elywalls.com/DB/assets/postersDb/"+purl)
 }catch{let x = 0}
 
     return (

@@ -88,7 +88,7 @@ const fileFilter = (req, file, cb) => {
 const storage = multer.diskStorage({
        destination: function (req, file, cb) {
               //resized operations
-              cb(null, '../elyreacts/src/assets/postersDb');
+              cb(null, '/home/ubuntu/elywalls.com/DB/assets/postersDb');
        },
        filename: function (req, file, cb) {
               let ext = String(file.mimetype).split("/")
@@ -122,7 +122,7 @@ const storageResized = multer.diskStorage({
         .jpeg({ quality: 90 })
         console.log(file)
 
-        cb(null, '../elyreacts/src/assets/postersDb');
+        cb(null, '/home/ubuntu/elywalls.com/DB/assets/postersDb');
        },
        filename: function (req, file, cb) {
               let ext = String(file.mimetype).split("/")

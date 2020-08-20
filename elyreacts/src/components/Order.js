@@ -34,7 +34,7 @@ export const Order = ({ order }) => {
                     className='image'
                     style={{
                         backgroundImage: `url("${
-                            require("../assets/postersDb/"+
+                            require("/home/ubuntu/elywalls.com/DB/assets/postersDb/"+
                             order.purchased_items[0].item.pictureURL.split("Db")[1].substring(1))
                         }")`,
                     }}

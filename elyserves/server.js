@@ -1,3 +1,6 @@
+//build folder at  /home/ubuntu/elywalls.com/
+//db at   ..../elywalls.com/DB
+
 const mongoose = require('mongoose');
 const express = require('express');
 const dotenv = require('dotenv');
