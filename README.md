@@ -1,7 +1,7 @@
 # Elywalls
 
 Full stack E-commerce platform to buy and sell posters &amp; art made by independent Artists, Photographers and Graphic designers.
-
+Server Build code v1.2 protected.
 # Features
 
 -   Mobile responsive
@@ -15,3 +15,4 @@ Full stack E-commerce platform to buy and sell posters &amp; art made by indepen
 # Site
 Live on 
 https://elywalls.com
+
