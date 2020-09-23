@@ -1,8 +1,9 @@
 # Elywalls
 
 Full stack E-commerce platform to buy and sell posters &amp; art made by independent Artists, Photographers and Graphic designers.
-Server Build code v1.2 protected.
+
 # Features
+
 
 -   Mobile responsive
 -   Auth - Email verification, Forgot password.
@@ -13,6 +14,8 @@ Server Build code v1.2 protected.
 -   Website - Search, Recommendation of posters, Popular posters, Top-selling Posters .etc
 
 # Site
-Live on 
-https://elywalls.com
+
+-   Server Build code v1.2 protected.
+
+-   Live on https://elywalls.com
 
