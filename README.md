@@ -16,6 +16,3 @@ Full stack E-commerce platform to buy and sell posters &amp; art made by indepen
 # Site
 
 -   Server stable build code v1.2 protected.
-
--   Live on https://elywalls.com
-
