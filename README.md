@@ -17,5 +17,5 @@ Full stack E-commerce platform to buy and sell posters &amp; art made by indepen
 -   Server stable build code v1.2 protected.
 
 # Preview
+![ElyGif](https://user-images.githubusercontent.com/47172497/113725784-4a329800-9711-11eb-9228-3537e9274780.gif)
 
-![ElyGif](https://user-images.githubusercontent.com/47172497/113725313-d1cbd700-9710-11eb-8650-e83e785de139.gif)
